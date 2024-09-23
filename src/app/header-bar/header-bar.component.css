@@ -1,0 +1,240 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f2f2f260;
+  padding: 20px;
+  box-shadow: 0px 0.15px 10px #888888;
+  font-family: Mitr;
+}
+
+.logo {
+  margin-left: 10px;
+  /* margin-top: 15px; */
+  cursor: pointer;
+  height: 30px;
+  & img {
+    height: 30px;
+  }
+  display: flex;
+}
+
+.menu {
+  display: flex;
+  list-style: none;
+  & li {
+    margin: 0 0.8rem;
+    margin-top: 5px;
+    padding: 5px;
+    & a {
+      color: #181818;
+      text-decoration: none;
+    }
+    & a:hover {
+      color: #d60000;
+      text-decoration: none;
+    }
+  }
+}
+
+.button {
+  display: flex;
+  list-style: none;
+  & li {
+    margin: 0 0.5rem;
+    & .languageSelection {
+      height: 30px;
+      opacity: 0.4;
+    }
+    & .languageSelection:hover {
+      background: url("https://www.ecount.com/th/common/images/common/icon-global.svg?ver=2024011502");
+      background-size: 30px 30px;
+    }
+  }
+}
+
+.hamburger {
+  display: none;
+  font-size: 30px;
+  background: rgba(255, 255, 255, 0);
+  border-radius: 1rem;
+  top: 1.5rem;
+  border: none;
+  color: Black;
+  cursor: pointer;
+}
+
+.menu-hamburger {
+  display: none;
+}
+
+.flipper:hover {
+  transform: rotateY(180deg);
+}
+
+.flipper,
+.th,
+.en,
+.logInA,
+.logInB {
+  width: 40px;
+  height: 40px;
+}
+
+.flipper {
+  transition: 0.5s;
+  transform-style: preserve-3d;
+
+  position: relative;
+}
+
+.th,
+.en,
+.logInA,
+.logInB {
+  backface-visibility: hidden;
+
+  position: absolute;
+}
+
+.th {
+  background: url(https://cdn-icons-png.flaticon.com/128/10576/10576553.png) 0 0
+    no-repeat;
+  background-position: center;
+  background-size: 40px;
+  cursor: pointer;
+}
+
+.en {
+  transform: rotateY(180deg);
+
+  background: url(https://cdn-icons-png.flaticon.com/128/197/197374.png) 0 0
+    no-repeat;
+  background-position: center;
+  background-size: 40px;
+  cursor: pointer;
+}
+
+.logInA {
+  background: url(https://cdn-icons-png.flaticon.com/512/7856/7856337.png) 0 0
+    no-repeat;
+  background-position: center;
+  background-size: 40px;
+  cursor: pointer;
+}
+
+.logInB {
+  transform: rotateY(180deg);
+
+  background: url(https://cdn-icons-png.flaticon.com/128/7856/7856126.png) 0 0
+    no-repeat;
+  background-position: center;
+  background-size: 40px;
+  cursor: pointer;
+}
+
+/*  */
+@media (max-width: 905px) {
+  .menu-hamburger {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    border-radius: 1rem;
+    background-color: #e3e3e3f3;
+    height: 100vh;
+    width: 90%;
+    list-style: none;
+    max-width: 905px;
+    z-index: 1;
+    text-align: center;
+    box-shadow: 5px 5px 10px #181818;
+    visibility: hidden;
+    & li {
+      margin: 10px auto;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 0.5rem;
+      & a {
+        text-decoration: none;
+        color: #000000;
+        font-weight: bold;
+      }
+    }
+    & li:hover {
+      padding: 10px;
+      background-color: rgba(255, 255, 255);
+      border-radius: 0.5rem;
+      & a {
+        text-decoration: none;
+        color: #ba9731;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .menu,
+  .button {
+    display: none;
+  }
+
+  .menu-hamburger.open {
+    visibility: visible;
+  }
+
+  .hamburger {
+    display: block;
+    position: relative;
+    right: 0;
+    top: 0;
+    height: 50px;
+    width: 50px;
+    & span {
+      height: 5px;
+      width: 30px;
+      background-color: #000000;
+      border-radius: 25px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: 0.3s ease;
+    }
+
+    & span:nth-child(1) {
+      top: 25%;
+    }
+
+    & span:nth-child(3) {
+      top: 75%;
+    }
+  }
+
+  .hamburger.open span:nth-child(1) {
+    top: 75%;
+    transform: rotate(45deg) translate(-60%, -60%);
+    background-color: red;
+  }
+
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.open span:nth-child(3) {
+    top: 30%;
+    transform: rotate(-45deg) translate(-40%, -40%);
+    background-color: red;
+  }
+}
+
+/*  */
+@media (max-width: 480px) {
+  .logo img {
+    height: 30px;
+  }
+
+  .menu,
+  .button {
+    display: none;
+  }
+}

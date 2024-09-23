@@ -1,0 +1,48 @@
+<nav>
+
+  <!-- Logo's Web application -->
+  <div class="logo" routerLinkActive="active" routerLink="">
+    <img src="assets/images/logoV5.png" alt="Logo">
+  </div>
+
+  <!-- Hamburger button -->
+  <button class="hamburger" [class.open]="menuVisible" (click)="toggleMenu()">
+    <span *ngIf="!menuVisible"></span>
+    <span *ngIf="!menuVisible"></span>
+    <span *ngIf="!menuVisible"></span>
+    <span *ngIf="menuVisible"></span>
+    <span *ngIf="menuVisible"></span>
+    <span *ngIf="menuVisible"></span>
+  </button>
+
+  <!-- Hamburger menu -->
+  <ul class="menu-hamburger" [class.open]="menuVisible">
+    <li><a class="nav-link" routerLinkActive="active" routerLink="/" (click)="closeMenu()">หน้าหลัก</a></li>
+    <li><a class="nav-link" routerLinkActive="active" routerLink="/dashboard" (click)="closeMenu()">แดชบอร์ด</a></li>
+    <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transaction" (click)="closeMenu()">เพิ่มรายการธุรกรรม</a></li>
+    <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transactionV2" (click)="closeMenu()">เพิ่มรายการธุรกรรมV2</a></li>
+  </ul>
+
+  <ul class="menu">
+    <li><a class="nav-link" routerLinkActive="active" routerLink="/">หน้าหลัก</a></li>
+    <li><a class="nav-link" routerLinkActive="active" routerLink="/dashboard">แดชบอร์ด</a></li>
+    <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transaction">เพิ่มรายการธุรกรรม</a></li>
+    <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transactionV2">เพิ่มรายการธุรกรรมV2</a></li>
+  </ul>
+  <ul class="button">
+    <figure></figure>
+    <li>
+      <div class="flipper">
+        <div class="th"></div>
+        <div class="en"></div>
+      </div>
+    </li>
+    <li>
+      <div class="flipper">
+        <div class="logInA"></div>
+        <div class="logInB"></div>
+      </div>
+    </li>
+  </ul>
+
+</nav>

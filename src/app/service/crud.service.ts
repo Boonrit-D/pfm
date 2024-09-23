@@ -1,0 +1,104 @@
+import { Injectable } from '@angular/core';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+
+// Transaction model
+export class Transaction {
+  _id!: string;
+  title!: string;
+  type!: string;
+  amount!: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CrudService {
+
+  // Node/Express API
+  REST_API: string = 'http://localhost:8000/api';
+  REST_API_V2: string = 'http://localhost:8000/apiV2';
+
+  // Http header
+  httpHeaders = new HttpHeaders().set('Content-Type','application/json');
+
+  constructor(private httpClient: HttpClient) { }
+
+  // Add
+  AddTransaction(data: Transaction): Observable<any> {
+    let API_URL = `${this.REST_API}/add-transaction`;
+    return this.httpClient.post(API_URL, data, { headers: this.httpHeaders })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // Get all transactions
+  GetTransactions(): Observable<any> {
+    return this.httpClient.get(`${this.REST_API}`);
+  }
+
+  // Get single transactions
+  GetTransaction(id: string): Observable<any> {
+    let API_URL = `${this.REST_API}/read-transaction/${id}`;
+    return this.httpClient.get(API_URL, { headers: this.httpHeaders })
+      .pipe(
+        map((res: any) => res || {}),
+        catchError(this.handleError)
+      );
+  }
+
+  // Update
+  updateTransaction(id: string, data: Transaction): Observable<any> {
+    let API_URL = `${this.REST_API}/update-transaction/${id}`;
+    console.log(`API URL: ${API_URL}`);  // ดีบัก URL
+
+    return this.httpClient.put(API_URL, data, { headers: this.httpHeaders })
+      .pipe(
+        tap(response => {
+          console.log('Response from updateTransaction:', response);
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  // Delete
+  deleteTransaction(id: string): Observable<any> {
+    let API_URL = `${this.REST_API}/delete-transaction/${id}`;
+    return this.httpClient.delete(API_URL, { headers: this.httpHeaders })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // Handle error
+  handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Handle client error
+      errorMessage = error.error.message;
+    } else {
+      // Handle server error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log(errorMessage);
+    return (errorMessage);
+  }
+
+  // V2
+  //////////////////////////////////////////
+  // Add
+  AddTransactionV2(data: Transaction): Observable<any> {
+    let API_URL = `${this.REST_API_V2}/add-transactionV2`;
+    return this.httpClient.post(API_URL, data, { headers: this.httpHeaders })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // Get all transactions
+  GetTransactionsV2(): Observable<any> {
+    return this.httpClient.get(`${this.REST_API_V2}`);
+  }
+}

@@ -1,0 +1,73 @@
+<!-- <p>dashboard works!</p> -->
+<div class="container mx-auto mt-4">
+
+    <div class="flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3 border-b">
+        <h2 class="mx-2">รายการธุรกรรม</h2>
+        <p>วันที่ปัจจุบัน: {{ currentDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+        <!-- <p>วันที่ปัจจุบัน: {{ currentDate | date: 'dd/MM/yyyy' }}</p> -->
+    </div>
+
+    <!-- V1 table -->
+
+    <div class="overflow-x-auto w-full sm:w-auto rounded-md">
+      <table class="min-w-full border border-gray-300">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2 border-b border-gray-300 text-left hidden sm:table-cell">ไอดี</th>
+            <th class="px-4 py-2 border-b border-gray-300 text-left">หัวข้อ</th>
+            <th class="px-4 py-2 border-b border-gray-300 text-left">ประเภทของธุรกรรม</th>
+            <th class="px-4 py-2 border-b border-gray-300 text-left">จำนวนเงิน</th>
+            <th class="px-4 py-2 border-b border-gray-300 text-left text-center">แก้ไข/ลบ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of Transactions; let i = index" class="even:bg-gray-50">
+            <th class="px-4 py-2 border-b border-gray-300 text-left hidden sm:table-cell">{{ transaction._id }}</th>
+            <td class="px-4 py-2 border-b border-gray-300">{{ transaction.title }}</td>
+            <td class="px-4 py-2 border-b border-gray-300">{{ transaction.type }}</td>
+            <td class="px-4 py-2 border-b border-gray-300">{{ transaction.amount }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 text-center">
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm m-1" routerLink="/edit-transaction/{{transaction._id}}">แก้ไข</button>
+              <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm m-1" (click)="delete(transaction._id, i)">ลบ</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- V2 table -->
+
+    <div class="overflow-x-auto w-full sm:w-auto rounded-md mt-10">
+      <table class="min-w-full border border-gray-300">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2 border-b border-gray-300 text-left">วันที่ทำธุรกรรม</th>
+            <th class="px-4 py-2 border-b border-gray-300 text-left">ประเภทของธุรกรรม</th>
+            <th class="px-4 py-2 border-b border-gray-300 text-left">จำนวนเงินที่เกี่ยวข้อง</th>
+            <th class="px-4 py-2 border-b border-gray-300 text-left">รายละเอียดเพิ่มเติม</th>
+            <th class="px-4 py-2 border-b border-gray-300 text-left">หมวดหมู่ของค่าใช้จ่าย</th>
+            <th class="px-4 py-2 border-b border-gray-300 text-left text-center">แก้ไข/ลบ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transactionV2 of TransactionsV2; let i = index" class="even:bg-gray-50">
+            <th class="px-4 py-2 border-b border-gray-300 text-left">
+              {{ transactionV2.date | date: 'dd/MM/yyyy' }}
+              <br>
+              {{ transactionV2.date | date: 'HH:mm:ss' }}
+            </th>
+            <td class="px-4 py-2 border-b border-gray-300">{{ transactionV2.type }}</td>
+            <td class="px-4 py-2 border-b border-gray-300">{{ transactionV2.amount }}</td>
+            <td class="px-4 py-2 border-b border-gray-300">{{ transactionV2.description }}</td>
+            <td class="px-4 py-2 border-b border-gray-300">{{ transactionV2.category }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 text-center">
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm m-1" routerLink="/edit-transaction/{{transactionV2._id}}">แก้ไข</button>
+              <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm m-1" (click)="delete(transactionV2._id, i)">ลบ</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    
+</div>

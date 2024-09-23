@@ -1,0 +1,11 @@
+@import "../node_modules/@angular/material/prebuilt-themes/rose-red.css";
+@import url("https://fonts.googleapis.com/css2?family=Mitr&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  margin: 0 auto;
+  box-sizing: border-box;
+}
