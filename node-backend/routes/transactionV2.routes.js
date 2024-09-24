@@ -15,6 +15,16 @@ transactionRouteV2.route('/').get( async (req, res, next) => {
     }
 })
 
+// Get a transaction
+transactionRouteV2.route('/read-transactionV2/:id').get( async (req, res, next) => {
+    try {
+        const data = await TransactionV2.findById(req.params.id);
+        res.json(data);
+    } catch (error) {
+        next(error);
+    }
+});
+
 // Add transaction
 transactionRouteV2.route('/add-transactionV2').post( async (req, res, next) => {
     try {
@@ -25,7 +35,7 @@ transactionRouteV2.route('/add-transactionV2').post( async (req, res, next) => {
     } 
 });
 
-// Delete book
+// Delete transaction
 transactionRouteV2.route('/delete-transactionV2/:id').delete( async (req, res, next) => {
     try {
         const data = await TransactionV2.findByIdAndDelete(req.params.id);
@@ -34,6 +44,22 @@ transactionRouteV2.route('/delete-transactionV2/:id').delete( async (req, res, n
         })
     } catch (error) {
         next(error);
+    }
+});
+
+// Update book
+transactionRouteV2.route('/update-transactionV2/:id').put(async (req, res, next) => {
+    try {
+        const data = await TransactionV2.findByIdAndUpdate(req.params.id, {
+            $set: req.body
+        }, { new: true });
+        if (!data) {
+            return res.status(404).json({ msg: 'Transaction not found' });
+        }
+        res.json(data);
+    } catch (error) {
+        next(error);
+        console.log(error);
     }
 });
 

@@ -16,6 +16,7 @@ import { AddTransactionComponent } from './add-transaction/add-transaction.compo
 import { EditTransactionComponent } from './edit-transaction/edit-transaction.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AddTransactionV2Component } from './add-transaction-v2/add-transaction-v2.component';
+import { EditTransactionV2Component } from './edit-transaction-v2/edit-transaction-v2.component';
 
 // Custom pipe
 import { HtmlPipe } from './pipes/html.pipe';
@@ -29,7 +30,8 @@ import { HtmlPipe } from './pipes/html.pipe';
     DashboardComponent, 
     AddTransactionComponent, 
     EditTransactionComponent, 
-    AddTransactionV2Component
+    AddTransactionV2Component, 
+    EditTransactionV2Component
   ],
 
   imports: [

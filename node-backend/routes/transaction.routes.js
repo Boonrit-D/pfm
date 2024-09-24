@@ -24,7 +24,7 @@ transactionRoute.route('/').get( async (req, res, next) => {
     }
 })
 
-// Get a book
+// Get a transaction
 transactionRoute.route('/read-transaction/:id').get( async (req, res, next) => {
     try {
         const data = await Transaction.findById(req.params.id);
@@ -34,7 +34,7 @@ transactionRoute.route('/read-transaction/:id').get( async (req, res, next) => {
     }
 });
 
-// Update book
+// Update transaction
 transactionRoute.route('/update-transaction/:id').put(async (req, res, next) => {
     try {
         const data = await Transaction.findByIdAndUpdate(req.params.id, {
@@ -50,7 +50,7 @@ transactionRoute.route('/update-transaction/:id').put(async (req, res, next) => 
     }
 });
 
-// Delete book
+// Delete transaction
 transactionRoute.route('/delete-transaction/:id').delete( async (req, res, next) => {
     try {
         const data = await Transaction.findByIdAndDelete(req.params.id);

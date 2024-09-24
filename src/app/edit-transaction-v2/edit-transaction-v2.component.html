@@ -1,0 +1,35 @@
+<!-- <p>edit-transaction-v2 works!</p> -->
+<div class="container mx-auto mt-6">
+    <h2 class="text-2xl font-bold text-center">Update Transaction</h2>
+    <div class="flex justify-center mt-6">
+        <div class="w-full max-w-md">
+            <form [formGroup]="updateFormV2" (ngSubmit)="onUpdateV2()" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <div class="form-group">
+                    <label for="name">Date: {{ currentDate | date: 'dd/MM/yyyy HH:mm:ss' }}</label>
+                </div>
+                <div class="form-group">
+                    <label for="price">Transaction Type</label>
+                    <input type="text" class="transactionClassName" formControlName="type" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Amount</label>
+                    <input type="text" class="transactionClassName" formControlName="amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" class="transactionClassName" formControlName="description" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Category</label>
+                    <input type="text" class="transactionClassName" formControlName="category" required>
+                </div>
+                <div class="form-group mt-3 ">
+                    <button class="submitButton" type="submit">Submit</button>
+                </div>
+                <div class="mt-6">
+                    <button class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

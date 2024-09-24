@@ -41,7 +41,7 @@
       <table class="min-w-full border border-gray-300">
         <thead class="bg-gray-200">
           <tr>
-            <th class="px-4 py-2 border-b border-gray-300 text-left">ID</th>
+            <!-- <th class="px-4 py-2 border-b border-gray-300 text-left">ID</th> -->
             <th class="px-4 py-2 border-b border-gray-300 text-left">วันที่ทำธุรกรรม</th>
             <th class="px-4 py-2 border-b border-gray-300 text-left">ประเภทของธุรกรรม</th>
             <th class="px-4 py-2 border-b border-gray-300 text-left">จำนวนเงินที่เกี่ยวข้อง</th>
@@ -52,7 +52,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let transactionV2 of TransactionsV2; let i = index" class="even:bg-gray-50">
-            <td class="px-4 py-2 border-b border-gray-300">{{ transactionV2._id }}</td>
+            <!-- <td class="px-4 py-2 border-b border-gray-300">{{ transactionV2._id }}</td> -->
             <th class="px-4 py-2 border-b border-gray-300 text-left">
               {{ transactionV2.date | date: 'dd/MM/yyyy' }}
               <br>
@@ -63,7 +63,7 @@
             <td class="px-4 py-2 border-b border-gray-300">{{ transactionV2.description }}</td>
             <td class="px-4 py-2 border-b border-gray-300">{{ transactionV2.category }}</td>
             <td class="px-4 py-2 border-b border-gray-300 text-center">
-              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm m-1" routerLink="/edit-transaction/{{transactionV2._id}}">แก้ไข</button>
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm m-1" routerLink="/edit-transactionV2/{{transactionV2._id}}">แก้ไข</button>
               <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm m-1" (click)="deleteV2(transactionV2._id, i)">ลบ</button>
             </td>
           </tr>
