@@ -11,6 +11,16 @@ export class Transaction {
   amount!: string;
 }
 
+// TransactionV2 model 
+export class TransactionV2 {
+  _id!: string;
+  date!: string;
+  type!: string;
+  amount!: string;
+  description!: string;
+  category!: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,7 +62,7 @@ export class CrudService {
   // Update
   updateTransaction(id: string, data: Transaction): Observable<any> {
     let API_URL = `${this.REST_API}/update-transaction/${id}`;
-    console.log(`API URL: ${API_URL}`);  // ดีบัก URL
+    console.log(`API URL: ${API_URL}`);
 
     return this.httpClient.put(API_URL, data, { headers: this.httpHeaders })
       .pipe(
@@ -89,7 +99,7 @@ export class CrudService {
   // V2
   //////////////////////////////////////////
   // Add
-  AddTransactionV2(data: Transaction): Observable<any> {
+  AddTransactionV2(data: TransactionV2): Observable<any> {
     let API_URL = `${this.REST_API_V2}/add-transactionV2`;
     return this.httpClient.post(API_URL, data, { headers: this.httpHeaders })
       .pipe(
@@ -100,5 +110,28 @@ export class CrudService {
   // Get all transactions
   GetTransactionsV2(): Observable<any> {
     return this.httpClient.get(`${this.REST_API_V2}`);
+  }
+
+  // Update
+  // updateTransactionV2(id: string, data: TransactionV2): Observable<any> {
+  //   let API_URL = `${this.REST_API_V2}/update-transactionV2/${id}`;
+  //   console.log(`API URL: ${API_URL}`);
+
+  //   return this.httpClient.put(API_URL, data, { headers: this.httpHeaders })
+  //     .pipe(
+  //       tap(response => {
+  //         console.log('Response from updateTransactionV2:', response);
+  //       }),
+  //       catchError(this.handleError)
+  //     );
+  // }
+
+  // Delete
+  deleteTransactionV2(id: string): Observable<any> {
+    let API_URL = `${this.REST_API_V2}/delete-transactionV2/${id}`;
+    return this.httpClient.delete(API_URL, { headers: this.httpHeaders })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 }

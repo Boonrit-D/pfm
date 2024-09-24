@@ -25,4 +25,16 @@ transactionRouteV2.route('/add-transactionV2').post( async (req, res, next) => {
     } 
 });
 
+// Delete book
+transactionRouteV2.route('/delete-transactionV2/:id').delete( async (req, res, next) => {
+    try {
+        const data = await TransactionV2.findByIdAndDelete(req.params.id);
+        res.status(200).json({
+            msg:data
+        })
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = transactionRouteV2 ;

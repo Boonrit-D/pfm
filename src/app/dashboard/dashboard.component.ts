@@ -39,12 +39,12 @@ export class DashboardComponent {
   }
 
   // V2
-  // deleteV2(id:any, i:any) {
-  //   console.log(id);
-  //   if ( window.confirm('Do you want to go ahead?') ) {
-  //     this.CrudService.deleteTransactionV2(id).subscribe((res) => {
-  //       this.TransactionsV2.splice(i, 1);
-  //     })
-  //   }
-  // }
+  deleteV2(id:any, i:any) {
+    console.log(id);
+    if ( window.confirm('Do you want to go ahead?') ) {
+      this.CrudService.deleteTransactionV2(id).subscribe((res) => {
+        this.TransactionsV2.splice(i, 1);
+      })
+    }
+  }
 }
