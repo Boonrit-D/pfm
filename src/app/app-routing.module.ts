@@ -9,6 +9,7 @@ import { AddTransactionV2Component } from './add-transaction-v2/add-transaction-
 import { EditTransactionComponent } from './edit-transaction/edit-transaction.component';
 import { EditTransactionV2Component } from './edit-transaction-v2/edit-transaction-v2.component';
 import { AccountComponent } from './account/account.component';
+import { AddAccountComponent } from './add-account/add-account.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,9 @@ const routes: Routes = [
   {
     path: 'account', component: AccountComponent, title: 'Account' // หน้าบัญชี
   },
+  {
+    path: 'add-account', component: AddAccountComponent, title: 'Add account' // เพิ่มบัญชี
+  }
 ];
 
 @NgModule({

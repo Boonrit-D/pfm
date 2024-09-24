@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AddTransactionV2Component } from './add-transaction-v2/add-transaction-v2.component';
 import { EditTransactionV2Component } from './edit-transaction-v2/edit-transaction-v2.component';
 import { AccountComponent } from './account/account.component';
+import { AddAccountComponent } from './add-account/add-account.component';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -30,7 +31,8 @@ import { AccountComponent } from './account/account.component';
     EditTransactionComponent, 
     AddTransactionV2Component, 
     EditTransactionV2Component, 
-    AccountComponent
+    AccountComponent, 
+    AddAccountComponent
   ],
 
   imports: [
