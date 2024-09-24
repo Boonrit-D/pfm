@@ -1,0 +1,103 @@
+<!-- <p>account works!</p> -->
+<div class="md:container md:mx-auto mt-4 mx-4">
+  <!-- Heading-->
+  <div
+    class="flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3 border-b"
+  >
+    <h2 class="text-left text-blue-600 font-bold">บัญชี</h2>
+  </div>
+
+  <!-- Account -->
+  <div *ngIf="accounts && accounts.length > 0; else noAccount">
+    <!-- <div class="overflow-x-auto w-full sm:w-auto rounded-md">
+      <table class="min-w-full border border-gray-300">
+        <tbody>
+          <tr *ngFor="let account of accounts; let i = index" class="even:bg-gray-50">
+            <td class="px-4 py-2 border-b border-gray-300">{{ account.id }}</td>
+            <td class="px-4 py-2 border-b border-gray-300">{{ account.accountName }}</td>
+            <td class="px-4 py-2 border-b border-gray-300">{{ account.balance | number: '1.2-2' }}</td>
+            <td class="px-4 py-2 border-b border-gray-300">{{ account.currency }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 text-center">
+              <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm m-1"
+                routerLink="/account/{{ account.id }}"
+              >
+                ดูรายละเอียด
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+
+    <div *ngFor="let account of accounts; let i = index" class="even:bg-gray-50">
+        <!-- แสดงข้อมูลบัญชีที่นี่ -->
+        
+    </div>
+
+  </div>
+
+  <!-- Account template -->
+  <p class="text-sm text-gray-500">นี่คือส่วนขอตัวอย่างที่แสดงบัญชี</p>
+  <div class="flex items-center justify-between p-4 border-b">
+    <!-- Icon and details -->
+    <div class="flex items-center">
+      <!-- Icon -->
+      <div class="bg-purple-200 rounded-full p-2 mr-4" >
+        <img src="https://cdn-icons-png.flaticon.com/128/6418/6418361.png" alt="Icon" class="h-20 cursor-pointer" routerLinkActive="active" routerLink="/dashboard">
+        <!-- <img src="https://cdn-icons-png.flaticon.com/128/6418/6418361.png" alt="Icon" class="h-20 cursor-pointer" routerLinkActive="active" routerLink="/account/{{ account.id }}"> -->
+      </div>
+  
+      <!-- Account details -->
+      <div>
+        <!-- <h4 routerLinkActive="active" routerLink="/account/{{ account.id }}" class="font-bold cursor-pointer hover:text-red-500">บัญชีส่วนตัว</h4> -->
+        <h4 routerLinkActive="active" routerLink="/dashboard" class="font-bold cursor-pointer hover:text-red-500">บัญชีส่วนตัว</h4>
+        <!-- <h4 class="font-bold">{{ accounts.accountName}}</h4> -->
+        <p class="text-sm text-gray-500">บัญชีนี้เป็นบัญชีสำหรับเงินใช้จ่ายส่วนตัว</p>
+        <!-- <p class="text-sm text-gray-500">{{ accounts.accountDescription}}</p> -->
+      </div>
+    </div>
+  
+    <!-- Amount -->
+    <div>
+      <p class="font-bold text-red-500">-$189.36</p>
+      <!-- <p class="font-bold text-red-500">{{ accounts.balance}} {{ accounts.currency}}</p> -->
+    </div>
+  </div>
+  <div class="flex items-center justify-between p-4 border-b">
+    <!-- Icon and details -->
+    <div class="flex items-center">
+      <!-- Icon -->
+      <div class="bg-purple-200 rounded-full p-2 mr-4">
+        <img src="https://cdn-icons-png.flaticon.com/128/5107/5107412.png" alt="Icon" class="h-20">
+      </div>
+  
+      <!-- Account details -->
+      <div>
+        <h4 class="font-bold">บัญชีธุรกิจ</h4>
+        <p class="text-sm text-gray-500">บัญชีนี้เป็นบัญชีสำหรับธุรกิจ</p>
+      </div>
+    </div>
+  
+    <!-- Amount -->
+    <div>
+      <p class="font-bold text-green-500">$200.98</p>
+    </div>
+  </div>  
+
+  <!-- No Account -->
+  <ng-template #noAccount>
+    <!-- <p class="text-center mt-4 text-gray-500">ไม่มีบัญชีในระบบ</p> -->
+  </ng-template>
+
+  <!-- Add account button -->
+  <div class="text-left mt-2">
+    <button
+      class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+      (click)="addAccount()"
+    >
+      เพิ่มบัญชี
+    </button>
+  </div>
+
+</div>

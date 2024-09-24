@@ -8,6 +8,7 @@ import { AddTransactionComponent } from './add-transaction/add-transaction.compo
 import { AddTransactionV2Component } from './add-transaction-v2/add-transaction-v2.component';
 import { EditTransactionComponent } from './edit-transaction/edit-transaction.component';
 import { EditTransactionV2Component } from './edit-transaction-v2/edit-transaction-v2.component';
+import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,9 @@ const routes: Routes = [
   },
   {
     path: 'edit-transactionV2/:id', component: EditTransactionV2Component, title: 'Edit TransactionV2' // หน้าสำหรับเพิ่ม Transaction Version 2
+  },
+  {
+    path: 'account', component: AccountComponent, title: 'Account' // หน้าบัญชี
   },
 ];
 

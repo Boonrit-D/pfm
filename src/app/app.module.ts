@@ -3,7 +3,7 @@ import {
   BrowserModule,
   provideClientHydration,
 } from '@angular/platform-browser';
-
+import { HtmlPipe } from './pipes/html.pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -17,9 +17,7 @@ import { EditTransactionComponent } from './edit-transaction/edit-transaction.co
 import { HttpClientModule } from '@angular/common/http';
 import { AddTransactionV2Component } from './add-transaction-v2/add-transaction-v2.component';
 import { EditTransactionV2Component } from './edit-transaction-v2/edit-transaction-v2.component';
-
-// Custom pipe
-import { HtmlPipe } from './pipes/html.pipe';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -31,7 +29,8 @@ import { HtmlPipe } from './pipes/html.pipe';
     AddTransactionComponent, 
     EditTransactionComponent, 
     AddTransactionV2Component, 
-    EditTransactionV2Component
+    EditTransactionV2Component, 
+    AccountComponent
   ],
 
   imports: [
