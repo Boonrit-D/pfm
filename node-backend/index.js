@@ -4,9 +4,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoDb = require('./database/db');
+const createError = require('http-errors');
+
+// routes
 const transactionRoute = require('./routes/transaction.routes');
 const transactionRouteV2 = require('./routes/transactionV2.routes');
-const createError = require('http-errors');
+const accountRoute = require('./routes/account.routes');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(mongoDb.db, {
@@ -33,7 +36,10 @@ app.get('/', (req, res) => {
 
 // API root
 app.use('/api', transactionRoute);
-app.use('/apiV2', transactionRouteV2)
+app.use('/apiV2', transactionRouteV2);
+
+// API root of Account
+app.use('/account', accountRoute);
 
 // PORT
 const port = process.env.PORT || 8000;

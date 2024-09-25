@@ -16,42 +16,40 @@
     <h2 class="text-3xl font-semibold text-gray-900 mb-6 text-center">
       เพิ่มบัญชี
     </h2>
-    <form class="space-y-4">
+    <form class="space-y-4" [formGroup]="accountForm" (ngSubmit)="onSubmit()">
       <!-- Name input -->
       <div class="form-group">
-        <label for="price" class="text-bold">ชื่อบัญชี</label>
+        <label for="accountName" class="text-bold">ชื่อบัญชี</label>
         <input
           formControlName="accountName"
-          type="text"
           placeholder="ชื่อบัญชี"
           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
       </div>
       <!-- Currency dropdown input -->
       <div class="form-group">
-        <label for="price" class="text-bold">สกุลเงิน</label>
+        <label for="currency" class="text-bold">สกุลเงิน</label>
         <input
-          list="currencies"
-          for="currency"
+          list="currency-list"
+          formControlName="currency"
           name="currency"
           placeholder="สกุลเงิน"
           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
 
-        <datalist id="currencies">
-          <option value="THB - Thai Baht"></option>
-          <option value="USD - US Dollar"></option>
-          <option value="EUR - Euro"></option>
-          <option value="JPY - Japanese Yen"></option>
-          <option value="CNY - Chinese Yuan"></option>
+        <datalist id="currency-list">
+          <option value="THB"></option>
+          <option value="USD"></option>
+          <option value="EUR"></option>
+          <option value="JPY"></option>
+          <option value="CNY"></option>
         </datalist>
       </div>
-      <!-- Message input -->
+      <!-- Description input -->
       <div class="form-group">
-        <label for="message" class="sr-only">Message</label>
+        <label for="description" class="sr-only">Description</label>
         <textarea
-          id="message"
-          name="message"
+          formControlName="description"
           rows="4"
           placeholder="รายละเอียด"
           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -61,6 +59,7 @@
       <div class="flex">
         <button
           class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-md font-semibold text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+          type="submit"
         >
           <span
             class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"

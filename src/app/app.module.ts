@@ -42,8 +42,15 @@ import { AddAccountComponent } from './add-account/add-account.component';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [provideClientHydration(), provideAnimationsAsync()],
-  bootstrap: [AppComponent],
+
+  providers: [
+    provideClientHydration(), 
+    provideAnimationsAsync()
+  ],
+
+  bootstrap: [
+    AppComponent,
+  ],
 
 })
 export class AppModule {

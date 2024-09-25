@@ -21,14 +21,34 @@ export class TransactionV2 {
   category!: string;
 }
 
+// Account model 
+export interface Account {
+  id            : string          ;
+  accountName   : string          ;
+  currency      : string          ;
+  balance       : number          ;
+  transactions  : Transaction []  ;
+}
+
+// Transaction of account model 
+export interface AccountTransaction {
+  transactionId: string;
+  category: string;
+  amount: number;
+  description: string;
+  date: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class CrudService {
 
   // Node/Express API
   REST_API: string = 'http://localhost:8000/api';
   REST_API_V2: string = 'http://localhost:8000/apiV2';
+  REST_API_ACCOUNT: string = 'http://localhost:8000/account';
 
   // Http header
   httpHeaders = new HttpHeaders().set('Content-Type','application/json');
@@ -140,6 +160,16 @@ export class CrudService {
   deleteTransactionV2(id: string): Observable<any> {
     let API_URL = `${this.REST_API_V2}/delete-transactionV2/${id}`;
     return this.httpClient.delete(API_URL, { headers: this.httpHeaders })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // Account
+  //////////////////////////////////////////
+  AddAccount(data: Account): Observable<any> {
+    let API_URL = `${this.REST_API_ACCOUNT}/add-account`;
+    return this.httpClient.post(API_URL, data, { headers: this.httpHeaders })
       .pipe(
         catchError(this.handleError)
       );
