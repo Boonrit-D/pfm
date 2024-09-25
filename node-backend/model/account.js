@@ -15,6 +15,7 @@ const transactionSchema = new mongoose.Schema({
 const accountSchema = new mongoose.Schema({
   accountName: { type: String, required: true },
   currency: { type: String, required: true },
+  description: { type: String },
   balance: { type: Number, required: true },
   transactions: [transactionSchema], // ใช้ array ของ transactions
 },{

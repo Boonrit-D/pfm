@@ -174,4 +174,9 @@ export class CrudService {
         catchError(this.handleError)
       );
   }
+
+  // Get all transactions
+  GetAccounts(): Observable<any> {
+    return this.httpClient.get(`${this.REST_API_ACCOUNT}`);
+  }
 }
