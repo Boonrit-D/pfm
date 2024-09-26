@@ -10,6 +10,7 @@ import { EditTransactionComponent } from './edit-transaction/edit-transaction.co
 import { EditTransactionV2Component } from './edit-transaction-v2/edit-transaction-v2.component';
 import { AccountComponent } from './account/account.component';
 import { AddAccountComponent } from './add-account/add-account.component';
+import { EditAccountComponent } from './edit-account/edit-account.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,9 @@ const routes: Routes = [
   },
   {
     path: 'add-account', component: AddAccountComponent, title: 'Add account' // เพิ่มบัญชี
+  },
+  {
+    path: 'edit-account/:id', component: EditAccountComponent, title: 'Edit account' // หน้าแก้ไขบัญชี
   }
 ];
 

@@ -23,4 +23,30 @@ accountRoute.route('/add-account').post( async (req, res, next) => {
     } 
 });
 
+// Get a account
+accountRoute.route('/read-account/:id').get( async (req, res, next) => {
+    try {
+        const data = await Account.findById(req.params.id);
+        res.json(data);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Update account
+accountRoute.route('/update-account/:id').put(async (req, res, next) => {
+    try {
+        const data = await Account.findByIdAndUpdate(req.params.id, {
+            $set: req.body
+        }, { new: true });
+        if (!data) {
+            return res.status(404).json({ msg: 'Account not found' });
+        }
+        res.json(data);
+    } catch (error) {
+        next(error);
+        console.log(error);
+    }
+});
+
 module.exports = accountRoute ;

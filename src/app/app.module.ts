@@ -19,6 +19,7 @@ import { AddTransactionV2Component } from './add-transaction-v2/add-transaction-
 import { EditTransactionV2Component } from './edit-transaction-v2/edit-transaction-v2.component';
 import { AccountComponent } from './account/account.component';
 import { AddAccountComponent } from './add-account/add-account.component';
+import { EditAccountComponent } from './edit-account/edit-account.component';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -32,7 +33,8 @@ import { AddAccountComponent } from './add-account/add-account.component';
     AddTransactionV2Component, 
     EditTransactionV2Component, 
     AccountComponent, 
-    AddAccountComponent
+    AddAccountComponent, 
+    EditAccountComponent
   ],
 
   imports: [

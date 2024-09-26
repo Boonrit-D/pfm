@@ -179,4 +179,28 @@ export class CrudService {
   GetAccounts(): Observable<any> {
     return this.httpClient.get(`${this.REST_API_ACCOUNT}`);
   }
+
+  // Update
+  updateAccount(id: string, data: Account): Observable<any> {
+    let API_URL = `${this.REST_API_ACCOUNT}/update-account/${id}`;
+    console.log(`API URL: ${API_URL}`);
+
+    return this.httpClient.put(API_URL, data, { headers: this.httpHeaders })
+      .pipe(
+        tap(response => {
+          console.log('Response from update account:', response);
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  // Get single account
+  GetAccount(id: string): Observable<any> {
+    let API_URL = `${this.REST_API_ACCOUNT}/read-account/${id}`;
+    return this.httpClient.get(API_URL, { headers: this.httpHeaders })
+      .pipe(
+        map((res: any) => res || {}),
+        catchError(this.handleError)
+      );
+  }
 }

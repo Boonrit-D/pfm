@@ -20,7 +20,7 @@
       />
       <div *ngIf="dropdownOpen[i]" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-md rounded-md">
         <ul>
-          <li class="p-2 hover:bg-blue-100 cursor-pointer" (click)="editAccount(i)">แก้ไข</li>
+          <li class="p-2 hover:bg-blue-100 cursor-pointer" routerLink="/edit-account/{{account._id}}">แก้ไข</li>
           <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(i)">ลบ</li>
         </ul>
       </div>
