@@ -11,6 +11,7 @@ import { EditTransactionV2Component } from './edit-transaction-v2/edit-transacti
 import { AccountComponent } from './account/account.component';
 import { AddAccountComponent } from './add-account/add-account.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
+import { AccountDashboardComponent } from './account-dashboard/account-dashboard.component';
 
 const routes: Routes = [
 
@@ -47,6 +48,9 @@ const routes: Routes = [
   },
   {
     path: 'edit-account/:id', component: EditAccountComponent, title: 'Edit account' // หน้าแก้ไขบัญชี
+  },
+  {
+    path: 'account/dashboard/:id', component: AccountDashboardComponent, title: 'Account dashboard' // หน้าแดชบอร์ดของบัญชี
   },
   
 ];

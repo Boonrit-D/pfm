@@ -20,6 +20,7 @@ import { EditTransactionV2Component } from './edit-transaction-v2/edit-transacti
 import { AccountComponent } from './account/account.component';
 import { AddAccountComponent } from './add-account/add-account.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
+import { AccountDashboardComponent } from './account-dashboard/account-dashboard.component';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -34,7 +35,8 @@ import { EditAccountComponent } from './edit-account/edit-account.component';
     EditTransactionV2Component, 
     AccountComponent, 
     AddAccountComponent, 
-    EditAccountComponent
+    EditAccountComponent, 
+    AccountDashboardComponent
   ],
 
   imports: [

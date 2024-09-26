@@ -1,0 +1,79 @@
+<!-- <p>account-dashboard works!</p> -->
+<div class="container mx-auto mt-8 p-4">
+    <!-- หัวข้อ -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold text-blue-600">{{account.accountName}}</h2>
+      <div class="flex">
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded m-1">
+          <span class="block sm:hidden">+</span> <!-- แสดงเฉพาะจอเล็ก -->
+          <span class="hidden sm:block">เงินเข้า +</span> <!-- แสดงเฉพาะจอใหญ่ -->
+        </button>
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-1">
+          <span class="block sm:hidden">-</span> <!-- แสดงเฉพาะจอเล็ก -->
+          <span class="hidden sm:block">เงินออก -</span> <!-- แสดงเฉพาะจอใหญ่ -->
+        </button>
+      </div>            
+    </div>
+  
+    <!-- ภาพรวมยอดเงินบัญชี -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <!-- ยอดเงินคงเหลือทั้งหมด -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold text-gray-700">ยอดเงินคงเหลือทั้งหมด</h3>
+        <p class="text-3xl font-bold text-green-500 mt-2">{{account.balance}} {{account.currency}}</p>
+      </div>
+  
+      <!-- รายได้รายเดือน -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold text-gray-700">รายได้รายเดือน</h3>
+        <p class="text-3xl font-bold text-green-500 mt-2">3,200.00 {{account.currency}}</p>
+      </div>
+  
+      <!-- ค่าใช้จ่ายรายเดือน -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold text-gray-700">ค่าใช้จ่ายรายเดือน</h3>
+        <p class="text-3xl font-bold text-red-500 mt-2">2,100.00 {{account.currency}}</p>
+      </div>
+    </div>
+  
+    <!-- รายการธุรกรรมล่าสุด -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+      <h3 class="text-xl font-semibold text-gray-700 mb-4">รายการธุรกรรมล่าสุด</h3>
+      <table class="min-w-full bg-white">
+        <thead>
+          <tr class="w-full bg-gray-200">
+            <th class="py-2 px-4 text-left">วันที่</th>
+            <th class="py-2 px-4 text-left">หมวดหมู่</th>
+            <th class="py-2 px-4 text-right">จำนวนเงิน</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="py-2 px-4">25 กันยายน 2024</td>
+            <td class="py-2 px-4">ของใช้ในบ้าน</td>
+            <td class="py-2 px-4 text-right text-red-500">- ฿150.00</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-4">24 กันยายน 2024</td>
+            <td class="py-2 px-4">เงินเดือน</td>
+            <td class="py-2 px-4 text-right text-green-500">฿3,000.00</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-4">23 กันยายน 2024</td>
+            <td class="py-2 px-4">ค่าน้ำไฟ</td>
+            <td class="py-2 px-4 text-right text-red-500">- ฿100.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- ภาพรวมการใช้จ่าย -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold text-gray-700 mb-4">ภาพรวมการใช้จ่าย</h3>
+      <div class="w-full h-64">
+        <!-- ตัวแทนตำแหน่งกราฟ -->
+        <img src="https://via.placeholder.com/400x200.png?text=กราฟภาพรวมการใช้จ่าย" alt="กราฟการใช้จ่าย" class="mx-auto" />
+      </div>
+    </div>
+  </div>
+  

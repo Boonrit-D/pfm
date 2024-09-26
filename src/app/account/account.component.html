@@ -35,13 +35,13 @@
               alt="Icon"
               class="h-20 cursor-pointer"
               routerLinkActive="active"
-              routerLink="/dashboard"
+              routerLink="/account/dashboard/{{account._id}}"
             />
           </div>
           <div>
             <h4
               routerLinkActive="active"
-              routerLink="/dashboard"
+              routerLink="/account/dashboard/{{account._id}}"
               class="font-bold cursor-pointer hover:text-red-500"
             >
               {{ account.accountName }}

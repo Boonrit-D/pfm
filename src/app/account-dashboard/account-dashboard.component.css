@@ -1,5 +1,7 @@
 h2,
 .form-group,
-button {
+button,
+h3,
+tr {
   font-family: Mitr;
 }
