@@ -3,7 +3,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
-// Transaction model
+// Transaction version 1 model
 export class Transaction {
   _id!: string;
   title!: string;
@@ -11,7 +11,7 @@ export class Transaction {
   amount!: string;
 }
 
-// TransactionV2 model 
+// Transaction version 2 model 
 export class TransactionV2 {
   _id!: string;
   date!: string;
@@ -46,8 +46,8 @@ export interface AccountTransaction {
 export class CrudService {
 
   // Node/Express API
-  REST_API: string = 'http://localhost:8000/api';
-  REST_API_V2: string = 'http://localhost:8000/apiV2';
+  REST_API: string = 'http://localhost:8000/transactionVersion1';
+  REST_API_V2: string = 'http://localhost:8000/transactionVersion2';
   REST_API_ACCOUNT: string = 'http://localhost:8000/account';
 
   // Http header

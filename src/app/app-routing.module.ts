@@ -13,24 +13,32 @@ import { AddAccountComponent } from './add-account/add-account.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
 
 const routes: Routes = [
+
+  // Main
   {
     path: '', component: HomeComponent, pathMatch: 'full', title: 'Personal Financial Management'  // หน้าแรก
   },
   {
     path: 'dashboard', component: DashboardComponent, title: 'Dashboard' // หน้า Dashboard
   },
+
+  // Transaction version 1
   {
     path: 'add-transaction', component: AddTransactionComponent, title: 'Add Transaction'  // หน้าสำหรับเพิ่ม Transaction
   },
   {
     path: 'add-transactionV2', component: AddTransactionV2Component, title: 'Add TransactionV2'  // หน้าสำหรับเพิ่ม Transaction Version 2
   },
+
+  // Transaction version 2
   {
     path: 'edit-transaction/:id', component: EditTransactionComponent, title: 'Edit Transaction' // หน้าสำหรับแก้ไข Transaction
   },
   {
     path: 'edit-transactionV2/:id', component: EditTransactionV2Component, title: 'Edit TransactionV2' // หน้าสำหรับเพิ่ม Transaction Version 2
   },
+
+  // Account
   {
     path: 'account', component: AccountComponent, title: 'Account' // หน้าบัญชี
   },
@@ -39,7 +47,8 @@ const routes: Routes = [
   },
   {
     path: 'edit-account/:id', component: EditAccountComponent, title: 'Edit account' // หน้าแก้ไขบัญชี
-  }
+  },
+  
 ];
 
 @NgModule({
