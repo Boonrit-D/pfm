@@ -34,9 +34,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
-// API root
-app.use('/api', transactionRoute);
-app.use('/apiV2', transactionRouteV2);
+// API root of Transaction
+app.use('/transactionVersion1', transactionRoute);
+app.use('/transactionVersion2', transactionRouteV2);
 
 // API root of Account
 app.use('/account', accountRoute);
