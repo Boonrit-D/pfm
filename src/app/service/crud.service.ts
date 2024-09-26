@@ -203,4 +203,13 @@ export class CrudService {
         catchError(this.handleError)
       );
   }
+
+  // Delete
+  deleteAccount(id: string): Observable<any> {
+    let API_URL = `${this.REST_API_ACCOUNT}/delete-account/${id}`;
+    return this.httpClient.delete(API_URL, { headers: this.httpHeaders })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }

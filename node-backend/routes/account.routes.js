@@ -49,4 +49,16 @@ accountRoute.route('/update-account/:id').put(async (req, res, next) => {
     }
 });
 
+// Delete account
+accountRoute.route('/delete-account/:id').delete( async (req, res, next) => {
+    try {
+        const data = await Account.findByIdAndDelete(req.params.id);
+        res.status(200).json({
+            msg:data
+        })
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = accountRoute ;

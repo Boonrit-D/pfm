@@ -9,7 +9,7 @@
 
   <!-- Account -->
   <div *ngIf="accounts && accounts.length > 0; else noAccount">
-    <div *ngFor="let account of accounts; let i = index" class="even:bg-gray-50 mt-2">
+    <div *ngFor="let account of accounts; let i = index" class="even:bg-gray-50 mt-2 rounded-md">
 
       <!-- Setting button -->
       <img
@@ -21,7 +21,7 @@
       <div *ngIf="dropdownOpen[i]" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-md rounded-md">
         <ul>
           <li class="p-2 hover:bg-blue-100 cursor-pointer" routerLink="/edit-account/{{account._id}}">แก้ไข</li>
-          <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(i)">ลบ</li>
+          <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(account._id, i)">ลบ</li>
         </ul>
       </div>
 

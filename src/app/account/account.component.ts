@@ -35,14 +35,13 @@ export class AccountComponent {
     this.dropdownOpen[index] = !this.dropdownOpen[index];
   }
 
-  editAccount(index: number) {
-    console.log('Edit Account:', index); 
-    this.dropdownOpen[index] = false;
-  }
-
-  deleteAccount(index: number) {
-    console.log('Delete Account:', index);
-    this.dropdownOpen[index] = false;
+  deleteAccount(id: any, i: any) {
+    console.log(id);
+    if (window.confirm('Do you want to go ahead?')) {
+      this.CrudService.deleteAccount(id).subscribe((res) => {
+        this.accounts.splice(i, 1);
+      });
+    }
   }
   
 }
