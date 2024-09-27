@@ -11,12 +11,13 @@ import { BarController, Chart, registerables } from 'chart.js';
   templateUrl: './account-dashboard.component.html',
   styleUrl: './account-dashboard.component.css',
 })
-export class AccountDashboardComponent {
+export class AccountDashboardComponent implements OnInit {
   getId: any;
   account: any;
   transactionsOfAccount: any;
   totalIncome: number = 0;
   totalExpenses: number = 0;
+  isLoading: boolean = true;
 
   title = 'ng2-charts-demo';
 
@@ -24,11 +25,26 @@ export class AccountDashboardComponent {
   public barChartPlugins = [];
 
   public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+    labels: this.getLastSixMonths(),
     datasets: [
-      { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' },
-      { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
-    ]
+      { 
+        data: [], 
+        label: 'เงินเข้า +',
+        backgroundColor: 'rgb(34 197 94)',
+        borderSkipped: 'bottom',
+        borderWidth: 1,
+        borderRadius: 2,
+      },
+      { 
+        data: [], 
+        label: 'เงินออก -',
+        backgroundColor: 'rgb(239 68 68)',
+        borderWidth: 1,
+        borderRadius: 3,
+      },
+        
+    ],
+    
   };
 
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
@@ -62,11 +78,19 @@ export class AccountDashboardComponent {
       console.log(this.transactionsOfAccount);
       
       // คำนวณและอัปเดตยอดเงินคงเหลือ
-      this.updateBalance(); 
+      this.updateBalance();   
 
       // คำนวณยอดรายได้และค่าใช้จ่ายประจำเดือน
       this.calculateTotalIncome();
       this.calculateTotalExpenses();
+
+      // อัปเดตข้อมูลในกราฟหลังจากได้ข้อมูลธุรกรรมแล้ว
+      this.updateChartData(); // เรียกใช้ฟังก์ชันนี้เพื่ออัปเดตกราฟ
+
+      // ตั้งเวลาให้รอ 2 วินาทีก่อนแสดงกราฟ
+      setTimeout(() => {
+        this.isLoading = false; // เปลี่ยนสถานะการโหลดเป็น false
+      }, 1000); // หน่วงเวลา 2000 มิลลิวินาที หรือ 2 วินาที
     });
   }
 
@@ -94,6 +118,46 @@ export class AccountDashboardComponent {
     this.totalExpenses = this.transactionsOfAccount
       .filter((txn: any) => txn.amount < 0) 
       .reduce((acc: number, txn: any) => acc + Math.abs(txn.amount), 0);
+  }
+
+  // ฟังก์ชันเพื่อสร้าง labels สำหรับกราฟ
+  getLastSixMonths(): string[] {
+    const months: string[] = [];
+    const currentDate = new Date();
+
+    // ตรวจสอบขนาดหน้าจอ
+    const isSmallScreen = window.innerWidth < 768; // ถ้าขนาดจอน้อยกว่า 768px (สามารถปรับได้ตามต้องการ)
+    const numberOfMonths = isSmallScreen ? 3 : 6; // กำหนดจำนวนเดือนที่จะแสดง
+    
+    for (let i = 0; i < numberOfMonths; i++) {
+      const month = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+      months.unshift(month.toLocaleString('default', { month: 'long' })); // ชื่อเดือนในรูปแบบยาว
+    }
+    
+    return months;
+  }
+
+  // ฟังก์ชันเพื่ออัปเดตข้อมูลกราฟ
+  
+  updateChartData() {
+    if (this.barChartData.labels) {
+      const incomeData = Array(this.barChartData.labels.length).fill(0);
+      const expensesData = Array(this.barChartData.labels.length).fill(0);
+
+      this.transactionsOfAccount.forEach((txn: any) => {
+        const monthIndex = this.getLastSixMonths().findIndex(month => month === new Date(txn.date).toLocaleString('default', { month: 'long' }));
+        if (monthIndex >= 0) {
+          if (txn.amount > 0) {
+            incomeData[monthIndex] += txn.amount; // เพิ่มข้อมูลที่เป็นบวกลงในเงินเข้า
+          } else {
+            expensesData[monthIndex] += Math.abs(txn.amount); // เพิ่มข้อมูลที่เป็นลบลงในเงินออก
+          }
+        }
+      });
+
+      this.barChartData.datasets[0].data = incomeData; // อัปเดตข้อมูลเงินเข้า
+      this.barChartData.datasets[1].data = expensesData; // อัปเดตข้อมูลเงินออก
+    }
   }
 
 }
