@@ -13,7 +13,7 @@ export class AccountDashboardComponent {
   account: any;
   transactionsOfAccount: any;
   totalIncome: number = 0;
-  
+  totalExpenses: number = 0;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -41,8 +41,9 @@ export class AccountDashboardComponent {
       // คำนวณและอัปเดตยอดเงินคงเหลือ
       this.updateBalance(); 
 
-      // คำนวณยอดรายได้ประจำเดือน
+      // คำนวณยอดรายได้และค่าใช้จ่ายประจำเดือน
       this.calculateTotalIncome();
+      this.calculateTotalExpenses();
     });
   }
 
@@ -64,6 +65,12 @@ export class AccountDashboardComponent {
     this.totalIncome = this.transactionsOfAccount
       .filter((txn: any) => txn.amount > 0)
       .reduce((acc: number, txn: any) => acc + txn.amount, 0);
+  }
+
+  calculateTotalExpenses() {
+    this.totalExpenses = this.transactionsOfAccount
+      .filter((txn: any) => txn.amount < 0) 
+      .reduce((acc: number, txn: any) => acc + Math.abs(txn.amount), 0);
   }
 
 }

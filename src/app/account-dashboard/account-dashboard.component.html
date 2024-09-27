@@ -23,9 +23,12 @@
       <!-- Total Balance -->
       <div class="bg-white p-6 rounded-lg shadow-md">
         <h3 class="text-xl font-semibold text-gray-700">ยอดเงินคงเหลือทั้งหมด</h3>
-        <span [ngClass]="{'text-red-500 text-3xl font-bold mt-2': account.balance < 0, 'text-green-500 text-3xl font-bold mt-2': account.balance >= 0}">
-          {{account.balance | number:'1.2-2'}} {{account.currency}}
-        </span>
+        <span [ngClass]="{
+          'text-red-500 text-3xl font-bold mt-2': account.balance < 0, 
+          'text-green-500 text-3xl font-bold mt-2': account.balance > 0
+        }">
+      {{account.balance | number:'1.2-2'}} {{account.currency}}
+      </span>
       </div>
   
       <!-- Monthly Income -->
@@ -37,7 +40,7 @@
       <!-- Monthly Expenses -->
       <div class="bg-white p-6 rounded-lg shadow-md">
         <h3 class="text-xl font-semibold text-gray-700">ค่าใช้จ่ายรายเดือน</h3>
-        <p class="text-3xl font-bold text-red-500 mt-2">2,100.00 {{account.currency}}</p>
+        <p class="text-3xl font-bold text-red-500 mt-2">{{ totalExpenses | number:'1.2-2' }} {{ account.currency }}</p>
       </div>
     </div>
   
