@@ -50,8 +50,8 @@
           </div>
         </div>
         <div class="flex items-center">
-          <p class="font-bold text-red-500 text-right">
-            {{ account.balance }} {{ account.currency }}
+          <p [ngClass]="{'text-red-500 text-right font-bold': account.balance < 0, 'text-green-500 text-right font-bold': account.balance >= 0}">
+            {{account.balance | number:'1.2-2'}} {{account.currency}}
           </p>
         </div>
       </div>
