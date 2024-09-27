@@ -30,8 +30,8 @@
   
       <!-- Monthly Income -->
       <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-semibold text-gray-700">รายได้รายเดือน</h3>
-        <p class="text-3xl font-bold text-green-500 mt-2">3,200.00 {{account.currency}}</p>
+        <h3 class="text-xl font-semibold text-gray-700">รายได้ประจำเดือน</h3>
+    <p class="text-3xl font-bold text-green-500 mt-2">{{ totalIncome | number:'1.2-2' }} {{ account.currency }}</p>
       </div>
   
       <!-- Monthly Expenses -->

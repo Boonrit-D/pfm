@@ -12,7 +12,7 @@ export class AccountDashboardComponent {
   getId: any;
   account: any;
   transactionsOfAccount: any;
-
+  totalIncome: number = 0;
   
 
   constructor(
@@ -36,8 +36,13 @@ export class AccountDashboardComponent {
     // Get all transaction of current account
     this.crudService.GetTransactionOfAccount(this.getId).subscribe((res) => {
       this.transactionsOfAccount = res;
-      console.log(this.transactionsOfAccount); // เช็คว่าข้อมูลถูกต้องหรือไม่
-      this.updateBalance(); // คำนวณและอัปเดตยอดเงินคงเหลือ
+      console.log(this.transactionsOfAccount);
+      
+      // คำนวณและอัปเดตยอดเงินคงเหลือ
+      this.updateBalance(); 
+
+      // คำนวณยอดรายได้ประจำเดือน
+      this.calculateTotalIncome();
     });
   }
 
@@ -53,6 +58,12 @@ export class AccountDashboardComponent {
             console.log('ยอดเงินคงเหลือถูกอัปเดต:', res);
         });
     }
-}
+  }
+
+  calculateTotalIncome() {
+    this.totalIncome = this.transactionsOfAccount
+      .filter((txn: any) => txn.amount > 0)
+      .reduce((acc: number, txn: any) => acc + txn.amount, 0);
+  }
 
 }
