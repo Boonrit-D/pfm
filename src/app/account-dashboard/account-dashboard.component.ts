@@ -1,10 +1,10 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, Inject, PLATFORM_ID  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CrudService } from '../service/crud.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ChartConfiguration } from 'chart.js';
 import { BarController, Chart, registerables } from 'chart.js';
-
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-account-dashboard',
@@ -18,6 +18,7 @@ export class AccountDashboardComponent implements OnInit {
   totalIncome: number = 0;
   totalExpenses: number = 0;
   isLoading: boolean = true;
+  isBrowser: boolean;
 
   title = 'ng2-charts-demo';
 
@@ -56,10 +57,12 @@ export class AccountDashboardComponent implements OnInit {
     private router: Router,
     private ngZone: NgZone,
     private activatedRouter: ActivatedRoute,
-    private crudService: CrudService
+    private crudService: CrudService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     // Get ID
     this.getId = this.activatedRouter.snapshot.paramMap.get('id');
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit(): void {
@@ -122,6 +125,9 @@ export class AccountDashboardComponent implements OnInit {
 
   // ฟังก์ชันเพื่อสร้าง labels สำหรับกราฟ
   getLastSixMonths(): string[] {
+    if (typeof window === 'undefined') {
+      return []; // หรือจัดการกรณีที่ไม่ใช่เบราว์เซอร์ 
+    }
     const months: string[] = [];
     const currentDate = new Date();
 

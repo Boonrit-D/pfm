@@ -54,7 +54,7 @@ import { BaseChartDirective } from 'ng2-charts';
 
   providers: [
     provideClientHydration(), 
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
   ],
 
   bootstrap: [
