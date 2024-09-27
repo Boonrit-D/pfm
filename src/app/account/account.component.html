@@ -50,7 +50,11 @@
           </div>
         </div>
         <div class="flex items-center">
-          <p [ngClass]="{'text-red-500 text-right font-bold': account.balance < 0, 'text-green-500 text-right font-bold': account.balance >= 0}">
+          <p [ngClass]="{
+            'text-green-500': account.balance > 0, 
+            'text-red-500': account.balance < 0,
+            'text-rig ht font-bold': true
+            }">
             {{account.balance | number:'1.2-2'}} {{account.currency}}
           </p>
         </div>
