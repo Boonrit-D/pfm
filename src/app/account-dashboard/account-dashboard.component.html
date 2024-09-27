@@ -1,87 +1,121 @@
 <!-- <p>account-dashboard works!</p> -->
 <div class="container mx-auto mt-8 p-4" *ngIf="account">
-    <!-- Heading -->
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">{{account.accountName}}</h2>
-      <div class="flex">
-        <button 
-          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded m-1"
-          routerLinkActive="active" routerLink="/account/add-transaction/{{account._id}}"
-        >
-          <span class="block sm:hidden">+</span> 
-          <span class="hidden sm:block">เงินเข้า +</span> 
-        </button>
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-1">
-          <span class="block sm:hidden">-</span> 
-          <span class="hidden sm:block">เงินออก -</span> 
-        </button>
-      </div>            
-    </div>
-  
-    <!-- Account Balance Overview -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <!-- Total Balance -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-semibold text-gray-700">ยอดเงินคงเหลือทั้งหมด</h3>
-        <span [ngClass]="{
-          'text-red-500': account.balance < 0, 
-          'text-green-500': account.balance > 0,
-          'text-3xl font-bold mt-2': true
-        }">
-      {{account.balance | number:'1.2-2'}} {{account.currency}}
-      </span>
-      </div>
-  
-      <!-- Monthly Income -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-semibold text-gray-700">รายได้ประจำเดือน</h3>
-    <p class="text-3xl font-bold text-green-500 mt-2">{{ totalIncome | number:'1.2-2' }} {{ account.currency }}</p>
-      </div>
-  
-      <!-- Monthly Expenses -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-semibold text-gray-700">ค่าใช้จ่ายรายเดือน</h3>
-        <p class="text-3xl font-bold text-red-500 mt-2">{{ totalExpenses | number:'1.2-2' }} {{ account.currency }}</p>
-      </div>
-    </div>
-  
-    <!-- Recent Transactions -->
-    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-      <h3 class="text-xl font-semibold text-gray-700 mb-4">รายการธุรกรรมล่าสุด</h3>
-      <table class="min-w-full bg-white">
-        <thead>
-          <tr class="w-full bg-gray-200">
-            <th class="py-2 px-4 text-left">วันที่และเวลา</th>
-            <th class="py-2 px-4 text-left">หมวดหมู่</th>
-            <th class="py-2 px-4 text-right">จำนวนเงิน</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let transactionOfAccount of transactionsOfAccount; let i = index" class="even:bg-gray-50">
-            <td class="py-2 px-4 hidden md:table-cell">
-              {{transactionOfAccount.date | date: 'dd/MM/yyyy'}} <br> {{transactionOfAccount.date | date: 'HH:mm:ss'}}
-            </td>
-            <td class="py-2 px-4 table-cell md:hidden">
-              {{transactionOfAccount.date | date: 'd/M H:mm'}}
-            </td>
-            <td class="py-2 px-4">{{transactionOfAccount.category}}</td>
-            <td class="py-2 px-4 text-right">
-              <span [ngClass]="{'text-red-500': transactionOfAccount.amount < 0, 'text-green-500': transactionOfAccount.amount >= 0}">
-                {{transactionOfAccount.amount | number:'1.2-2'}}
-              </span>            
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  
-    <!-- Spending Overview Chart -->
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <h3 class="text-xl font-semibold text-gray-700 mb-4">ภาพรวมการใช้จ่าย</h3>
-      <div class="w-full h-64">
-        <!-- Placeholder for Chart -->
-        <img src="https://via.placeholder.com/400x200.png?text=กราฟภาพรวมการใช้จ่าย" alt="กราฟการใช้จ่าย" class="mx-auto" />
-      </div>
+  <!-- Heading -->
+  <div class="flex justify-between items-center mb-4">
+    <h2
+      class="text-2xl text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400"
+    >
+      {{ account.accountName }}
+    </h2>
+    <div class="flex">
+      <button
+        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded m-1"
+        routerLinkActive="active"
+        routerLink="/account/add-transaction/{{ account._id }}"
+      >
+        <span class="block sm:hidden">+</span>
+        <span class="hidden sm:block">เงินเข้า +</span>
+      </button>
+      <button
+        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-1"
+      >
+        <span class="block sm:hidden">-</span>
+        <span class="hidden sm:block">เงินออก -</span>
+      </button>
     </div>
   </div>
-  
+
+  <!-- Account Balance Overview -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Total Balance -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold text-gray-700">ยอดเงินคงเหลือทั้งหมด</h3>
+      <span
+        [ngClass]="{
+          'text-red-500': account.balance < 0,
+          'text-green-500': account.balance > 0,
+          'text-3xl font-bold mt-2': true
+        }"
+      >
+        {{ account.balance | number : "1.2-2" }} {{ account.currency }}
+      </span>
+    </div>
+
+    <!-- Monthly Income -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold text-gray-700">รายได้ประจำเดือน</h3>
+      <p class="text-3xl font-bold text-green-500 mt-2">
+        {{ totalIncome | number : "1.2-2" }} {{ account.currency }}
+      </p>
+    </div>
+
+    <!-- Monthly Expenses -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold text-gray-700">ค่าใช้จ่ายรายเดือน</h3>
+      <p class="text-3xl font-bold text-red-500 mt-2">
+        {{ totalExpenses | number : "1.2-2" }} {{ account.currency }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+    <h3 class="text-xl font-semibold text-gray-700 mb-4">
+      รายการธุรกรรมล่าสุด
+    </h3>
+    <table class="min-w-full bg-white">
+      <thead>
+        <tr class="w-full bg-gray-200">
+          <th class="py-2 px-4 text-left">วันที่และเวลา</th>
+          <th class="py-2 px-4 text-left">หมวดหมู่</th>
+          <th class="py-2 px-4 text-right">จำนวนเงิน</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let transactionOfAccount of transactionsOfAccount;
+            let i = index
+          "
+          class="even:bg-gray-50"
+        >
+          <td class="py-2 px-4 hidden md:table-cell">
+            {{ transactionOfAccount.date | date : "dd/MM/yyyy" }} <br />
+            {{ transactionOfAccount.date | date : "HH:mm:ss" }}
+          </td>
+          <td class="py-2 px-4 table-cell md:hidden">
+            {{ transactionOfAccount.date | date : "d/M H:mm" }}
+          </td>
+          <td class="py-2 px-4">{{ transactionOfAccount.category }}</td>
+          <td class="py-2 px-4 text-right">
+            <span
+              [ngClass]="{
+                'text-red-500': transactionOfAccount.amount < 0,
+                'text-green-500': transactionOfAccount.amount >= 0
+              }"
+            >
+              {{ transactionOfAccount.amount | number : "1.2-2" }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Spending Overview Chart -->
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h3 class="text-xl font-semibold text-gray-700 mb-4">ภาพรวมการใช้จ่าย</h3>
+    <div class="w-full h-64">
+      <!-- Chart -->
+      <canvas
+        baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [type]="'bar'"
+      >
+      </canvas>
+    </div>
+  </div>
+</div>

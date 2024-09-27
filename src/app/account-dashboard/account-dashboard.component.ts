@@ -2,6 +2,9 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CrudService } from '../service/crud.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { ChartConfiguration } from 'chart.js';
+import { BarController, Chart, registerables } from 'chart.js';
+
 
 @Component({
   selector: 'app-account-dashboard',
@@ -15,6 +18,23 @@ export class AccountDashboardComponent {
   totalIncome: number = 0;
   totalExpenses: number = 0;
 
+  title = 'ng2-charts-demo';
+
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  public barChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+    datasets: [
+      { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' },
+      { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
+    ]
+  };
+
+  public barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: false,
+  };
+
   constructor(
     public formBuilder: FormBuilder,
     private router: Router,
@@ -27,6 +47,9 @@ export class AccountDashboardComponent {
   }
 
   ngOnInit(): void {
+    // Register Chart.js controllers, elements, and plugins
+    Chart.register(...registerables);
+
     // Get current account
     this.crudService.GetAccount(this.getId).subscribe((res) => {
       this.account = res;
