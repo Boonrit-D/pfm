@@ -231,6 +231,11 @@ export class CrudService {
       map((res: any) => res || {}),
       catchError(this.handleError)
     );
-}
+  }
+  
+  // Update balance
+  updateBalance(id: string, balance: number): Observable<any> {
+    return this.httpClient.put<any>(`${this.REST_API_ACCOUNT}/update-balance/${id}`, { balance });
+  }
   
 }

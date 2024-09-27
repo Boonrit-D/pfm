@@ -103,4 +103,23 @@ accountRoute.route('/read-account-transactions/:id').get( async (req, res, next)
     }
 });
 
+// Update account balance
+accountRoute.route('/update-balance/:id').put(async (req, res, next) => {
+    try {
+        const accountId = req.params.id;
+        const { balance } = req.body; // รับค่า balance จาก body ของ request
+
+        const updatedAccount = await Account.findByIdAndUpdate(accountId, { balance }, { new: true });
+
+        if (!updatedAccount) {
+            return res.status(404).json({ msg: 'Account not found' });
+        }
+        
+        res.json(updatedAccount);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
 module.exports = accountRoute ;
