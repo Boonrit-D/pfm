@@ -9,16 +9,18 @@ accountRoute.route('/').get( async (req, res, next) => {
         const data = await Account.find();
         res.json(data);
     } catch (error) {
+        console.log(error);
         next(error);
     }
 })
 
-// Add transaction
+// Add account
 accountRoute.route('/add-account').post( async (req, res, next) => {
     try {
         const data = await Account.create(req.body);
         res.json(data);
     } catch (error) {
+        console.log(error);
         next(error);
     } 
 });
@@ -29,6 +31,7 @@ accountRoute.route('/read-account/:id').get( async (req, res, next) => {
         const data = await Account.findById(req.params.id);
         res.json(data);
     } catch (error) {
+        console.log(error);
         next(error);
     }
 });
@@ -44,8 +47,8 @@ accountRoute.route('/update-account/:id').put(async (req, res, next) => {
         }
         res.json(data);
     } catch (error) {
-        next(error);
         console.log(error);
+        next(error);
     }
 });
 
@@ -57,6 +60,45 @@ accountRoute.route('/delete-account/:id').delete( async (req, res, next) => {
             msg:data
         })
     } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+// Transaction 
+// Add transaction
+accountRoute.route('/add-transaction/:id').post( async (req, res, next) => {
+    try {
+        const accountId = req.params.id;
+        const account = await Account.findById(accountId);
+
+        if (!account) {
+            return res.status(404).json({ message: "Account not found" });
+        }
+
+        // Add the new transaction to the account's transactions array
+        account.transactions.push(req.body);
+
+        // Save the account with the new transaction
+        const updatedAccount = await account.save();
+
+        res.json(updatedAccount);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    } 
+});
+
+// Get transactions of a specific account
+accountRoute.route('/read-account-transactions/:id').get( async (req, res, next) => {
+    try {
+        const account = await Account.findById(req.params.id);
+        if (!account) {
+            return res.status(404).json({ message: 'Account not found' });
+        }
+        res.json(account.transactions);
+    } catch (error) {
+        console.error(error);
         next(error);
     }
 });

@@ -21,6 +21,7 @@ import { AccountComponent } from './account/account.component';
 import { AddAccountComponent } from './add-account/add-account.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
 import { AccountDashboardComponent } from './account-dashboard/account-dashboard.component';
+import { AddAccountTransactionComponent } from './add-account-transaction/add-account-transaction.component';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -36,7 +37,8 @@ import { AccountDashboardComponent } from './account-dashboard/account-dashboard
     AccountComponent, 
     AddAccountComponent, 
     EditAccountComponent, 
-    AccountDashboardComponent
+    AccountDashboardComponent, 
+    AddAccountTransactionComponent
   ],
 
   imports: [

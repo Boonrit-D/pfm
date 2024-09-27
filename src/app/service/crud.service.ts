@@ -212,4 +212,25 @@ export class CrudService {
         catchError(this.handleError)
       );
   }
+
+  // Transaction of Account
+  //////////////////////////////////////////
+  AddTransactionOfAccount(data: AccountTransaction, id: string): Observable<any> {
+    let API_URL = `${this.REST_API_ACCOUNT}/add-transaction/${id}`;
+    return this.httpClient.post(API_URL, data, { headers: this.httpHeaders })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // Get all transactions of account
+  GetTransactionOfAccount(id: string): Observable<any> {
+  let API_URL = `${this.REST_API_ACCOUNT}/read-account-transactions/${id}`;
+  return this.httpClient.get(API_URL, { headers: this.httpHeaders })
+    .pipe(
+      map((res: any) => res || {}),
+      catchError(this.handleError)
+    );
+}
+  
 }

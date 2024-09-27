@@ -11,6 +11,9 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class AccountDashboardComponent {
   getId: any;
   account: any;
+  transactionsOfAccount: any;
+
+  
 
   constructor(
     public formBuilder: FormBuilder,
@@ -19,11 +22,15 @@ export class AccountDashboardComponent {
     private activatedRouter: ActivatedRoute,
     private crudService: CrudService
   ) {
+    // Get ID
     this.getId = this.activatedRouter.snapshot.paramMap.get('id');
 
+    // Get current account
     this.crudService.GetAccount(this.getId).subscribe((res) => {
       this.account = res;
     });
+
+    
 
     // Idea
     // ธุรกรรมทั้งหมด
@@ -50,6 +57,14 @@ export class AccountDashboardComponent {
     console.log(`ยอดเงินคงเหลือ: ${totalBalance} บาท`);
     console.log(`รายได้รายเดือน: ${totalIncome} บาท`);
     console.log(`ค่าใช้จ่ายรายเดือน: ${totalExpenses} บาท`);
+  }
+
+  ngOnInit(): void {
+    // Get all transaction of current account
+    this.crudService.GetTransactionOfAccount(this.getId).subscribe((res) => {
+      this.transactionsOfAccount = res;
+      console.log(this.transactionsOfAccount); // เช็คว่าข้อมูลถูกต้องหรือไม่
+    });
   }
 
 }

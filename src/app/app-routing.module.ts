@@ -12,6 +12,7 @@ import { AccountComponent } from './account/account.component';
 import { AddAccountComponent } from './add-account/add-account.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
 import { AccountDashboardComponent } from './account-dashboard/account-dashboard.component';
+import { AddAccountTransactionComponent } from './add-account-transaction/add-account-transaction.component';
 
 const routes: Routes = [
 
@@ -51,6 +52,11 @@ const routes: Routes = [
   },
   {
     path: 'account/dashboard/:id', component: AccountDashboardComponent, title: 'Account dashboard' // หน้าแดชบอร์ดของบัญชี
+  },
+
+  // Account transaction
+  {
+    path: 'account/add-transaction/:id', component: AddAccountTransactionComponent, title: 'Add transaction\'s account' // หน้าเพิ่มรายการธุรกรรมของบัญชี
   },
   
 ];
