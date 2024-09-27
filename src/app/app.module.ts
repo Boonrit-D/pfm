@@ -23,6 +23,8 @@ import { EditAccountComponent } from './edit-account/edit-account.component';
 import { AccountDashboardComponent } from './account-dashboard/account-dashboard.component';
 import { AddAccountTransactionComponent } from './add-account-transaction/add-account-transaction.component';
 
+import { BaseChartDirective } from 'ng2-charts';
+
 @NgModule({
   declarations: [AppComponent, 
     HeaderBarComponent, 
@@ -46,7 +48,8 @@ import { AddAccountTransactionComponent } from './add-account-transaction/add-ac
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BaseChartDirective
   ],
 
   providers: [
