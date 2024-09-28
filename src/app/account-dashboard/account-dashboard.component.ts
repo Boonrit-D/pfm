@@ -19,6 +19,7 @@ export class AccountDashboardComponent implements OnInit {
   totalExpenses: number = 0;
   isLoading: boolean = true;
   isBrowser: boolean;
+  recentTransactions: any;
 
   title = 'ng2-charts-demo';
 
@@ -79,6 +80,9 @@ export class AccountDashboardComponent implements OnInit {
     this.crudService.GetTransactionOfAccount(this.getId).subscribe((res) => {
       this.transactionsOfAccount = res;
       console.log(this.transactionsOfAccount);
+
+      // อัปเดต recentTransactions ให้แสดงแค่ 3 รายการล่าสุด
+      this.recentTransactions = this.transactionsOfAccount.slice(-3).reverse();
       
       // คำนวณและอัปเดตยอดเงินคงเหลือ
       this.updateBalance();   
