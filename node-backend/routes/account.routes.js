@@ -143,4 +143,25 @@ accountRoute.route('/read-account-transaction/:accountId/:transactionId').get(as
     }
 });
 
+// Update a specific transaction of a specific account
+accountRoute.route('/update-account-transaction/:accountId/:transactionId').put(async (req, res, next) => {
+    try {
+        const account = await Account.findById(req.params.accountId);
+        const transaction = account?.transactions.id(req.params.transactionId);
+
+        if (!account || !transaction) {
+            return res.status(404).json({ message: 'Account or Transaction not found' });
+        }
+
+        // Update the transaction details
+        Object.assign(transaction, req.body);
+        await account.save();
+
+        res.json(transaction);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
 module.exports = accountRoute ;
