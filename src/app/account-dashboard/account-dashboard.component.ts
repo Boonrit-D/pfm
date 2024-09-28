@@ -63,6 +63,7 @@ export class AccountDashboardComponent implements OnInit {
   ) {
     // Get ID
     this.getId = this.activatedRouter.snapshot.paramMap.get('id');
+    
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
