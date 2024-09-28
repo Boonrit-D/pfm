@@ -1,15 +1,14 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators  } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CrudService } from './../service/crud.service';
 
 @Component({
   selector: 'app-add-account-transaction',
   templateUrl: './add-account-transaction.component.html',
-  styleUrl: './add-account-transaction.component.css'
+  styleUrl: './add-account-transaction.component.css',
 })
 export class AddAccountTransactionComponent implements OnInit {
-
   // Define date
   currentDateTime: string;
 
@@ -27,9 +26,8 @@ export class AddAccountTransactionComponent implements OnInit {
     private activatedRouter: ActivatedRoute,
     public formBuilder: FormBuilder,
     private router: Router,
-    private ngZone: NgZone,
+    private ngZone: NgZone
   ) {
-
     // Get ID
     this.getId = this.activatedRouter.snapshot.paramMap.get('id');
 
@@ -49,40 +47,54 @@ export class AddAccountTransactionComponent implements OnInit {
     // รูปแบบสำหรับ datetime-local คือ YYYY-MM-DDTHH:MM
     this.currentDateTime = `${yyyy}-${mm}-${dd}T${hours}:${minutes}:${seconds}`;
 
-    // 
+    //
     this.transactionForm = this.formBuilder.group({
       category: ['', Validators.required],
-      amount: [ , Validators.required],
+      amount: [, Validators.required],
       description: [''],
-      date: [this.currentDateTime]
+      date: [this.currentDateTime],
     });
   }
 
   ngOnInit(): void {
-
-    // สมมุติว่ามีการดึงข้อมูลหมวดหมู่เก่าจาก API หรือที่ไหนสักแห่ง
-    this.fetchOldCategories();
-
-  }
-
-  fetchOldCategories() {
-    // สมมุติว่ามีการดึงข้อมูลหมวดหมู่เก่าจาก API หรือที่ไหนสักแห่ง
-    const oldCategories = ['หมวดหมู่ 1', 'หมวดหมู่ 2', 'หมวดหมู่ 3'];
-    this.categories = [...this.categories, ...oldCategories];
-  }
-
-  onSubmit(): any {
-    this.crudService.AddTransactionOfAccount(this.transactionForm.value, this.getId).subscribe({
-      next: () => {
-        console.log('data added successfully');
-        this.ngZone.run(() => this.router.navigateByUrl(`/account/dashboard/${this.getId}`));
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-      },
+    // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า dashboard
+    this.activatedRouter.queryParams.subscribe((params) => {
+      if (params['amount'] === 'positive') {
+        // ถ้าเป็น "เงินเข้า" กำหนดให้ amount เป็นค่าบวก
+        this.transactionForm.patchValue({ amount: '' }); // ใส่ช่องว่างเพื่อให้ผู้ใช้กรอกค่าเอง
+      } else if (params['amount'] === 'negative') {
+        // ถ้าเป็น "เงินออก" กำหนดให้ amount เป็นค่าลบ
+        this.transactionForm.patchValue({ amount: '-' }); // ใส่ - ไว้ล่วงหน้าให้ผู้ใช้กรอก
+      }
     });
   }
 
+  onSubmit(): any {
+    // ตรวจสอบว่าค่าที่ส่งมาใน amount เป็นค่าลบหรือไม่
+    let amountValue = this.transactionForm.value.amount;
+
+    // ถ้าค่า amount ที่ส่งมาจากปุ่ม "เงินออก" และผู้ใช้กรอกค่าที่ไม่ติดลบ
+    if (
+      this.activatedRouter.snapshot.queryParams['amount'] === 'negative' &&
+      amountValue > 0
+    ) {
+      // ทำให้ amount เป็นค่าลบ
+      this.transactionForm.patchValue({ amount: -Math.abs(amountValue) });
+    }
+
+    this.crudService
+      .AddTransactionOfAccount(this.transactionForm.value, this.getId)
+      .subscribe({
+        next: () => {
+          console.log('data added successfully');
+          this.ngZone.run(() =>
+            this.router.navigateByUrl(`/account/dashboard/${this.getId}`)
+          );
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {},
+      });
+  }
 }
