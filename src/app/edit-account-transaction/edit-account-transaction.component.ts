@@ -80,7 +80,7 @@ export class EditAccountTransactionComponent implements OnInit {
     });
 
     // Transaction type
-    this.activatedRouter.queryParams.subscribe(params => {
+    this.activatedRouter.queryParams.subscribe((params) => {
       const amountType = params['amount']; // ดึงค่าที่ส่งมาจาก queryParams
       if (amountType === 'positive') {
         this.transactionType = '(เงินเข้า)'; // หากเป็นรายการบวก แสดงเครื่องหมาย "+"
@@ -91,31 +91,39 @@ export class EditAccountTransactionComponent implements OnInit {
   }
 
   onSubmit(): any {
-    // ตรวจสอบว่าค่าที่ส่งมาใน amount เป็นค่าลบหรือไม่
     let amountValue = this.transactionForm.value.amount;
 
-    // ถ้าค่า amount ที่ส่งมาจากปุ่ม "เงินออก" และผู้ใช้กรอกค่าที่ไม่ติดลบ
-    if (
-      this.activatedRouter.snapshot.queryParams['amount'] === 'negative' &&
-      amountValue > 0
-    ) {
-      // ทำให้ amount เป็นค่าลบ
-      this.transactionForm.patchValue({ amount: -Math.abs(amountValue) });
+  // ตรวจสอบและตั้งค่าค่าลบสำหรับ "เงินออก"
+  if (this.activatedRouter.snapshot.queryParams['amount'] === 'negative') {
+    if (amountValue > 0) {
+      // หากเป็น "เงินออก" และค่า amount ไม่ติดลบ ให้ตั้งค่าให้ติดลบ
+      amountValue = -Math.abs(amountValue);
     }
+  } else if (this.activatedRouter.snapshot.queryParams['amount'] === 'positive') {
+    // สำหรับ "เงินเข้า" ให้ตั้งค่าให้เป็นค่าบวกแน่นอน
+    amountValue = Math.abs(amountValue);
+  }
 
-    // this.crudService
-    //   .AddTransactionOfAccount(this.transactionForm.value, this.getId)
-    //   .subscribe({
-    //     next: () => {
-    //       console.log('data added successfully');
-    //       this.ngZone.run(() =>
-    //         this.router.navigateByUrl(`/account/dashboard/${this.getId}`)
-    //       );
-    //     },
-    //     error: (err) => {
-    //       console.log(err);
-    //     },
-    //     complete: () => {},
-    //   });
+  // อัปเดตค่าในฟอร์ม
+  this.transactionForm.patchValue({ amount: amountValue });
+
+  // ส่งข้อมูลไปอัปเดต
+  this.crudService
+    .UpdateATransactionOfAccount(
+      this.transactionForm.value, // ข้อมูลที่ได้จากฟอร์ม
+      this.getAccountId, // ID ของบัญชี
+      this.getTransactionId // ID ของ transaction ที่จะอัปเดต
+    )
+    .subscribe({
+      next: () => {
+        console.log('Updated transaction successfully');
+        this.ngZone.run(
+          () => this.router.navigateByUrl(`/account/dashboard/${this.getAccountId}`)
+        );
+      },
+      error: (err) => {
+        console.log(err); // แสดง error ในกรณีที่มีปัญหาในการอัปเดต
+      },
+    });
   }
 }

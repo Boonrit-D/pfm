@@ -242,6 +242,25 @@ export class CrudService {
     );
   }
 
+  // Update transaction of account
+  UpdateATransactionOfAccount(
+    data: AccountTransaction, // ข้อมูลของ transaction ที่ต้องการอัปเดต
+    accountId: string,
+    transactionId: string
+  ): Observable<any> {
+    let API_URL = `${this.REST_API_ACCOUNT}/update-account-transaction/${accountId}/${transactionId}`;
+
+    // ทำการ PUT โดยส่งข้อมูลของ transaction และ headers ไปยัง API
+    return this.httpClient
+      .put(API_URL, data, { headers: this.httpHeaders })
+      .pipe(
+        tap((response) => {
+          console.log('Response from update transaction of account:', response);
+        }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
+        catchError(this.handleError) // จัดการข้อผิดพลาด
+      );
+  }
+
   // Update balance
   updateBalance(id: string, balance: number): Observable<any> {
     return this.httpClient.put<any>(
