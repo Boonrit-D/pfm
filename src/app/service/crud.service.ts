@@ -261,6 +261,23 @@ export class CrudService {
       );
   }
 
+  deleteATransactionOfAccount(
+    accountId: string,
+    transactionId: string
+  ): Observable<any> {
+    let API_URL = `${this.REST_API_ACCOUNT}/delete-account-transaction/${accountId}/${transactionId}`;
+
+    // ทำการ DELETE โดยส่งข้อมูลของ transaction และ headers ไปยัง API
+    return this.httpClient
+      .delete(API_URL, { headers: this.httpHeaders })
+      .pipe(
+        tap((response) => {
+          console.log('Deleted transaction of account:', response);
+        }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
+        catchError(this.handleError) // จัดการข้อผิดพลาด
+      );
+  }
+
   // Update balance
   updateBalance(id: string, balance: number): Observable<any> {
     return this.httpClient.put<any>(
@@ -268,4 +285,6 @@ export class CrudService {
       { balance }
     );
   }
+
+  
 }
