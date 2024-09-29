@@ -6,10 +6,9 @@ import { CrudService } from './../service/crud.service';
 @Component({
   selector: 'app-edit-account-transaction',
   templateUrl: './edit-account-transaction.component.html',
-  styleUrl: './edit-account-transaction.component.css'
+  styleUrl: './edit-account-transaction.component.css',
 })
 export class EditAccountTransactionComponent implements OnInit {
-
   // Category
   categories: string[] = ['รายได้', 'รายจ่าย']; // หมวดหมู่เริ่มต้น
   newCategory: string = ''; // ตัวแปรสำหรับเก็บหมวดหมู่ใหม่
@@ -38,33 +37,34 @@ export class EditAccountTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     // Get ID from route
-  this.getAccountId = this.activatedRouter.snapshot.paramMap.get('accountId');
-  this.getTransactionId = this.activatedRouter.snapshot.paramMap.get('transactionId');
+    this.getAccountId = this.activatedRouter.snapshot.paramMap.get('accountId');
+    this.getTransactionId =
+      this.activatedRouter.snapshot.paramMap.get('transactionId');
 
-  // Get current account
-  this.crudService.GetAccount(this.getAccountId).subscribe((res) => {
-    this.account = res;
-    // console.log(res);
-  });
-  
-  this.crudService.GetATransactionOfAccount(this.getAccountId, this.getTransactionId).subscribe((res) => {
-    this.aTransactionsOfAccount = res;
-    console.log(res);
-
-    // Convert date to yyyy-MM-ddThh:mm format
-    const transactionDate = new Date(res['date']);
-    const formattedDate = transactionDate.toISOString().slice(0, 16); // yyyy-MM-ddThh:mm
-
-    this.transactionForm.setValue({
-      category: res['category'],
-      amount: res['amount'],
-      description: res['description'],
-      date: formattedDate
+    // Get current account
+    this.crudService.GetAccount(this.getAccountId).subscribe((res) => {
+      this.account = res;
+      // console.log(res);
     });
-  });
-  
+
+    this.crudService
+      .GetATransactionOfAccount(this.getAccountId, this.getTransactionId)
+      .subscribe((res) => {
+        this.aTransactionsOfAccount = res;
+        console.log(res);
+
+        // Convert date to yyyy-MM-ddThh:mm format
+        const transactionDate = new Date(res['date']);
+        const formattedDate = transactionDate.toISOString().slice(0, 16); // yyyy-MM-ddThh:mm
+
+        this.transactionForm.setValue({
+          category: res['category'],
+          amount: res['amount'],
+          description: res['description'],
+          date: formattedDate,
+        });
+      });
 
     // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า dashboard
     this.activatedRouter.queryParams.subscribe((params) => {
