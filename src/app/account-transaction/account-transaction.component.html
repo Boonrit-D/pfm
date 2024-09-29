@@ -65,6 +65,7 @@
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm m-1"
               *ngIf="account && account._id"
               [routerLink]="['/account/edit-transaction', account._id, transaction._id]"
+              [queryParams]="{ amount: (transaction.amount >= 0 ? 'positive' : 'negative') }"
             >
               แก้ไข
             </button>
