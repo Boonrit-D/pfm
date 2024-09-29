@@ -10,8 +10,11 @@ import { CrudService } from '../service/crud.service';
 export class AccountTransactionComponent {
 
   getId: any;
+  getTransactionsId: any;
+  getAccountId: any;
   transactionsOfAccount: any;
   currentDate = new Date();
+  account: any;
 
   constructor(
     private router: Router,
@@ -21,6 +24,7 @@ export class AccountTransactionComponent {
   ){
     // Get ID
     this.getId = this.activatedRouter.snapshot.paramMap.get('id');
+    // this.getAccountId = this.activatedRouter.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
@@ -29,6 +33,12 @@ export class AccountTransactionComponent {
     this.crudService.GetTransactionOfAccount(this.getId).subscribe((res) => {
       this.transactionsOfAccount = res.reverse();
       console.log(this.transactionsOfAccount);
+    });
+
+    // Get current account
+    this.crudService.GetAccount(this.getId).subscribe((res) => {
+      this.account = res;
+      console.log(this.account);
     });
 
   }

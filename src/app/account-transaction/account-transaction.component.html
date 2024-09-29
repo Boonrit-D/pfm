@@ -63,7 +63,8 @@
           <td class="px-4 py-2 border-b border-gray-300 text-center">
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm m-1"
-              routerLink="/edit-transaction/{{ transaction._id }}"
+              *ngIf="account && account._id"
+              [routerLink]="['/account/edit-transaction', account._id, transaction._id]"
             >
               แก้ไข
             </button>

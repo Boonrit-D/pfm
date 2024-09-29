@@ -24,6 +24,7 @@ import { AccountDashboardComponent } from './account-dashboard/account-dashboard
 import { AddAccountTransactionComponent } from './add-account-transaction/add-account-transaction.component';
 import { BaseChartDirective } from 'ng2-charts';
 import { AccountTransactionComponent } from './account-transaction/account-transaction.component';
+import { EditAccountTransactionComponent } from './edit-account-transaction/edit-account-transaction.component';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -41,7 +42,8 @@ import { AccountTransactionComponent } from './account-transaction/account-trans
     EditAccountComponent, 
     AccountDashboardComponent, 
     AddAccountTransactionComponent, 
-    AccountTransactionComponent
+    AccountTransactionComponent, 
+    EditAccountTransactionComponent
   ],
 
   imports: [
