@@ -17,7 +17,7 @@
         <span class="block sm:hidden">+</span>
         <span class="hidden sm:block">เงินเข้า +</span>
       </button>
-    
+
       <button
         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-1"
         routerLink="/account/add-transaction/{{ account._id }}"
@@ -39,16 +39,16 @@
         <!-- Spinner -->
         <span class="loading-text">Loading...</span>
       </div>
-        <canvas
-          *ngIf="isBrowser && !isLoading"
-          baseChart
-          [data]="barChartData"
-          [options]="barChartOptions"
-          [plugins]="barChartPlugins"
-          [legend]="barChartLegend"
-          [type]="'bar'"
-        >
-        </canvas>
+      <canvas
+        *ngIf="isBrowser && !isLoading"
+        baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [type]="'bar'"
+      >
+      </canvas>
     </div>
   </div>
 
@@ -100,11 +100,9 @@
       </thead>
       <tbody>
         <tr
-          *ngFor="
-            let transactionOfAccount of recentTransactions ;
-            let i = index
-          "
+          *ngFor="let transactionOfAccount of recentTransactions; let i = index"
           class="even:bg-gray-50 hover:bg-green-100"
+          [routerLink]="['/account/edit-transaction', account._id, transactionOfAccount._id]"
         >
           <td class="py-2 px-4 hidden md:table-cell">
             {{ transactionOfAccount.date | date : "dd/MM/yyyy" }} <br />
@@ -127,7 +125,12 @@
         </tr>
       </tbody>
     </table>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm mt-2" routerLink="/account/transaction/{{account._id}}">ดูทั้งหมด</button>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm mt-2"
+      routerLink="/account/transaction/{{ account._id }}"
+    >
+      ดูทั้งหมด
+    </button>
   </div>
   <!-- Ending -->
 </div>
