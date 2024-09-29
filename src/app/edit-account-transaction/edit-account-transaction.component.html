@@ -2,7 +2,7 @@
 <div class="container mx-auto mt-8 p-4">
     <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
       <div class="p-4 bg-blue-600 text-white text-center font-bold text-xl">
-        แก้ไขรายการธุรกรรมใหม่
+        แก้ไขรายการธุรกรรม {{ transactionType }}
       </div>
       <form class="p-6" [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
         <!-- วันที่ -->
@@ -66,7 +66,6 @@
         <!-- จำนวนเงิน -->
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="amount">
-            จำนวนเงิน (เครื่องหมาย + - มีผลต่อการแก้ไข)
           </label>
           <input
             type="number"

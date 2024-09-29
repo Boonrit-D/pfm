@@ -20,6 +20,8 @@ export class EditAccountTransactionComponent implements OnInit {
   aTransactionsOfAccount: any;
   getTransactionId: any;
 
+  transactionType: string = ''; // เก็บข้อมูลประเภทของธุรกรรม ('positive' หรือ 'negative')
+
   constructor(
     private crudService: CrudService,
     private activatedRouter: ActivatedRoute,
@@ -60,20 +62,30 @@ export class EditAccountTransactionComponent implements OnInit {
 
         this.transactionForm.setValue({
           category: res['category'],
-          amount: res['amount'],
+          amount: Math.abs(res['amount']),
           description: res['description'],
           date: formattedDate,
         });
       });
 
-    // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า dashboard
+    // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า transaction
     this.activatedRouter.queryParams.subscribe((params) => {
       if (params['amount'] === 'positive') {
         // ถ้าเป็น "เงินเข้า" กำหนดให้ amount เป็นค่าบวก
         this.transactionForm.patchValue({ amount: '' }); // ใส่ช่องว่างเพื่อให้ผู้ใช้กรอกค่าเอง
       } else if (params['amount'] === 'negative') {
         // ถ้าเป็น "เงินออก" กำหนดให้ amount เป็นค่าลบ
-        this.transactionForm.patchValue({ amount: '-' }); // ใส่ - ไว้ล่วงหน้าให้ผู้ใช้กรอก
+        this.transactionForm.patchValue({ amount: '-' }); // ใส่ "-" ไว้ล่วงหน้าให้ผู้ใช้กรอก
+      }
+    });
+
+    // Transaction type
+    this.activatedRouter.queryParams.subscribe(params => {
+      const amountType = params['amount']; // ดึงค่าที่ส่งมาจาก queryParams
+      if (amountType === 'positive') {
+        this.transactionType = '(เงินเข้า)'; // หากเป็นรายการบวก แสดงเครื่องหมาย "+"
+      } else if (amountType === 'negative') {
+        this.transactionType = '(เงินออก)'; // หากเป็นรายการลบ แสดงเครื่องหมาย "-"
       }
     });
   }

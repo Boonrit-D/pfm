@@ -70,6 +70,7 @@ export class AddAccountTransactionComponent implements OnInit {
       }
     });
 
+    // Transaction type
     this.activatedRouter.queryParams.subscribe(params => {
       const amountType = params['amount']; // ดึงค่าที่ส่งมาจาก queryParams
       if (amountType === 'positive') {
