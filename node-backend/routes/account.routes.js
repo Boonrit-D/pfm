@@ -180,8 +180,8 @@ accountRoute.route('/delete-account-transaction/:accountId/:transactionId').dele
             return res.status(404).json({ message: 'Transaction not found' });
         }
 
-        // ลบ transaction
-        transaction.remove();
+        // ลบ transaction ออกจาก array
+        account.transactions.pull(transaction); // ใช้ pull แทน remove
         await account.save(); // บันทึกการเปลี่ยนแปลงหลังจากลบ
 
         res.status(200).json({
@@ -193,5 +193,7 @@ accountRoute.route('/delete-account-transaction/:accountId/:transactionId').dele
         next(error);
     }
 });
+
+
 
 module.exports = accountRoute ;

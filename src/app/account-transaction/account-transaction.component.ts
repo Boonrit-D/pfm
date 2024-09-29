@@ -42,8 +42,24 @@ export class AccountTransactionComponent {
     });
 
   }
-  delete(id:any, i:any): void{
-
+  delete(id: any): void {
+    if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบธุรกรรมนี้?')) {
+      this.crudService
+        .deleteATransactionOfAccount(this.getId, id)
+        .subscribe({
+          next: () => {
+            console.log('Deleted transaction successfully');
+            this.ngZone.run(() =>
+              this.router.navigateByUrl(
+                `/account/dashboard/${this.getId}`
+              )
+            );
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+    }
   }
 
 }

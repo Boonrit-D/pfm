@@ -95,13 +95,12 @@
           ยกเลิก
         </button>
         <button
-        *ngIf="account && account._id"
-        class="w-20 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md m-1"
-        routerLinkActive="active"
-        routerLink="/account/dashboard/{{ account._id }}"
-      >
-        ลบ
-      </button>
+          type="button"
+          class="w-20 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md m-1"
+          (click)="delete()"
+        >
+          ลบ
+        </button>
       </div>
     </form>
   </div>

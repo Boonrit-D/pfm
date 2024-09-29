@@ -9,6 +9,7 @@ import { CrudService } from './../service/crud.service';
   styleUrl: './edit-account-transaction.component.css',
 })
 export class EditAccountTransactionComponent implements OnInit {
+
   // Category
   categories: string[] = ['รายได้', 'รายจ่าย']; // หมวดหมู่เริ่มต้น
   newCategory: string = ''; // ตัวแปรสำหรับเก็บหมวดหมู่ใหม่
@@ -68,60 +69,86 @@ export class EditAccountTransactionComponent implements OnInit {
         });
       });
 
-      // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า transaction
-      this.activatedRouter.queryParams.subscribe((params) => {
-        if (params['amount'] === 'positive') {
-          // ถ้าเป็น "เงินเข้า" กำหนดให้ amount เป็นค่าบวก แต่ไม่ต้องใส่ค่าเริ่มต้น
-          this.transactionForm.patchValue({ amount: '' });
-        } else if (params['amount'] === 'negative') {
-          // ถ้าเป็น "เงินออก" กำหนดให้ amount เป็นค่าลบ (แต่ไม่ใส่ "-" ล่วงหน้า)
-          this.transactionForm.patchValue({ amount: '' });
-        }
-      });
-    
-      // Transaction type
-      this.activatedRouter.queryParams.subscribe((params) => {
-        const amountType = params['amount']; 
-        if (amountType === 'positive') {
-          this.transactionType = '(เงินเข้า)';
-        } else if (amountType === 'negative') {
-          this.transactionType = '(เงินออก)';
-        }
-      });
-    }
-    
-    onSubmit(): any {
-      let amountValue = this.transactionForm.value.amount;
-    
-      // ตั้งค่าให้ติดลบหรือบวกตามประเภท
-      if (this.activatedRouter.snapshot.queryParams['amount'] === 'negative') {
-        if (amountValue > 0) {
-          amountValue = -Math.abs(amountValue); // ถ้าเป็น "เงินออก" ให้ติดลบ
-        }
-      } else if (this.activatedRouter.snapshot.queryParams['amount'] === 'positive') {
-        amountValue = Math.abs(amountValue); // ถ้าเป็น "เงินเข้า" ให้เป็นบวก
+    // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า transaction
+    this.activatedRouter.queryParams.subscribe((params) => {
+      if (params['amount'] === 'positive') {
+        // ถ้าเป็น "เงินเข้า" กำหนดให้ amount เป็นค่าบวก แต่ไม่ต้องใส่ค่าเริ่มต้น
+        this.transactionForm.patchValue({ amount: '' });
+      } else if (params['amount'] === 'negative') {
+        // ถ้าเป็น "เงินออก" กำหนดให้ amount เป็นค่าลบ (แต่ไม่ใส่ "-" ล่วงหน้า)
+        this.transactionForm.patchValue({ amount: '' });
       }
-    
-      // อัปเดตค่าในฟอร์ม
-      this.transactionForm.patchValue({ amount: amountValue });
-    
-      // ส่งข้อมูลไปอัปเดต
+    });
+
+    // Transaction type
+    this.activatedRouter.queryParams.subscribe((params) => {
+      const amountType = params['amount'];
+      if (amountType === 'positive') {
+        this.transactionType = '(เงินเข้า)';
+      } else if (amountType === 'negative') {
+        this.transactionType = '(เงินออก)';
+      }
+    });
+  }
+
+  onSubmit(): any {
+    if (this.transactionForm.invalid) {
+      return; // ไม่ทำงานต่อถ้าฟอร์มไม่ถูกต้อง
+    }
+
+    let amountValue = this.transactionForm.value.amount;
+
+    // ตั้งค่าให้ติดลบหรือบวกตามประเภท
+    if (this.activatedRouter.snapshot.queryParams['amount'] === 'negative') {
+      if (amountValue > 0) {
+        amountValue = -Math.abs(amountValue); // ถ้าเป็น "เงินออก" ให้ติดลบ
+      }
+    } else if (
+      this.activatedRouter.snapshot.queryParams['amount'] === 'positive'
+    ) {
+      amountValue = Math.abs(amountValue); // ถ้าเป็น "เงินเข้า" ให้เป็นบวก
+    }
+
+    // อัปเดตค่าในฟอร์ม
+    this.transactionForm.patchValue({ amount: amountValue });
+
+    // ส่งข้อมูลไปอัปเดต
+    this.crudService
+      .UpdateATransactionOfAccount(
+        this.transactionForm.value,
+        this.getAccountId,
+        this.getTransactionId
+      )
+      .subscribe({
+        next: () => {
+          console.log('Updated transaction successfully');
+          this.ngZone.run(() =>
+            this.router.navigateByUrl(`/account/dashboard/${this.getAccountId}`)
+          );
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  delete(): any {
+    if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบธุรกรรมนี้?')) {
       this.crudService
-        .UpdateATransactionOfAccount(
-          this.transactionForm.value, 
-          this.getAccountId, 
-          this.getTransactionId
-        )
+        .deleteATransactionOfAccount(this.getAccountId, this.getTransactionId)
         .subscribe({
           next: () => {
-            console.log('Updated transaction successfully');
+            console.log('Deleted transaction successfully');
             this.ngZone.run(() =>
-              this.router.navigateByUrl(`/account/dashboard/${this.getAccountId}`)
+              this.router.navigateByUrl(
+                `/account/dashboard/${this.getAccountId}`
+              )
             );
           },
           error: (err) => {
             console.log(err);
           },
         });
+    }
   }
 }

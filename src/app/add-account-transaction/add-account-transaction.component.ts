@@ -63,15 +63,15 @@ export class AddAccountTransactionComponent implements OnInit {
     this.activatedRouter.queryParams.subscribe((params) => {
       if (params['amount'] === 'positive') {
         // ถ้าเป็น "เงินเข้า" กำหนดให้ amount เป็นค่าบวก
-        this.transactionForm.patchValue({ amount: '' }); // ใส่ช่องว่างเพื่อให้ผู้ใช้กรอกค่าเอง
+        this.transactionForm.patchValue({ amount: null }); // ใส่ null เพื่อให้ผู้ใช้กรอกค่าเอง
       } else if (params['amount'] === 'negative') {
         // ถ้าเป็น "เงินออก" กำหนดให้ amount เป็นค่าลบ
-        this.transactionForm.patchValue({ amount: '-' }); // ใส่ - ไว้ล่วงหน้าให้ผู้ใช้กรอก
+        this.transactionForm.patchValue({ amount: null }); // ใส่ null หรือ 0 เพื่อให้ผู้ใช้กรอกค่า
       }
     });
 
     // Transaction type
-    this.activatedRouter.queryParams.subscribe(params => {
+    this.activatedRouter.queryParams.subscribe((params) => {
       const amountType = params['amount']; // ดึงค่าที่ส่งมาจาก queryParams
       if (amountType === 'positive') {
         this.transactionType = '+'; // หากเป็นรายการบวก แสดงเครื่องหมาย "+"
@@ -94,6 +94,7 @@ export class AddAccountTransactionComponent implements OnInit {
       this.transactionForm.patchValue({ amount: -Math.abs(amountValue) });
     }
 
+    // นำค่าที่ถูกต้องไปส่ง
     this.crudService
       .AddTransactionOfAccount(this.transactionForm.value, this.getId)
       .subscribe({
