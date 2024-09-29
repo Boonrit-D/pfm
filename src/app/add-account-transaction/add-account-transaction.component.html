@@ -2,7 +2,7 @@
 <div class="container mx-auto mt-8 p-4">
   <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
     <div class="p-4 bg-blue-600 text-white text-center font-bold text-xl">
-      เพิ่มรายการธุรกรรมใหม่
+      เพิ่มรายการธุรกรรมใหม่ {{ transactionType }}
     </div>
     <form class="p-6" [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
       <!-- วันที่ -->

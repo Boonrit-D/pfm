@@ -21,6 +21,8 @@ export class AddAccountTransactionComponent implements OnInit {
   getId: any;
   transactionForm: FormGroup;
 
+  transactionType: string = ''; // เก็บข้อมูลประเภทของธุรกรรม ('positive' หรือ 'negative')
+
   constructor(
     private crudService: CrudService,
     private activatedRouter: ActivatedRoute,
@@ -65,6 +67,15 @@ export class AddAccountTransactionComponent implements OnInit {
       } else if (params['amount'] === 'negative') {
         // ถ้าเป็น "เงินออก" กำหนดให้ amount เป็นค่าลบ
         this.transactionForm.patchValue({ amount: '-' }); // ใส่ - ไว้ล่วงหน้าให้ผู้ใช้กรอก
+      }
+    });
+
+    this.activatedRouter.queryParams.subscribe(params => {
+      const amountType = params['amount']; // ดึงค่าที่ส่งมาจาก queryParams
+      if (amountType === 'positive') {
+        this.transactionType = '+'; // หากเป็นรายการบวก แสดงเครื่องหมาย "+"
+      } else if (amountType === 'negative') {
+        this.transactionType = '-'; // หากเป็นรายการลบ แสดงเครื่องหมาย "-"
       }
     });
   }
