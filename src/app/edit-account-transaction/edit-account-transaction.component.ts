@@ -68,62 +68,60 @@ export class EditAccountTransactionComponent implements OnInit {
         });
       });
 
-    // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า transaction
-    this.activatedRouter.queryParams.subscribe((params) => {
-      if (params['amount'] === 'positive') {
-        // ถ้าเป็น "เงินเข้า" กำหนดให้ amount เป็นค่าบวก
-        this.transactionForm.patchValue({ amount: '' }); // ใส่ช่องว่างเพื่อให้ผู้ใช้กรอกค่าเอง
-      } else if (params['amount'] === 'negative') {
-        // ถ้าเป็น "เงินออก" กำหนดให้ amount เป็นค่าลบ
-        this.transactionForm.patchValue({ amount: '-' }); // ใส่ "-" ไว้ล่วงหน้าให้ผู้ใช้กรอก
-      }
-    });
-
-    // Transaction type
-    this.activatedRouter.queryParams.subscribe((params) => {
-      const amountType = params['amount']; // ดึงค่าที่ส่งมาจาก queryParams
-      if (amountType === 'positive') {
-        this.transactionType = '(เงินเข้า)'; // หากเป็นรายการบวก แสดงเครื่องหมาย "+"
-      } else if (amountType === 'negative') {
-        this.transactionType = '(เงินออก)'; // หากเป็นรายการลบ แสดงเครื่องหมาย "-"
-      }
-    });
-  }
-
-  onSubmit(): any {
-    let amountValue = this.transactionForm.value.amount;
-
-  // ตรวจสอบและตั้งค่าค่าลบสำหรับ "เงินออก"
-  if (this.activatedRouter.snapshot.queryParams['amount'] === 'negative') {
-    if (amountValue > 0) {
-      // หากเป็น "เงินออก" และค่า amount ไม่ติดลบ ให้ตั้งค่าให้ติดลบ
-      amountValue = -Math.abs(amountValue);
+      // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า transaction
+      this.activatedRouter.queryParams.subscribe((params) => {
+        if (params['amount'] === 'positive') {
+          // ถ้าเป็น "เงินเข้า" กำหนดให้ amount เป็นค่าบวก แต่ไม่ต้องใส่ค่าเริ่มต้น
+          this.transactionForm.patchValue({ amount: '' });
+        } else if (params['amount'] === 'negative') {
+          // ถ้าเป็น "เงินออก" กำหนดให้ amount เป็นค่าลบ (แต่ไม่ใส่ "-" ล่วงหน้า)
+          this.transactionForm.patchValue({ amount: '' });
+        }
+      });
+    
+      // Transaction type
+      this.activatedRouter.queryParams.subscribe((params) => {
+        const amountType = params['amount']; 
+        if (amountType === 'positive') {
+          this.transactionType = '(เงินเข้า)';
+        } else if (amountType === 'negative') {
+          this.transactionType = '(เงินออก)';
+        }
+      });
     }
-  } else if (this.activatedRouter.snapshot.queryParams['amount'] === 'positive') {
-    // สำหรับ "เงินเข้า" ให้ตั้งค่าให้เป็นค่าบวกแน่นอน
-    amountValue = Math.abs(amountValue);
-  }
-
-  // อัปเดตค่าในฟอร์ม
-  this.transactionForm.patchValue({ amount: amountValue });
-
-  // ส่งข้อมูลไปอัปเดต
-  this.crudService
-    .UpdateATransactionOfAccount(
-      this.transactionForm.value, // ข้อมูลที่ได้จากฟอร์ม
-      this.getAccountId, // ID ของบัญชี
-      this.getTransactionId // ID ของ transaction ที่จะอัปเดต
-    )
-    .subscribe({
-      next: () => {
-        console.log('Updated transaction successfully');
-        this.ngZone.run(
-          () => this.router.navigateByUrl(`/account/dashboard/${this.getAccountId}`)
-        );
-      },
-      error: (err) => {
-        console.log(err); // แสดง error ในกรณีที่มีปัญหาในการอัปเดต
-      },
-    });
+    
+    onSubmit(): any {
+      let amountValue = this.transactionForm.value.amount;
+    
+      // ตั้งค่าให้ติดลบหรือบวกตามประเภท
+      if (this.activatedRouter.snapshot.queryParams['amount'] === 'negative') {
+        if (amountValue > 0) {
+          amountValue = -Math.abs(amountValue); // ถ้าเป็น "เงินออก" ให้ติดลบ
+        }
+      } else if (this.activatedRouter.snapshot.queryParams['amount'] === 'positive') {
+        amountValue = Math.abs(amountValue); // ถ้าเป็น "เงินเข้า" ให้เป็นบวก
+      }
+    
+      // อัปเดตค่าในฟอร์ม
+      this.transactionForm.patchValue({ amount: amountValue });
+    
+      // ส่งข้อมูลไปอัปเดต
+      this.crudService
+        .UpdateATransactionOfAccount(
+          this.transactionForm.value, 
+          this.getAccountId, 
+          this.getTransactionId
+        )
+        .subscribe({
+          next: () => {
+            console.log('Updated transaction successfully');
+            this.ngZone.run(() =>
+              this.router.navigateByUrl(`/account/dashboard/${this.getAccountId}`)
+            );
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
   }
 }
