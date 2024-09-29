@@ -19,7 +19,10 @@ export class EditAccountTransactionComponent implements OnInit {
   getAccountId: any;
   transactionForm: FormGroup;
   aTransactionsOfAccount: any;
+  transactionsOfAccount: any;
   getTransactionId: any;
+  totalIncome: number = 0;
+  totalExpenses: number = 0;
 
   transactionType: string = ''; // เก็บข้อมูลประเภทของธุรกรรม ('positive' หรือ 'negative')
 
@@ -68,6 +71,21 @@ export class EditAccountTransactionComponent implements OnInit {
           date: formattedDate,
         });
       });
+
+      // Get all transaction of current account
+    this.crudService.GetTransactionOfAccount(this.getAccountId).subscribe((res) => {
+      this.transactionsOfAccount = res;
+      console.log(this.transactionsOfAccount);
+
+      
+      // คำนวณและอัปเดตยอดเงินคงเหลือ
+      this.updateBalance();   
+
+      // คำนวณยอดรายได้และค่าใช้จ่ายประจำเดือน
+      this.calculateTotalIncome();
+      this.calculateTotalExpenses();
+
+    });
 
     // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า transaction
     this.activatedRouter.queryParams.subscribe((params) => {
@@ -150,5 +168,31 @@ export class EditAccountTransactionComponent implements OnInit {
           },
         });
     }
+  }
+
+  // Calculate and update balance
+  updateBalance() {
+    if (this.transactionsOfAccount) {
+        // Calculate the total balance from all transactions.
+        const totalBalance: number = this.transactionsOfAccount.reduce((acc: number, txn: { amount: number }) => acc + txn.amount, 0);
+        this.account.balance = totalBalance;
+
+        // Update the balance in the database
+        this.crudService.updateBalance(this.getAccountId, totalBalance).subscribe((res) => {
+            console.log('ยอดเงินคงเหลือถูกอัปเดต:', res);
+        });
+    }
+  }
+
+  calculateTotalIncome() {
+    this.totalIncome = this.transactionsOfAccount
+      .filter((txn: any) => txn.amount > 0)
+      .reduce((acc: number, txn: any) => acc + txn.amount, 0);
+  }
+
+  calculateTotalExpenses() {
+    this.totalExpenses = this.transactionsOfAccount
+      .filter((txn: any) => txn.amount < 0) 
+      .reduce((acc: number, txn: any) => acc + Math.abs(txn.amount), 0);
   }
 }
