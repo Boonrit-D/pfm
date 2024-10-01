@@ -10,6 +10,7 @@ const createError = require('http-errors');
 const transactionRoute = require('./routes/transaction.routes');
 const transactionRouteV2 = require('./routes/transactionV2.routes');
 const accountRoute = require('./routes/account.routes');
+const authRoute = require('./routes/auth.routes');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(mongoDb.db, {
@@ -40,6 +41,9 @@ app.use('/transactionVersion2', transactionRouteV2);
 
 // API root of Account
 app.use('/account', accountRoute);
+
+// API root of User
+app.use('/auth', authRoute);
 
 // PORT
 const port = process.env.PORT || 8000;
