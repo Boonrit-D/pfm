@@ -1,5 +1,7 @@
 {
-    "cSpell.words": [
-        "devkit"
-    ]
+  "cSpell.words": ["devkit"],
+  "cSpell.ignoreRegExpList": ["/[\\u0E00-\\u0E7F]/g"],
+  "cSpell.fixSpellingWithRenameProvider": false,
+  "cSpell.customDictionaries": {},
+  "cSpell.caseSensitive": true
 }
