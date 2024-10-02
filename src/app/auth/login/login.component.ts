@@ -4,13 +4,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
 })
-export class RegisterComponent {
+export class LoginComponent {
 
-  registerForm: FormGroup;
+  credentialsForm: FormGroup;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -18,17 +18,17 @@ export class RegisterComponent {
     private ngZone: NgZone,
     private authService: AuthService
   ){
-    this.registerForm = this.formBuilder.group({
+    this.credentialsForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
   onSubmit(): any {
-    this.authService.register(this.registerForm.value).subscribe({
+    this.authService.login(this.credentialsForm.value).subscribe({
       next: () => {
-        console.log('User registered');
-        this.ngZone.run(() => this.router.navigateByUrl('/dashboard')); // แก้ไขเป็น /login หลังจากสร้างหน้า login สำเร็จแล้ว
+        console.log('User logged in');
+        this.ngZone.run(() => this.router.navigateByUrl('/dashboard'));
       },
       error: (err) =>{
         console.log(err);

@@ -54,6 +54,7 @@ import { AddAccountTransactionComponent } from './add-account-transaction/add-ac
 import { AccountTransactionComponent } from './account-transaction/account-transaction.component';
 import { EditAccountTransactionComponent } from './edit-account-transaction/edit-account-transaction.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { LoginComponent } from './auth/login/login.component';
 
 // NgModule Decorator
 // โมดูลหลักของแอปพลิเคชันที่กำหนดคอมโพเนนต์, ฟีเจอร์ และบริการที่จำเป็น
@@ -77,6 +78,7 @@ import { RegisterComponent } from './auth/register/register.component';
     AccountTransactionComponent,
     EditAccountTransactionComponent,
     RegisterComponent,
+    LoginComponent,
   ],
 
   imports: [

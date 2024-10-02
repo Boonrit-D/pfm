@@ -1,0 +1,63 @@
+<!-- <p>login works!</p> -->
+<div class="container mx-auto mt-8 p-4">
+    <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="p-4 bg-blue-600 text-white text-center font-bold text-xl">
+        เข้าสู่ระบบ
+      </div>
+      <form class="p-6" [formGroup]="credentialsForm" (ngSubmit)="onSubmit()">
+        <!-- Username -->
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="username"
+          >
+            ชื่อผู้ใช้
+          </label>
+          <input
+            id="username"
+            name="username"
+            placeholder="username"
+            class="block w-full bg-gray-100 border border-gray-300 rounded-md py-2 px-3"
+            formControlName="username"
+          />
+        </div>
+  
+        <!-- Password -->
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="password"
+          >
+            รหัสผ่าน
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="password"
+            class="block w-full bg-gray-100 border border-gray-300 rounded-md py-2 px-3"
+            formControlName="password"
+          />
+        </div>
+  
+        <!-- ปุ่มบันทึก -->
+        <div class="flex mt-6">
+          <button
+            type="submit"
+            class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md m-1"
+          >
+            เข้าสู่ระบบ
+          </button>
+          <button
+            type="button"
+            class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md m-1"
+            routerLinkActive="active"
+            routerLink="/dashboard"
+          >
+            ยกเลิก
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

@@ -33,15 +33,18 @@ export class AuthService {
   // Functions for registration
   // ฟังก์ชันสำหรับการลงทะเบียน
   register(user: User): Observable<any> {
-    const apiUrl = `${this.restApi}/register`;
+    let apiUrl = `${this.restApi}/register`;
     return this.http
       .post(apiUrl, user, { headers: this.httpHeaders, responseType: 'text' })
       .pipe(catchError(this.handleError));
   }
-
+  // Functions for login
   // ฟังก์ชันสำหรับการล็อกอิน
   login(credentials: any): Observable<any> {
-    return this.http.post(`${this.restApi}/login`, credentials);
+    let apiUrl = `${this.restApi}/login`;
+    return this.http
+    .post(apiUrl, credentials, { headers: this.httpHeaders, responseType: 'text' })
+      .pipe(catchError(this.handleError));
   }
 
   // Function to handle errors that occur during API calls
