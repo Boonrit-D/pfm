@@ -2,6 +2,7 @@ const express = require("express");
 const User = require('../model/user');
 const authRouter = express.Router();
 const bcrypt = require("bcrypt");
+const { loginUser } = require('../controllers/authController');
 
 // Get all users
 authRouter.route('/').get( async (req, res, next) => {
@@ -25,21 +26,6 @@ authRouter.post('/register', async (req, res) => {
 });
 
 // ล็อกอิน
-authRouter.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username });
-
-  if (!user) {
-    return res.status(401).send('Invalid username or password');
-  }
-
-  const isValidPassword = await bcrypt.compare(password, user.password);
-  if (!isValidPassword) {
-    return res.status(401).send('Invalid username or password');
-  }
-
-  // สามารถสร้าง token ที่ใช้สำหรับการตรวจสอบในอนาคตได้ที่นี่
-  res.status(200).send('Login successful');
-});
+authRouter.post('/login', loginUser); // เรียกใช้ฟังก์ชัน loginUser
 
 module.exports = authRouter;
