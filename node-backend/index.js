@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoDb = require('./database/db');
 const createError = require('http-errors');
+const authMiddleware = require('./middlewares/jwtMiddleware');
 
 // routes
 const transactionRoute = require('./routes/transaction.routes');
@@ -40,7 +41,8 @@ app.use('/transactionVersion1', transactionRoute);
 app.use('/transactionVersion2', transactionRouteV2);
 
 // API root of Account
-app.use('/account', accountRoute);
+// app.use('/account', accountRoute);
+app.use('/account', authMiddleware, accountRoute);
 
 // API root of User
 app.use('/auth', authRoute);
