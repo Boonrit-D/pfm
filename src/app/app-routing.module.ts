@@ -15,6 +15,7 @@ import { AccountDashboardComponent } from './account-dashboard/account-dashboard
 import { AddAccountTransactionComponent } from './add-account-transaction/add-account-transaction.component';
 import { AccountTransactionComponent } from './account-transaction/account-transaction.component';
 import { EditAccountTransactionComponent } from './edit-account-transaction/edit-account-transaction.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 const routes: Routes = [
 
@@ -66,7 +67,11 @@ const routes: Routes = [
   {
     path: 'account/edit-transaction/:accountId/:transactionId', component: EditAccountTransactionComponent, title: 'edit transaction\'s account' // หน้าแก้ไขรายการธุรกรรมของบัญชี
   },
-  
+
+  // Authentication
+  {
+    path: 'register', component: RegisterComponent, title: 'Register' // Register Page
+  },  
 ];
 
 @NgModule({

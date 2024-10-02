@@ -1,5 +1,5 @@
 /* 
-EN:
+English:
 Main module of the Angular application
 Includes the import of necessary modules for the application to function
 - BrowserModule: for running in the browser
@@ -53,6 +53,7 @@ import { AccountDashboardComponent } from './account-dashboard/account-dashboard
 import { AddAccountTransactionComponent } from './add-account-transaction/add-account-transaction.component';
 import { AccountTransactionComponent } from './account-transaction/account-transaction.component';
 import { EditAccountTransactionComponent } from './edit-account-transaction/edit-account-transaction.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 // NgModule Decorator
 // โมดูลหลักของแอปพลิเคชันที่กำหนดคอมโพเนนต์, ฟีเจอร์ และบริการที่จำเป็น
@@ -75,6 +76,7 @@ import { EditAccountTransactionComponent } from './edit-account-transaction/edit
     AddAccountTransactionComponent,
     AccountTransactionComponent,
     EditAccountTransactionComponent,
+    RegisterComponent,
   ],
 
   imports: [
