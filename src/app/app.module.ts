@@ -32,8 +32,9 @@ import { HtmlPipe } from './pipes/html.pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
-import { BaseChartDirective } from 'ng2-charts';
+import { provideHttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 // Component Imports
 // นำเข้าคอมโพเนนต์ที่ใช้ในแอปพลิเคชัน
@@ -93,6 +94,12 @@ import { LoginComponent } from './auth/login/login.component';
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(),
+    provideCharts(withDefaultRegisterables()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
   ],
 
   bootstrap: [AppComponent],

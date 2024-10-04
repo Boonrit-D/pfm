@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 export interface User {
   username: string;
@@ -29,6 +29,18 @@ export class AuthService {
   */
   httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
 
+  // ฟังก์ชันสำหรับสร้าง HTTP headers
+  public createHttpHeaders(includeToken: boolean = false): HttpHeaders {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    if (includeToken) {
+      const token = this.getToken();
+      if (token) {
+        headers = headers.set('Authorization', `Bearer ${token}`);
+      }
+    }
+    return headers;
+  }
+
   constructor(private http: HttpClient) {}
   // Functions for registration
   // ฟังก์ชันสำหรับการลงทะเบียน
@@ -43,8 +55,42 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     let apiUrl = `${this.restApi}/login`;
     return this.http
-    .post(apiUrl, credentials, { headers: this.httpHeaders, responseType: 'text' })
-      .pipe(catchError(this.handleError));
+      .post(apiUrl, credentials, {
+        headers: this.createHttpHeaders(),
+        responseType: 'json', // เปลี่ยนเป็น 'json' ถ้า response มีข้อมูล JSON
+      })
+      .pipe(
+        catchError(this.handleError),
+        tap((response: any) => {
+          const token = response.token || response.data.token; // ดึง token ออกมาให้ถูกต้อง
+          if (token) {
+            this.storeToken(token); // จัดเก็บ token ใน Local Storage
+            console.log(token);
+          } else {
+            console.error('Token is undefined');
+          }
+        })
+      );
+  }
+
+  // ฟังก์ชันสำหรับจัดเก็บ JWT ใน Local Storage
+  private storeToken(token: string) {
+    localStorage.setItem('jwt', token);
+  }
+
+  // ฟังก์ชันเพื่อตรวจสอบว่าผู้ใช้ล็อกอินอยู่หรือไม่
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('jwt'); // ตรวจสอบว่ามี JWT ใน Local Storage หรือไม่
+  }
+
+  // ฟังก์ชันสำหรับออกจากระบบ
+  logout(): void {
+    localStorage.removeItem('jwt'); // ลบ JWT ออกจาก Local Storage
+  }
+
+  // ฟังก์ชันสำหรับดึง JWT จาก Local Storage
+  getToken(): string | null {
+    return localStorage.getItem('jwt'); // คืนค่า JWT ที่จัดเก็บใน Local Storage
   }
 
   // Function to handle errors that occur during API calls

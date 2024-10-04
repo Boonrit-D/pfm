@@ -6,6 +6,7 @@ import {
   HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
+import { AuthService } from './auth.service';
 
 // Transaction version 1 model
 export class Transaction {
@@ -54,8 +55,14 @@ export class CrudService {
 
   // Http header
   httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
+  private headers: HttpHeaders; // ประกาศตัวแปร headers
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {
+    this.headers = this.authService.createHttpHeaders(true);
+  }
 
   // Add
   AddTransaction(data: Transaction): Observable<any> {
@@ -163,49 +170,50 @@ export class CrudService {
       .pipe(catchError(this.handleError));
   }
 
-  // Account
-  //////////////////////////////////////////
+  //*** Create, Read, Update, Delete of Account ***//
+
+  // Create Account
   AddAccount(data: Account): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/add-account`;
     return this.httpClient
-      .post(API_URL, data, { headers: this.httpHeaders })
+      .post(API_URL, data, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Get all transactions
+  // Read All Accounts
   GetAccounts(): Observable<any> {
-    return this.httpClient.get(`${this.REST_API_ACCOUNT}`);
+    return this.httpClient.get(`${this.REST_API_ACCOUNT}`, {
+      headers: this.headers,
+    });
   }
 
-  // Update
+  // Update Account
   updateAccount(id: string, data: Account): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/update-account/${id}`;
     console.log(`API URL: ${API_URL}`);
 
-    return this.httpClient
-      .put(API_URL, data, { headers: this.httpHeaders })
-      .pipe(
-        tap((response) => {
-          console.log('Response from update account:', response);
-        }),
-        catchError(this.handleError)
-      );
+    return this.httpClient.put(API_URL, data, { headers: this.headers }).pipe(
+      tap((response) => {
+        console.log('Response from update account:', response);
+      }),
+      catchError(this.handleError)
+    );
   }
 
-  // Get single account
+  // Read One Account
   GetAccount(id: string): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/read-account/${id}`;
-    return this.httpClient.get(API_URL, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.get(API_URL, { headers: this.headers }).pipe(
       map((res: any) => res || {}),
       catchError(this.handleError)
     );
   }
 
-  // Delete
+  // Delete Account
   deleteAccount(id: string): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/delete-account/${id}`;
     return this.httpClient
-      .delete(API_URL, { headers: this.httpHeaders })
+      .delete(API_URL, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
 
@@ -217,14 +225,14 @@ export class CrudService {
   ): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/add-transaction/${id}`;
     return this.httpClient
-      .post(API_URL, data, { headers: this.httpHeaders })
+      .post(API_URL, data, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
 
   // Get all transactions of account
   GetTransactionOfAccount(id: string): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/read-account-transactions/${id}`;
-    return this.httpClient.get(API_URL, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.get(API_URL, { headers: this.headers }).pipe(
       map((res: any) => res || {}),
       catchError(this.handleError)
     );
@@ -236,7 +244,7 @@ export class CrudService {
     transactionId: string
   ): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/read-account-transaction/${accountId}/${transactionId}`;
-    return this.httpClient.get(API_URL, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.get(API_URL, { headers: this.headers }).pipe(
       map((res: any) => res || {}),
       catchError(this.handleError)
     );
@@ -251,14 +259,12 @@ export class CrudService {
     let API_URL = `${this.REST_API_ACCOUNT}/update-account-transaction/${accountId}/${transactionId}`;
 
     // ทำการ PUT โดยส่งข้อมูลของ transaction และ headers ไปยัง API
-    return this.httpClient
-      .put(API_URL, data, { headers: this.httpHeaders })
-      .pipe(
-        tap((response) => {
-          console.log('Response from update transaction of account:', response);
-        }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
-        catchError(this.handleError) // จัดการข้อผิดพลาด
-      );
+    return this.httpClient.put(API_URL, data, { headers: this.headers }).pipe(
+      tap((response) => {
+        console.log('Response from update transaction of account:', response);
+      }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
+      catchError(this.handleError) // จัดการข้อผิดพลาด
+    );
   }
 
   deleteATransactionOfAccount(
@@ -268,7 +274,7 @@ export class CrudService {
     let API_URL = `${this.REST_API_ACCOUNT}/delete-account-transaction/${accountId}/${transactionId}`;
 
     // ทำการ DELETE
-    return this.httpClient.delete(API_URL, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.delete(API_URL, { headers: this.headers }).pipe(
       tap((response) => {
         console.log('Deleted transaction of account:', response);
       }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
@@ -280,7 +286,8 @@ export class CrudService {
   updateBalance(id: string, balance: number): Observable<any> {
     return this.httpClient.put<any>(
       `${this.REST_API_ACCOUNT}/update-balance/${id}`,
-      { balance }
+      { balance },
+      { headers: this.headers }
     );
   }
 }
