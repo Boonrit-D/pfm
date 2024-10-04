@@ -2,7 +2,8 @@ h2,
 .form-group,
 button,
 h3,
-tr {
+tr,
+canvas {
   font-family: Mitr;
 }
 
