@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import {
@@ -7,6 +7,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { isPlatformBrowser } from '@angular/common';
 
 // Transaction version 1 model
 export class Transaction {
@@ -55,14 +56,12 @@ export class CrudService {
 
   // Http header
   httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
-  private headers: HttpHeaders; // ประกาศตัวแปร headers
 
   constructor(
     private httpClient: HttpClient,
-    private authService: AuthService
-  ) {
-    this.headers = this.authService.createHttpHeaders(true);
-  }
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   // Add
   AddTransaction(data: Transaction): Observable<any> {
@@ -112,16 +111,24 @@ export class CrudService {
   // Handle error
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Handle client error
-      errorMessage = error.error.message;
-    } else {
-      // Handle server error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  
+    if (isPlatformBrowser(this.platformId)) {
+      if (error.error instanceof ErrorEvent) {
+        // Handle client error
+        errorMessage = error.error.message;
+      } else {
+        // Handle server error
+        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      }
+      alert(errorMessage); // แสดง alert
+      return throwError(() => new Error(errorMessage));
     }
-    console.log(errorMessage);
-    return errorMessage;
+  
+    // Handle server-side error
+    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    return throwError(() => new Error('An unknown error occurred.'));
   }
+  
 
   // V2
   //////////////////////////////////////////
@@ -176,15 +183,40 @@ export class CrudService {
   AddAccount(data: Account): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/add-account`;
     return this.httpClient
-      .post(API_URL, data, { headers: this.headers })
+      .post(API_URL, data)
       .pipe(catchError(this.handleError));
   }
 
   // Read All Accounts
+  // GetAccounts(): Observable<any> {
+  //   return this.httpClient.get(`${this.REST_API_ACCOUNT}`, {
+  //     headers: this.headers,
+  //   });
+  // }
+
   GetAccounts(): Observable<any> {
-    return this.httpClient.get(`${this.REST_API_ACCOUNT}`, {
-      headers: this.headers,
+    let token: string | null = null;
+
+    // ตรวจสอบว่าอยู่ใน browser หรือไม่
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('jwt'); // ดึง token จาก Local Storage
+    }
+
+    // ตรวจสอบว่า token มีค่าหรือไม่ ถ้าไม่มีให้แสดง error
+    if (!token) {
+      console.error('No token provided');
+      // return throwError(() => new Error('No token provided'));
+    }
+
+    // สร้าง headers โดยแนบ token
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     });
+    // ส่ง request โดยแนบ headers
+    return this.httpClient
+      .get(this.REST_API_ACCOUNT)
+      .pipe(catchError(this.handleError));
   }
 
   // Update Account
@@ -192,7 +224,7 @@ export class CrudService {
     let API_URL = `${this.REST_API_ACCOUNT}/update-account/${id}`;
     console.log(`API URL: ${API_URL}`);
 
-    return this.httpClient.put(API_URL, data, { headers: this.headers }).pipe(
+    return this.httpClient.put(API_URL, data).pipe(
       tap((response) => {
         console.log('Response from update account:', response);
       }),
@@ -203,7 +235,7 @@ export class CrudService {
   // Read One Account
   GetAccount(id: string): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/read-account/${id}`;
-    return this.httpClient.get(API_URL, { headers: this.headers }).pipe(
+    return this.httpClient.get(API_URL).pipe(
       map((res: any) => res || {}),
       catchError(this.handleError)
     );
@@ -213,7 +245,7 @@ export class CrudService {
   deleteAccount(id: string): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/delete-account/${id}`;
     return this.httpClient
-      .delete(API_URL, { headers: this.headers })
+      .delete(API_URL)
       .pipe(catchError(this.handleError));
   }
 
@@ -225,14 +257,14 @@ export class CrudService {
   ): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/add-transaction/${id}`;
     return this.httpClient
-      .post(API_URL, data, { headers: this.headers })
+      .post(API_URL, data)
       .pipe(catchError(this.handleError));
   }
 
   // Get all transactions of account
   GetTransactionOfAccount(id: string): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/read-account-transactions/${id}`;
-    return this.httpClient.get(API_URL, { headers: this.headers }).pipe(
+    return this.httpClient.get(API_URL).pipe(
       map((res: any) => res || {}),
       catchError(this.handleError)
     );
@@ -244,7 +276,7 @@ export class CrudService {
     transactionId: string
   ): Observable<any> {
     let API_URL = `${this.REST_API_ACCOUNT}/read-account-transaction/${accountId}/${transactionId}`;
-    return this.httpClient.get(API_URL, { headers: this.headers }).pipe(
+    return this.httpClient.get(API_URL).pipe(
       map((res: any) => res || {}),
       catchError(this.handleError)
     );
@@ -259,7 +291,7 @@ export class CrudService {
     let API_URL = `${this.REST_API_ACCOUNT}/update-account-transaction/${accountId}/${transactionId}`;
 
     // ทำการ PUT โดยส่งข้อมูลของ transaction และ headers ไปยัง API
-    return this.httpClient.put(API_URL, data, { headers: this.headers }).pipe(
+    return this.httpClient.put(API_URL, data).pipe(
       tap((response) => {
         console.log('Response from update transaction of account:', response);
       }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
@@ -274,7 +306,7 @@ export class CrudService {
     let API_URL = `${this.REST_API_ACCOUNT}/delete-account-transaction/${accountId}/${transactionId}`;
 
     // ทำการ DELETE
-    return this.httpClient.delete(API_URL, { headers: this.headers }).pipe(
+    return this.httpClient.delete(API_URL).pipe(
       tap((response) => {
         console.log('Deleted transaction of account:', response);
       }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
@@ -287,7 +319,7 @@ export class CrudService {
     return this.httpClient.put<any>(
       `${this.REST_API_ACCOUNT}/update-balance/${id}`,
       { balance },
-      { headers: this.headers }
+      
     );
   }
 }

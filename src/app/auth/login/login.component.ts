@@ -28,7 +28,7 @@ export class LoginComponent {
     this.authService.login(this.credentialsForm.value).subscribe({
       next: () => {
         console.log('User logged in');
-        this.ngZone.run(() => this.router.navigateByUrl('/dashboard'));
+        this.ngZone.run(() => this.router.navigateByUrl('/'));
       },
       error: (err) =>{
         console.log(err);

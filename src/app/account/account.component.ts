@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CrudService } from '../service/crud.service';
+import { isPlatformBrowser } from '@angular/common';
 
 interface Account {
   id: string;
@@ -14,22 +15,16 @@ interface Account {
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',
 })
-export class AccountComponent {
+export class AccountComponent implements OnInit {
   accounts: any = [];
   dropdownOpen: boolean[] = [];
 
-  constructor(private CrudService: CrudService) {}
+  constructor(
+    private CrudService: CrudService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
-
-    // ตรวจสอบว่าเคยรีเฟรชหรือยัง
-    const hasRefreshed = localStorage.getItem('hasRefreshed');
-
-    // ถ้ายังไม่เคยรีเฟรช ให้ทำการรีเฟรชและบันทึกสถานะ
-    if (!hasRefreshed) {
-      localStorage.setItem('hasRefreshed', 'true'); // บันทึกสถานะว่าเคยรีเฟรชแล้ว
-      window.location.reload(); // ทำการรีเฟรช
-    }
 
     // Get all accounts
     this.CrudService.GetAccounts().subscribe((res) => {

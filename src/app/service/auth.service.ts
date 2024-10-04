@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import {
   HttpClient,
   HttpHeaders,
@@ -6,6 +6,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface User {
   username: string;
@@ -41,7 +42,7 @@ export class AuthService {
     return headers;
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {}
   // Functions for registration
   // ฟังก์ชันสำหรับการลงทะเบียน
   register(user: User): Observable<any> {
@@ -81,7 +82,10 @@ export class AuthService {
 
   // ฟังก์ชันเพื่อตรวจสอบว่าผู้ใช้ล็อกอินอยู่หรือไม่
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('jwt'); // ตรวจสอบว่ามี JWT ใน Local Storage หรือไม่
+    if (isPlatformBrowser(this.platformId)) {
+      return !!localStorage.getItem('jwt'); // ตรวจสอบว่ามี JWT ใน Local Storage หรือไม่
+    }
+    return false; // หรือค่าเริ่มต้นอื่น ๆ ตามต้องการ
   }
 
   // ฟังก์ชันสำหรับออกจากระบบ
@@ -93,7 +97,10 @@ export class AuthService {
 
   // ฟังก์ชันสำหรับดึง JWT จาก Local Storage
   getToken(): string | null {
-    return localStorage.getItem('jwt'); // คืนค่า JWT ที่จัดเก็บใน Local Storage
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('jwt'); // คืนค่า JWT ที่จัดเก็บใน Local Storage
+    }
+    return null;
   }
 
   // ฟังก์ชันดึงชื่อผู้ใช้
