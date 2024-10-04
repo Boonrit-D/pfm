@@ -68,6 +68,7 @@ export class AccountDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     // Register Chart.js controllers, elements, and plugins
     Chart.register(...registerables);
 

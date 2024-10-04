@@ -39,26 +39,36 @@
       >
     </li>
     <li>
-      <a class="nav-link" routerLinkActive="active" routerLink="/account"
+      <a
+        class="nav-link"
+        *ngIf="authService.isLoggedIn()"
+        routerLinkActive="active"
+        routerLink="/account"
         >บัญชี</a
       >
+      <ng-template #loggedOut>
+        <div routerLinkActive="active" routerLink="/login" class="flipper">
+          <div class="logInA"></div>
+          <div class="logInB"></div>
+        </div>
+      </ng-template>
     </li>
-    <!-- <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transaction">เพิ่มรายการธุรกรรม (เวอร์ชั่น 1)</a></li> -->
-    <!-- <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transactionV2">เพิ่มรายการธุรกรรม (เวอร์ชั่น 2)</a></li> -->
   </ul>
   <ul class="button">
     <figure></figure>
-    <li>
-      <div class="flipper">
-        <div class="th"></div>
-        <div class="en"></div>
+    <!-- เช็คการล็อกอินและแสดงชื่อผู้ใช้ -->
+    <li class="flex" *ngIf="authService.isLoggedIn(); else loggedOut">
+      <span class="">{{ authService.getUsername() }}</span>
+      <div class="flipper ml-3" (click)="logout()">
+        <div class="logOutA"></div>
+        <div class="logOutB"></div>
       </div>
     </li>
-    <li>
+    <ng-template #loggedOut>
       <div routerLinkActive="active" routerLink="/login" class="flipper">
         <div class="logInA"></div>
         <div class="logInB"></div>
       </div>
-    </li>
+    </ng-template>
   </ul>
 </nav>

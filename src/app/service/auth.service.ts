@@ -65,6 +65,7 @@ export class AuthService {
           const token = response.token || response.data.token; // ดึง token ออกมาให้ถูกต้อง
           if (token) {
             this.storeToken(token); // จัดเก็บ token ใน Local Storage
+            this.storeUser(credentials.username); // จัดเก็บชื่อผู้ใช้ใน Local Storage
             console.log(token);
           } else {
             console.error('Token is undefined');
@@ -86,11 +87,22 @@ export class AuthService {
   // ฟังก์ชันสำหรับออกจากระบบ
   logout(): void {
     localStorage.removeItem('jwt'); // ลบ JWT ออกจาก Local Storage
+    localStorage.removeItem('username'); // ลบ JWT ออกจาก Local Storage
+    localStorage.removeItem('hasRefreshed');
   }
 
   // ฟังก์ชันสำหรับดึง JWT จาก Local Storage
   getToken(): string | null {
     return localStorage.getItem('jwt'); // คืนค่า JWT ที่จัดเก็บใน Local Storage
+  }
+
+  // ฟังก์ชันดึงชื่อผู้ใช้
+  getUsername(): string | null {
+    return localStorage.getItem('username'); // คืนค่าชื่อผู้ใช้
+  }
+
+  private storeUser(user: string) {
+    localStorage.setItem('username', user); // จัดเก็บชื่อผู้ใช้
   }
 
   // Function to handle errors that occur during API calls

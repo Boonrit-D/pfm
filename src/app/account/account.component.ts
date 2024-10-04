@@ -12,18 +12,25 @@ interface Account {
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
-  styleUrl: './account.component.css'
+  styleUrl: './account.component.css',
 })
-
-
 export class AccountComponent {
-
   accounts: any = [];
   dropdownOpen: boolean[] = [];
 
   constructor(private CrudService: CrudService) {}
-  
+
   ngOnInit(): void {
+
+    // ตรวจสอบว่าเคยรีเฟรชหรือยัง
+    const hasRefreshed = localStorage.getItem('hasRefreshed');
+
+    // ถ้ายังไม่เคยรีเฟรช ให้ทำการรีเฟรชและบันทึกสถานะ
+    if (!hasRefreshed) {
+      localStorage.setItem('hasRefreshed', 'true'); // บันทึกสถานะว่าเคยรีเฟรชแล้ว
+      window.location.reload(); // ทำการรีเฟรช
+    }
+
     // Get all accounts
     this.CrudService.GetAccounts().subscribe((res) => {
       console.log(res);
@@ -43,5 +50,4 @@ export class AccountComponent {
       });
     }
   }
-  
 }
