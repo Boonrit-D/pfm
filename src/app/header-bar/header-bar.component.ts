@@ -10,6 +10,7 @@ import { AuthService } from '../service/auth.service';
 export class HeaderBarComponent {
   menuVisible = false;
   menuBarVisible = false;
+  public isCollapsed = false;
 
   // ประกาศตัวแปร authService
   constructor(public authService: AuthService, private router: Router) {}
@@ -39,4 +40,11 @@ export class HeaderBarComponent {
   toggleMenuBar() {
     this.menuBarVisible = !this.menuBarVisible;  // เปลี่ยนค่าเมื่อคลิก
   }
+
+  isVisible = false; // สถานะการแสดง Popover
+
+  togglePopover() {
+    this.isVisible = !this.isVisible; // สลับสถานะเมื่อคลิกปุ่ม
+  }
+  
 }
