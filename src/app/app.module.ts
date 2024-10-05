@@ -32,7 +32,7 @@ import { HtmlPipe } from './pipes/html.pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClient, HTTP_INTERCEPTORS, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, HTTP_INTERCEPTORS, withInterceptorsFromDi, withFetch } from '@angular/common/http';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AuthInterceptor } from '../app/service/auth.interceptor';
@@ -95,7 +95,7 @@ import { LoginComponent } from './auth/login/login.component';
   providers: [
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptorsFromDi(), withFetch()),
     provideCharts(withDefaultRegisterables()),
     {
       provide: HTTP_INTERCEPTORS,
