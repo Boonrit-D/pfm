@@ -1,74 +1,82 @@
-<nav>
-  <!-- Logo's Web application -->
-  <div class="logo" routerLinkActive="active" routerLink="">
-    <img src="assets/images/logoV5.png" alt="Logo" />
-  </div>
+<div class="nav-wrapper px-5 shadow-md bg-opacity-60 ">
+  <nav class="max-w-screen-xl mx-auto flex justify-between items-center p-2 sticky">
+    <!-- Logo's Web application -->
+    <div class="logo" routerLinkActive="active" routerLink="">
+      <img src="assets/images/dootang_logo.png" alt="Logo" />
+    </div>
 
-  <!-- Hamburger button -->
-  <button class="hamburger" [class.open]="menuVisible" (click)="toggleMenu()">
-    <span *ngIf="!menuVisible"></span>
-    <span *ngIf="!menuVisible"></span>
-    <span *ngIf="!menuVisible"></span>
-    <span *ngIf="menuVisible"></span>
-    <span *ngIf="menuVisible"></span>
-    <span *ngIf="menuVisible"></span>
-  </button>
+    <!-- Hamburger button -->
+    <button class="hamburger" [class.open]="menuVisible" (click)="toggleMenu()">
+      <span *ngIf="!menuVisible"></span>
+      <span *ngIf="!menuVisible"></span>
+      <span *ngIf="!menuVisible"></span>
+      <span *ngIf="menuVisible"></span>
+      <span *ngIf="menuVisible"></span>
+      <span *ngIf="menuVisible"></span>
+    </button>
 
-  <!-- Hamburger menu -->
-  <ul class="menu-hamburger" [class.open]="menuVisible">
-    <li routerLinkActive="active" routerLink="/" (click)="closeMenu()">
-      <a class="nav-link">หน้าหลัก</a>
-    </li>
-    <li routerLinkActive="active" routerLink="/dashboard" (click)="closeMenu()">
-      <a class="nav-link">แดชบอร์ด</a>
-    </li>
-    <li routerLinkActive="active" routerLink="/account" (click)="closeMenu()">
-      <a class="nav-link">บัญชี</a>
-    </li>
-    <!-- <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transaction" (click)="closeMenu()">เพิ่มรายการธุรกรรม (เวอร์ชั่น 1)</a></li> -->
-    <!-- <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transactionV2" (click)="closeMenu()">เพิ่มรายการธุรกรรม (เวอร์ชั่น 2)</a></li> -->
-  </ul>
-
-  <ul class="menu">
-    <li>
-      <a class="nav-link" routerLinkActive="active" routerLink="/">หน้าหลัก</a>
-    </li>
-    <li>
-      <a class="nav-link" routerLinkActive="active" routerLink="/dashboard"
-        >แดชบอร์ด</a
-      >
-    </li>
-    <li>
-      <a
-        class="nav-link"
-        *ngIf="authService.isLoggedIn()"
+    <!-- Hamburger menu -->
+    <ul class="menu-hamburger" [class.open]="menuVisible">
+      <li routerLinkActive="active" routerLink="/" (click)="closeMenu()">
+        <a class="nav-link">หน้าหลัก</a>
+      </li>
+      <li
         routerLinkActive="active"
-        routerLink="/account"
-        >บัญชี</a
+        routerLink="/dashboard"
+        (click)="closeMenu()"
       >
+        <a class="nav-link">แดชบอร์ด</a>
+      </li>
+      <li routerLinkActive="active" routerLink="/account" (click)="closeMenu()">
+        <a class="nav-link">บัญชี</a>
+      </li>
+      <!-- <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transaction" (click)="closeMenu()">เพิ่มรายการธุรกรรม (เวอร์ชั่น 1)</a></li> -->
+      <!-- <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transactionV2" (click)="closeMenu()">เพิ่มรายการธุรกรรม (เวอร์ชั่น 2)</a></li> -->
+    </ul>
+
+    <ul class="menu">
+      <li>
+        <a class="nav-link" routerLinkActive="active" routerLink="/"
+          >หน้าหลัก</a
+        >
+      </li>
+      <li>
+        <a class="nav-link" routerLinkActive="active" routerLink="/dashboard"
+          >แดชบอร์ด</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          *ngIf="authService.isLoggedIn()"
+          routerLinkActive="active"
+          routerLink="/account"
+          >บัญชี</a
+        >
+        <ng-template #loggedOut>
+          <div routerLinkActive="active" routerLink="/login" class="flipper">
+            <div class="logInA"></div>
+            <div class="logInB"></div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <ul class="button">
+      <figure></figure>
+      <!-- เช็คการล็อกอินและแสดงชื่อผู้ใช้ -->
+      <li class="flex" *ngIf="authService.isLoggedIn(); else loggedOut">
+        <span class="">{{ authService.getUsername() }}</span>
+        <div class="flipper ml-3" (click)="logout()">
+          <div class="logOutA"></div>
+          <div class="logOutB"></div>
+        </div>
+      </li>
       <ng-template #loggedOut>
         <div routerLinkActive="active" routerLink="/login" class="flipper">
           <div class="logInA"></div>
           <div class="logInB"></div>
         </div>
       </ng-template>
-    </li>
-  </ul>
-  <ul class="button">
-    <figure></figure>
-    <!-- เช็คการล็อกอินและแสดงชื่อผู้ใช้ -->
-    <li class="flex" *ngIf="authService.isLoggedIn(); else loggedOut">
-      <span class="">{{ authService.getUsername() }}</span>
-      <div class="flipper ml-3" (click)="logout()">
-        <div class="logOutA"></div>
-        <div class="logOutB"></div>
-      </div>
-    </li>
-    <ng-template #loggedOut>
-      <div routerLinkActive="active" routerLink="/login" class="flipper">
-        <div class="logInA"></div>
-        <div class="logInB"></div>
-      </div>
-    </ng-template>
-  </ul>
-</nav>
+    </ul>
+  </nav>
+</div>
