@@ -1,8 +1,71 @@
-<div class="nav-wrapper px-5 shadow-md bg-opacity-60 ">
-  <nav class="max-w-screen-xl mx-auto flex justify-between items-center p-2 sticky">
-    <!-- Logo's Web application -->
-    <div class="logo" routerLinkActive="active" routerLink="">
-      <img src="assets/images/dootang_logo.png" alt="Logo" />
+<div class="nav-wrapper px-5 shadow-md bg-opacity-60">
+  <nav
+    class="max-w-screen-xl mx-auto flex justify-between items-center p-2 sticky"
+  >
+    <div class="flex">
+      <!-- Logo's Website -->
+      <div class="logo" routerLinkActive="active" routerLink="">
+        <img src="assets/images/dootang_logo.png" alt="Logo" />
+      </div>
+
+      <div class="block my-auto"></div>
+      <!-- Menu Bar -->
+      <ul class="menu">
+        <li>
+          <a class="nav-link" routerLinkActive="active" routerLink="/"
+            >หน้าหลัก</a
+          >
+        </li>
+        <ul class="block rounded border-b" *ngIf="!authService.isLoggedIn()">
+          <span
+            class="block text-red-500 text-center bg-red-200 rounded cursor-pointer p-1 hover:text-white hover:bg-red-600 mt-1"
+            (click)="toggleMenuBar()"
+            >เมนูสำหรับทดลองใช้งาน</span
+          >
+          <ul class="flex" *ngIf="menuBarVisible">
+            <li>
+              <a
+                class="nav-link"
+                routerLinkActive="active"
+                routerLink="/dashboard"
+                >แดชบอร์ด</a
+              >
+            </li>
+            <li>
+              <a
+                class="nav-link"
+                routerLinkActive="active"
+                routerLink="/add-transaction"
+                >บัญชี</a
+              >
+            </li>
+            <li>
+              <a
+                class="nav-link"
+                routerLinkActive="active"
+                routerLink="/add-transactionV2"
+                >รายการธุรกรรม</a
+              >
+            </li>
+          </ul>
+        </ul>
+
+        <li>
+          <a
+            class="nav-link"
+            *ngIf="authService.isLoggedIn()"
+            routerLinkActive="active"
+            routerLink="/account"
+            >บัญชี</a
+          >
+          <ng-template #loggedOut>
+            <div routerLinkActive="active" routerLink="/login" class="flipper">
+              <div class="logInA"></div>
+              <div class="logInB"></div>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
     </div>
 
     <!-- Hamburger button -->
@@ -34,33 +97,6 @@
       <!-- <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transactionV2" (click)="closeMenu()">เพิ่มรายการธุรกรรม (เวอร์ชั่น 2)</a></li> -->
     </ul>
 
-    <ul class="menu">
-      <li>
-        <a class="nav-link" routerLinkActive="active" routerLink="/"
-          >หน้าหลัก</a
-        >
-      </li>
-      <li>
-        <a class="nav-link" routerLinkActive="active" routerLink="/dashboard"
-          >แดชบอร์ด</a
-        >
-      </li>
-      <li>
-        <a
-          class="nav-link"
-          *ngIf="authService.isLoggedIn()"
-          routerLinkActive="active"
-          routerLink="/account"
-          >บัญชี</a
-        >
-        <ng-template #loggedOut>
-          <div routerLinkActive="active" routerLink="/login" class="flipper">
-            <div class="logInA"></div>
-            <div class="logInB"></div>
-          </div>
-        </ng-template>
-      </li>
-    </ul>
     <ul class="button">
       <figure></figure>
       <!-- เช็คการล็อกอินและแสดงชื่อผู้ใช้ -->

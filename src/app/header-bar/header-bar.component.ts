@@ -9,6 +9,7 @@ import { AuthService } from '../service/auth.service';
 })
 export class HeaderBarComponent {
   menuVisible = false;
+  menuBarVisible = false;
 
   // ประกาศตัวแปร authService
   constructor(public authService: AuthService, private router: Router) {}
@@ -33,5 +34,9 @@ export class HeaderBarComponent {
   logout() {
     this.authService.logout(); // เรียกใช้ฟังก์ชัน logout จาก AuthService
     this.router.navigate(['/login']); // นำทางไปยังหน้า login
+  }
+
+  toggleMenuBar() {
+    this.menuBarVisible = !this.menuBarVisible;  // เปลี่ยนค่าเมื่อคลิก
   }
 }
