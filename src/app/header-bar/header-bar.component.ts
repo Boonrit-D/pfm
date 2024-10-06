@@ -8,17 +8,29 @@ import { AuthService } from '../service/auth.service';
   styleUrls: ['./header-bar.component.css'],
 })
 export class HeaderBarComponent {
-
   // ใช้เพื่อควบคุมการแสดงผล
   menuVisible = false;
   menuBarVisible = false;
   isDropdownOpen = false;
   showPopover = false;
   showPinLogin = false;
-  
+
   pinCode: string = ''; // เก็บรหัส PIN ที่ผู้ใช้ป้อน
   pinDisplay: string[] = ['', '', '', '']; // แสดง PIN ที่กรอก
-  numbers: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#']; // ตัวเลขบนแป้นกด
+  numbers: string[] = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '*',
+    '0',
+    '#',
+  ]; // ตัวเลขบนแป้นกด
 
   // ประกาศตัวแปร authService
   constructor(public authService: AuthService, private router: Router) {}

@@ -101,9 +101,19 @@
         class="fixed inset-0 z-20 flex items-center justify-center"
       >
         <div
-          class="bg-white p-6 rounded-lg shadow-lg w-80 text-center border border-gray-200"
+          class="relative your-popover-class bg-white p-6 rounded-lg shadow-lg w-96 text-center border border-gray-200"
           (click)="$event.stopPropagation()"
         >
+          <!-- Close button (กากบาท) -->
+          <button
+            type="button"
+            class="absolute text-4xl top-1 right-5 text-red-500 hover:text-red-700 focus:outline-none"
+            (click)="closePinLogin()"
+          >
+            &times;
+          </button>
+
+          <!-- Header -->
           <span class="text-3xl mb-4">กรุณาใส่รหัสผ่าน</span>
 
           <!-- Display entered PIN -->
@@ -137,7 +147,7 @@
             class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
             (click)="loginWithPin()"
           >
-            เข้าสู่ระบบ
+            ยืนยัน
           </button>
           <button
             class="mt-4 text-red-500 hover:text-red-700 px-4 py-2"
