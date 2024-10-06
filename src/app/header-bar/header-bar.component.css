@@ -150,7 +150,7 @@ nav {
 }
 
 /*  */
-@media (max-width: 905px) {
+@media (max-width: 1024px) {
   .menu-hamburger {
     display: flex;
     flex-direction: column;

@@ -66,17 +66,92 @@
       </ul>
     </div>
 
-    <!-- Hamburger button -->
-    <!-- <button class="hamburger" [class.open]="menuVisible" (click)="toggleMenu()">
-      <span *ngIf="!menuVisible"></span>
-      <span *ngIf="!menuVisible"></span>
-      <span *ngIf="!menuVisible"></span>
-      <span *ngIf="menuVisible"></span>
-      <span *ngIf="menuVisible"></span>
-      <span *ngIf="menuVisible"></span>
-    </button> -->
+    <!-- Personal Identification Number -->
+    <div class="relative" *ngIf="!authService.isLoggedIn()">
+      <!-- Image for triggering PIN login popover -->
+      <img
+        class="h-10 cursor-pointer"
+        src="https://cdn-icons-png.flaticon.com/512/442/442092.png"
+        alt="PIN login"
+        (click)="showPinLogin = true"
+        (mouseenter)="showPopover = true"
+        (mouseleave)="showPopover = false"
+      />
 
-    <div class="relative inline-block text-left md:hidden">
+      <!-- Popover -->
+      <div
+        *ngIf="showPopover"
+        class="absolute z-10 w-32 p-1 text-sm text-gray-500 bg-white border border-gray-200 rounded-lg shadow-md top-full mt-2 opacity-60"
+      >
+        <span class="border-b font-semibold text-gray-900">PIN Login</span>
+        <br />
+        <span> เข้าสู่ระบบแบบพิน </span>
+      </div>
+
+      <!-- Backdrop -->
+      <div
+        *ngIf="showPinLogin"
+        class="fixed inset-0 bg-black opacity-50 z-10"
+        (click)="closePinLogin()"
+      ></div>
+
+      <!-- Popover for PIN login -->
+      <div
+        *ngIf="showPinLogin"
+        class="fixed inset-0 z-20 flex items-center justify-center"
+      >
+        <div
+          class="bg-white p-6 rounded-lg shadow-lg w-80 text-center border border-gray-200"
+          (click)="$event.stopPropagation()"
+        >
+          <span class="text-3xl mb-4">กรุณาใส่รหัสผ่าน</span>
+
+          <!-- Display entered PIN -->
+          <div class="flex justify-center space-x-2 mb-4">
+            <div
+              *ngFor="let digit of pinDisplay"
+              class="w-6 h-6 border-b-2 border-gray-300 text-center"
+            >
+              {{ digit ? "*" : "" }}
+            </div>
+          </div>
+
+          <!-- Number Pad -->
+          <div class="grid grid-cols-3 gap-2 mb-4">
+            <button
+              *ngFor="let number of numbers"
+              class="bg-gray-200 hover:bg-gray-300 text-xl p-2 rounded"
+              (click)="enterPin(number)"
+            >
+              {{ number }}
+            </button>
+            <button
+              class="bg-red-200 hover:bg-red-300 text-xl p-2 rounded col-span-3"
+              (click)="deletePin()"
+            >
+              Delete
+            </button>
+          </div>
+
+          <button
+            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+            (click)="loginWithPin()"
+          >
+            เข้าสู่ระบบ
+          </button>
+          <button
+            class="mt-4 text-red-500 hover:text-red-700 px-4 py-2"
+            (click)="closePinLogin()"
+          >
+            ยกเลิก
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hamburger -->
+
+    <div class="relative inline-block text-left lg:hidden">
       <button
         class="inline-flex justify-center w-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 rounded-md"
         (click)="isDropdownOpen = !isDropdownOpen"
@@ -87,9 +162,16 @@
         />
       </button>
 
+      <!-- Backdrop -->
       <div
         *ngIf="isDropdownOpen"
-        class="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+        class="fixed inset-0 bg-black opacity-50 z-10"
+        (click)="isDropdownOpen = false"
+      ></div>
+
+      <div
+        *ngIf="isDropdownOpen"
+        class="absolute right-0 z-20 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
       >
         <div
           class="py-1 border-b rounded"
@@ -106,12 +188,15 @@
           >
             หน้าหลัก
           </span>
+
+          <!-- Example Menu -->
           <ul class="block rounded border-b" *ngIf="!authService.isLoggedIn()">
             <span
               class="block text-red-500 text-center bg-red-200 cursor-pointer p-1 hover:text-white hover:bg-red-600 mt-1"
               (click)="toggleMenuBar()"
-              >เมนูสำหรับทดลองใช้งาน</span
             >
+              เมนูสำหรับทดลองใช้งาน
+            </span>
             <ul class="block bg-red-100 text-sm" *ngIf="menuBarVisible">
               <li class="mx-4 hover:text-red-500 cursor-pointer py-2">
                 <span
@@ -191,8 +276,6 @@
       <li routerLinkActive="active" routerLink="/account" (click)="closeMenu()">
         <a class="nav-link">บัญชี</a>
       </li>
-      <!-- <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transaction" (click)="closeMenu()">เพิ่มรายการธุรกรรม (เวอร์ชั่น 1)</a></li> -->
-      <!-- <li><a class="nav-link" routerLinkActive="active" routerLink="/add-transactionV2" (click)="closeMenu()">เพิ่มรายการธุรกรรม (เวอร์ชั่น 2)</a></li> -->
     </ul>
 
     <ul class="button">
