@@ -1,114 +1,123 @@
 <!-- <p>accounts works!</p> -->
-<div class="md:container md:mx-auto mt-4 mx-4">
-  <!-- Heading-->
-  <div
-    class="flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3 border-b"
-  >
-    <h2 class="text-left font-bold">บัญชี</h2>
-  </div>
+<div class="mt-4 max-w-screen-xl mx-auto">
+  <div class="md:container md:mx-auto mt-4 mx-4">
+    <!-- Heading-->
+    <div
+      class="lg:flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3 text-center md:text-left"
+    >
+      <h2 class="font-bold">บัญชี</h2>
+    </div>
 
-  <!-- Account -->
-  <!-- <div *ngIf="accounts && accounts.length > 0; else noAccount"> -->
-  <div>
-    <!-- <div *ngFor="let account of accounts; let i = index" class="even:bg-gray-50 mt-2 rounded-md"> -->
-    <div class="even:bg-gray-50 mt-2 rounded-md">
-      <!-- Setting button -->
-      <!-- <img
-          src="https://cdn-icons-png.flaticon.com/128/3524/3524659.png"
+    <!-- Account -->
+    <!-- <div *ngIf="accounts && accounts.length > 0; else noAccount"> -->
+    <div>
+      <!-- <div *ngFor="let account of accounts; let i = index" class="even:bg-gray-50 mt-2 rounded-md"> -->
+      <div class="even:bg-gray-50 mt-2 rounded-md">
+        <!-- Setting button -->
+        <!-- <img
+                src="https://cdn-icons-png.flaticon.com/128/3524/3524659.png"
+                alt="Settings"
+                class="h-6 w-6 ml-auto relative cursor-pointer"
+                (click)="toggleDropdown(i)" 
+              /> -->
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/7216/7216132.png"
           alt="Settings"
           class="h-6 w-6 ml-auto relative cursor-pointer"
-          (click)="toggleDropdown(i)" 
-        /> -->
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/7216/7216132.png"
-        alt="Settings"
-        class="h-6 w-6 ml-auto relative cursor-pointer"
-        (click)="toggleDropdown()"
-      />
-      <!-- <div *ngIf="dropdownOpen[i]" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-md rounded-md">
+          (click)="toggleDropdown()"
+        />
+        <!-- <div *ngIf="dropdownOpen[i]" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-md rounded-md">
+                <ul>
+                  <li class="p-2 hover:bg-blue-100 cursor-pointer" routerLink="/edit-account/{{account._id}}">แก้ไข</li>
+                  <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(account._id, i)">ลบ</li>
+                </ul>
+              </div> -->
+        <div
+          *ngIf="dropdownOpen"
+          class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-md rounded-md"
+        >
           <ul>
-            <li class="p-2 hover:bg-blue-100 cursor-pointer" routerLink="/edit-account/{{account._id}}">แก้ไข</li>
-            <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(account._id, i)">ลบ</li>
+            <!-- <li class="p-2 hover:bg-blue-100 cursor-pointer" routerLink="/edit-account/{{account._id}}">แก้ไข</li> -->
+            <li class="p-2 hover:bg-blue-100 cursor-pointer">แก้ไข</li>
+            <!-- <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(account._id, i)">ลบ</li> -->
+            <li class="p-2 hover:bg-red-100 cursor-pointer">ลบ</li>
           </ul>
-        </div> -->
-      <div
-        *ngIf="dropdownOpen"
-        class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-md rounded-md"
-      >
-        <ul>
-          <!-- <li class="p-2 hover:bg-blue-100 cursor-pointer" routerLink="/edit-account/{{account._id}}">แก้ไข</li> -->
-          <li class="p-2 hover:bg-blue-100 cursor-pointer">แก้ไข</li>
-          <!-- <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(account._id, i)">ลบ</li> -->
-          <li class="p-2 hover:bg-red-100 cursor-pointer">ลบ</li>
-        </ul>
-      </div>
-
-      <!-- Account information -->
-
-      <div class="flex items-center justify-between p-4 border-b">
-        <div class="flex items-center">
-          <div [ngClass]="currentBackgroundColor" class="rounded-full p-2 mr-4">
-            <!-- <img
-                src="https://cdn-icons-png.flaticon.com/128/6418/6418361.png"
-                alt="Icon"
-                class="h-20 cursor-pointer"
-                routerLinkActive="active"
-                routerLink="/account/dashboard/{{account._id}}"
-              /> -->
-            <img
-              [src]="currentImage"
-              alt="Random Icon"
-              class="h-20 cursor-pointer"
-            />
-          </div>
-          <div>
-            <!-- <h4
-                routerLinkActive="active"
-                routerLink="/account/dashboard/{{account._id}}"
-                class="font-bold cursor-pointer hover:text-red-500"
-              >
-                {{ account.accountName }}
-              </h4> -->
-            <h4 class="font-bold cursor-pointer hover:text-red-500">บัญชี</h4>
-            <!-- <p class="text-sm text-gray-500">{{ account.description }}</p> -->
-            <p class="text-sm text-gray-500">รายละเอียดเพิ่มเติม</p>
-          </div>
         </div>
-        <div class="flex items-center">
-          <!-- <p [ngClass]="{
-              'text-green-500': account.balance > 0, 
-              'text-red-500': account.balance < 0,
-              'text-rig ht font-bold': true
-              }">
-              {{account.balance | number:'1.2-2'}} {{account.currency}}
-            </p> -->
-          <p
-            [ngClass]="{
-              'text-rig ht font-bold': true
-            }"
-          >
-            {{ 1000 | number : "1.2-2" }} BTH
-          </p>
+
+        <!-- Account information -->
+
+        <div class="flex items-center justify-between p-4 border-b">
+          <div class="flex items-center">
+            <div
+              [ngClass]="currentBackgroundColor"
+              class="rounded-full p-2 mr-4"
+            >
+              <!-- <img
+                      src="https://cdn-icons-png.flaticon.com/128/6418/6418361.png"
+                      alt="Icon"
+                      class="h-20 cursor-pointer"
+                      routerLinkActive="active"
+                      routerLink="/account/dashboard/{{account._id}}"
+                    /> -->
+              <img
+                [src]="currentImage"
+                alt="Random Icon"
+                class="h-20 cursor-pointer"
+              />
+            </div>
+            <div>
+              <!-- <h4
+                      routerLinkActive="active"
+                      routerLink="/account/dashboard/{{account._id}}"
+                      class="font-bold cursor-pointer hover:text-red-500"
+                    >
+                      {{ account.accountName }}
+                    </h4> -->
+              <h4 class="font-bold cursor-pointer hover:text-red-500">บัญชี</h4>
+              <!-- <p class="text-sm text-gray-500">{{ account.description }}</p> -->
+              <p class="text-sm text-gray-500">รายละเอียดเพิ่มเติม</p>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <!-- <p [ngClass]="{
+                    'text-green-500': account.balance > 0, 
+                    'text-red-500': account.balance < 0,
+                    'text-rig ht font-bold': true
+                    }">
+                    {{account.balance | number:'1.2-2'}} {{account.currency}}
+                  </p> -->
+            <p
+              [ngClass]="{
+                'text-rig ht font-bold': true
+              }"
+            >
+              {{ 1000 | number : "1.2-2" }} BTH
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- No Account -->
+    <!-- No Account -->
 
-  <ng-template #noAccount>
-    <p class="text-center mt-4 text-gray-500">ไม่มีบัญชีในระบบ</p>
-  </ng-template>
+    <ng-template #noAccount>
+      <p class="text-center mt-4 text-gray-500">ไม่มีบัญชีในระบบ</p>
+    </ng-template>
 
-  <!-- Add account button -->
+    <!-- Add account button -->
 
-  <div class="text-left mt-2">
-    <button
-      class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      routerLinkActive="active"
-      routerLink="/add-account"
-    >
-      เพิ่มบัญชี
-    </button>
+    <div class="text-left mt-2">
+      <button
+        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-md font-semibold text-gray-900 rounded-lg group bg-gradient-to-br from-red-500 to-red-400 group-hover:from-red-500 group-hover:to-red-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+        routerLinkActive="active"
+        routerLink="/demo/create-account"
+      >
+        <span
+          class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        >
+          สร้างบัญชีใหม่
+        </span>
+      </button>
+    </div>
   </div>
 </div>

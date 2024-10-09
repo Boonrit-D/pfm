@@ -20,6 +20,7 @@ import { LoginComponent } from './auth/login/login.component';
 // Demo
 import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
 import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
+import { CreateDemoAccountComponent } from './demo/account/accounts/create-account/create-account.component';
 
 const routes: Routes = [
 
@@ -117,7 +118,9 @@ const routes: Routes = [
   {
     path: 'demo/accounts', component: DemoAccountsComponent, title: 'Account'
   },
-
+  {
+    path: 'demo/create-account', component: CreateDemoAccountComponent, title: 'Create Account'
+  },
 ];
 
 @NgModule({
