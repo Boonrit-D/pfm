@@ -114,19 +114,21 @@ export class HeaderBarComponent implements OnInit {
         // การส่งข้อมูลไปยัง API
         this.authService.loginPin(this.credentialsForm.value).subscribe({
           next: () => {
+            alert('เข้าสู่ระบบสำเร็จ');
             console.log('User logged in');
             this.ngZone.run(() => this.router.navigateByUrl('/'));
           },
           error: (err) => {
+            alert('เข้าสู่ระบบไม่สำเร็จ');
             console.log(err);
           },
         });
         this.closePinLogin(); // ปิด popover หลังจากเข้าสู่ระบบสำเร็จ
       } else {
-        alert('Form is not valid');
+        alert('แบบฟอร์มไม่ถูกต้อง');
       }
     } else {
-      alert('Please enter a 4-digit PIN');
+      alert('กรุณาใส่รหัส PIN 4 หลัก');
     }
   }
 }
