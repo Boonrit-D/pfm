@@ -66,6 +66,13 @@
       </ul>
     </div>
 
+    <div class="flex lg:hidden" *ngIf="authService.isLoggedIn()">
+      <img class="h-5 my-auto" src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="">
+      <span class="my-auto ml-1">
+        {{ authService.getUsername() }}
+      </span>
+    </div>
+
     <!-- Personal Identification Number -->
     <div class="relative" *ngIf="!authService.isLoggedIn()">
       <!-- Image for triggering PIN login popover -->
@@ -293,7 +300,12 @@
       <figure></figure>
       <!-- เช็คการล็อกอินและแสดงชื่อผู้ใช้ -->
       <li class="flex" *ngIf="authService.isLoggedIn()">
-        <span class="my-auto">{{ authService.getUsername() }}</span>
+        <div class="flex" *ngIf="authService.isLoggedIn()">
+          <img class="h-5 my-auto" src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="">
+          <span class="my-auto ml-1">
+            {{ authService.getUsername() }}
+          </span>
+        </div>
         <div class="flipper ml-3" (click)="logout()">
           <div class="logOutA"></div>
           <div class="logOutB"></div>
