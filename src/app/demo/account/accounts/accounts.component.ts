@@ -26,6 +26,8 @@ export class DemoAccountsComponent implements OnInit  {
   // 
   // dropdownOpen: boolean[] = [];
   dropdownOpen = false;
+  //
+  isHovered = false;
 
   //
   constructor() {

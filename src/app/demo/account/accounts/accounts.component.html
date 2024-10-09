@@ -20,33 +20,57 @@
                 class="h-6 w-6 ml-auto relative cursor-pointer"
                 (click)="toggleDropdown(i)" 
               /> -->
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/7216/7216132.png"
-          alt="Settings"
-          class="h-6 w-6 ml-auto relative cursor-pointer"
-          (click)="toggleDropdown()"
-        />
+        <div class="relative">
+          <img
+            *ngIf="!isHovered"
+            src="https://cdn-icons-png.flaticon.com/512/7216/7216132.png"
+            alt="Settings"
+            class="h-6 w-6 right-0 absolute cursor-pointer"
+            (mouseenter)="isHovered = true"
+            (mouseleave)="isHovered = false"
+            (click)="toggleDropdown()"
+          />
+          <img
+            *ngIf="isHovered"
+            src="https://cdn-icons-png.flaticon.com/512/8428/8428385.png"
+            alt="Settings"
+            class="h-6 w-6 right-0 absolute cursor-pointer"
+            (mouseenter)="isHovered = true"
+            (mouseleave)="isHovered = false"
+            (click)="toggleDropdown()"
+          />
+          <div
+            *ngIf="dropdownOpen"
+            class="absolute right-0 top-2 mt-2 w-24 text-center bg-white border-2 border-gray-200 shadow-md rounded-full"
+          >
+            <ul>
+              <!-- <li class="p-2 hover:bg-blue-100 cursor-pointer" routerLink="/edit-account/{{account._id}}">แก้ไข</li> -->
+              <li
+                class="p-2 hover:rounded-t-full hover:bg-red-500 hover:text-white hover:font-bold cursor-pointer border-b"
+              >
+                แก้ไข
+              </li>
+              <!-- <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(account._id, i)">ลบ</li> -->
+              <li
+                class="p-2 hover:rounded-b-full hover:bg-red-500 hover:text-white hover:font-bold cursor-pointer border-t"
+              >
+                ลบ
+              </li>
+            </ul>
+          </div>
+        </div>
         <!-- <div *ngIf="dropdownOpen[i]" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-md rounded-md">
                 <ul>
                   <li class="p-2 hover:bg-blue-100 cursor-pointer" routerLink="/edit-account/{{account._id}}">แก้ไข</li>
                   <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(account._id, i)">ลบ</li>
                 </ul>
               </div> -->
-        <div
-          *ngIf="dropdownOpen"
-          class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-md rounded-md"
-        >
-          <ul>
-            <!-- <li class="p-2 hover:bg-blue-100 cursor-pointer" routerLink="/edit-account/{{account._id}}">แก้ไข</li> -->
-            <li class="p-2 hover:bg-blue-100 cursor-pointer">แก้ไข</li>
-            <!-- <li class="p-2 hover:bg-red-100 cursor-pointer" (click)="deleteAccount(account._id, i)">ลบ</li> -->
-            <li class="p-2 hover:bg-red-100 cursor-pointer">ลบ</li>
-          </ul>
-        </div>
 
         <!-- Account information -->
 
-        <div class="flex items-center justify-between p-4 border-b">
+        <div
+          class="flex items-center justify-between p-4 border-b border-red-100"
+        >
           <div class="flex items-center">
             <div
               [ngClass]="currentBackgroundColor"
@@ -106,7 +130,7 @@
 
     <!-- Add account button -->
 
-    <div class="text-left mt-2">
+    <div class="text-left mt-2 flex">
       <button
         class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-md font-semibold text-gray-900 rounded-lg group bg-gradient-to-br from-red-500 to-red-400 group-hover:from-red-500 group-hover:to-red-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
         routerLinkActive="active"
@@ -118,6 +142,7 @@
           สร้างบัญชีใหม่
         </span>
       </button>
+      <img class="h-8 bg-white my-auto" src="assets/images/arrow.png" alt="" />
     </div>
   </div>
 </div>
