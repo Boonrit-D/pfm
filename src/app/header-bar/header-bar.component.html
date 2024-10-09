@@ -14,12 +14,26 @@
             >หน้าหลัก</a
           >
         </li>
-        <ul class="block rounded border-b" *ngIf="!authService.isLoggedIn()">
+        <ul class="relative rounded border-b" *ngIf="!authService.isLoggedIn()">
           <span
             class="block text-red-500 text-center bg-red-200 rounded cursor-pointer p-1 hover:text-white hover:bg-red-600 mt-1"
+            (mouseenter)="showPopoverMenu = true"
+            (mouseleave)="showPopoverMenu = false"
             (click)="toggleMenuBar()"
             >เมนูสำหรับทดลองใช้งาน</span
           >
+
+          <!-- Popover -->
+          <div
+            *ngIf="showPopoverMenu"
+            class="absolute z-10 w-32 p-1 text-sm text-gray-500 bg-white border border-gray-200 rounded-lg shadow-md top-full mt-2 opacity-60"
+          >
+            <span class="border-b font-semibold text-gray-900">คลิก!</span>
+            <br />
+            <span *ngIf="!menuBarVisible"> เพื่อทดลองใช้งาน </span>
+            <span *ngIf="menuBarVisible"> เพื่อปิดเมนูที่แสดง </span>
+          </div>
+
           <ul class="flex" *ngIf="menuBarVisible">
             <li>
               <a
@@ -67,7 +81,11 @@
     </div>
 
     <div class="flex lg:hidden" *ngIf="authService.isLoggedIn()">
-      <img class="h-5 my-auto" src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="">
+      <img
+        class="h-5 my-auto"
+        src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+        alt=""
+      />
       <span class="my-auto ml-1">
         {{ authService.getUsername() }}
       </span>
@@ -215,6 +233,7 @@
             >
               เมนูสำหรับทดลองใช้งาน
             </span>
+
             <ul class="block bg-red-100 text-sm" *ngIf="menuBarVisible">
               <li class="mx-4 hover:text-red-500 cursor-pointer py-2">
                 <span
@@ -301,7 +320,11 @@
       <!-- เช็คการล็อกอินและแสดงชื่อผู้ใช้ -->
       <li class="flex" *ngIf="authService.isLoggedIn()">
         <div class="flex" *ngIf="authService.isLoggedIn()">
-          <img class="h-5 my-auto" src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="">
+          <img
+            class="h-5 my-auto"
+            src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+            alt=""
+          />
           <span class="my-auto ml-1">
             {{ authService.getUsername() }}
           </span>

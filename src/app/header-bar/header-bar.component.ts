@@ -15,6 +15,7 @@ export class HeaderBarComponent implements OnInit {
   isDropdownOpen = false;
   showPopover = false;
   showPinLogin = false;
+  showPopoverMenu = false;
 
   pinCode: string = ''; // เก็บรหัส PIN ที่ผู้ใช้ป้อน
   pinDisplay: string[] = ['', '', '', '']; // แสดง PIN ที่กรอก

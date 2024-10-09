@@ -1,8 +1,6 @@
-.container {
+.container,
+div,
+h2,
+h3 {
     font-family: Mitr;
-}
-
-h2 {
-    font-family: Mitr;
-    margin-left: 10px;
 }
