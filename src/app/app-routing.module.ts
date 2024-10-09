@@ -17,6 +17,9 @@ import { AccountTransactionComponent } from './account-transaction/account-trans
 import { EditAccountTransactionComponent } from './edit-account-transaction/edit-account-transaction.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
+// Demo
+import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
+import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
 
 const routes: Routes = [
 
@@ -103,7 +106,18 @@ const routes: Routes = [
     // Login Page
     // หน้าเข้าสู่ระบบ
     path: 'login', component: LoginComponent, title: 'Login' 
-  }
+  }, 
+
+  // Demo
+  // Dashboard
+  {
+    path: 'demo/dashboard', component: DemoDashboardComponent, title: 'Dashboard'
+  },
+  // Accounts
+  {
+    path: 'demo/accounts', component: DemoAccountsComponent, title: 'Account'
+  },
+
 ];
 
 @NgModule({

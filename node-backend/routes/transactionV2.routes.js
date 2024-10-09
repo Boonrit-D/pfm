@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 const transactionRouteV2 = express.Router();
-let TransactionV2 = require('../model/transactionV2');
+let TransactionV2 = require('../models/transactionV2');
 
 // V2
 // Get all transactionsV2

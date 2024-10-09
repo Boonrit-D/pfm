@@ -1,7 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CrudService } from './../service/crud.service';
+import { CrudService } from '../services/crud.service';
 
 @Component({
   selector: 'app-add-account',

@@ -1,0 +1,141 @@
+<!-- <p>dashboard works!</p> -->
+<div class="mt-4 max-w-screen-xl mx-auto">
+    <div
+      class="flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3"
+    >
+      <h2 class="mx-2">แดชบอร์ด</h2>
+      <p>วันที่ปัจจุบัน: {{ currentDate | date : "dd/MM/yyyy HH:mm:ss" }}</p>
+    </div>
+  
+    <!-- Spending Overview Chart -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold text-gray-700 mb-4">
+        ภาพรวมของบัญชีทั้งหมด
+      </h3>
+      <div class="w-full h-60 justify-center flex">
+        <div *ngIf="isLoading" class="loading-container">
+          <div class="loader"></div>
+          <!-- Spinner -->
+          <span class="loading-text">Loading...</span>
+        </div>
+        <!-- เพิ่มบางอย่าง -->
+        <canvas
+          *ngIf="isBrowser && !isLoading"
+          baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [type]="'bar'"
+        >
+        </canvas>
+      </div>
+      <div class="h-80 justify-center flex flex-col md:flex-row mt-5">
+        <canvas
+          *ngIf="!isLoading"
+          baseChart
+          [datasets]="pieChartData.datasets"
+          [labels]="pieChartData.labels"
+          [options]="pieChartOptions"
+          [legend]="pieChartLegend"
+          [plugins]="pieChartPlugins"
+          [type]="'pie'"
+        >
+        </canvas>
+      </div>
+    </div>
+  
+    <!-- Account Balance Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 mt-5">
+      <!-- Total Balance -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold text-gray-700">ยอดเงินคงเหลือทั้งหมด</h3>
+        <!-- <span
+          [ngClass]="{
+            'text-red-500': account.balance < 0,
+            'text-green-500': account.balance > 0,
+            'text-3xl font-bold mt-2': true
+          }"
+        > -->
+        <span>
+          <!-- {{ account.balance | number : "1.2-2" }} {{ account.currency }} -->
+          {{ 5000 | number : "1.2-2" }}
+          <!-- เปลี่ยนเป็นค่าที่จะให้แสดง -->
+        </span>
+      </div>
+  
+      <!-- Monthly Income -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold text-gray-700">รายได้ประจำเดือน</h3>
+        <p class="text-3xl text-green-500 mt-2">
+          <!-- {{ totalIncome | number : "1.2-2" }} {{ account.currency }} -->
+          {{ 10000 | number : "1.2-2" }}
+          <!-- เปลี่ยนเป็นค่าที่จะให้แสดง -->
+        </p>
+      </div>
+  
+      <!-- Monthly Expenses -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold text-gray-700">ค่าใช้จ่ายรายเดือน</h3>
+        <p class="text-3xl text-red-500 mt-2">
+          <!-- {{ totalExpenses | number : "1.2-2" }} {{ account.currency }} -->
+          {{ 5000 | number : "1.2-2" }}
+        </p>
+      </div>
+    </div>
+  
+    <!-- Recent Transactions -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+      <h3 class="text-xl font-semibold text-gray-700 mb-4">
+        รายการธุรกรรมล่าสุด
+      </h3>
+      <table class="min-w-full bg-white">
+        <thead>
+          <tr class="w-full bg-gray-200">
+            <th class="py-2 px-4 text-left">วันที่และเวลา</th>
+            <th class="py-2 px-4 text-left">หมวดหมู่</th>
+            <th class="py-2 px-4 text-right">จำนวนเงิน</th>
+          </tr>
+        </thead>
+        <!-- <tbody>
+          <tr
+            *ngFor="let transactionOfAccount of recentTransactions; let i = index"
+            class="even:bg-gray-50 hover:bg-green-100"
+            [routerLink]="[
+              '/account/edit-transaction',
+              account._id,
+              transactionOfAccount._id
+            ]"
+            [queryParams]="{
+              amount: transactionOfAccount.amount >= 0 ? 'positive' : 'negative'
+            }"
+          >
+            <td class="py-2 px-4 hidden md:table-cell">
+              {{ transactionOfAccount.date | date : "dd/MM/yyyy" }} <br />
+              {{ transactionOfAccount.date | date : "HH:mm:ss" }}
+            </td>
+            <td class="py-2 px-4 table-cell md:hidden">
+              {{ transactionOfAccount.date | date : "d/M H:mm" }}
+            </td>
+            <td class="py-2 px-4">{{ transactionOfAccount.category }}</td>
+            <td class="py-2 px-4 text-right">
+              <span
+                [ngClass]="{
+                  'text-red-500': transactionOfAccount.amount < 0,
+                  'text-green-500': transactionOfAccount.amount >= 0
+                }"
+              >
+                {{ transactionOfAccount.amount | number : "1.2-2" }}
+              </span>
+            </td>
+          </tr>
+        </tbody> -->
+      </table>
+      <!-- <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm mt-2"
+        routerLink="/account/transaction/{{ account._id }}"
+      >
+        ดูทั้งหมด
+      </button> -->
+    </div>
+</div>

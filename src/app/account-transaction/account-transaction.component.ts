@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone, } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CrudService } from '../service/crud.service';
+import { CrudService } from '../services/crud.service';
 
 @Component({
   selector: 'app-account-transaction',

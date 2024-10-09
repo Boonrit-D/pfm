@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CrudService } from '../service/crud.service';
+import { CrudService } from '../services/crud.service';
 import { FormBuilder } from '@angular/forms';
 import { ChartConfiguration } from 'chart.js';
 import { Chart, registerables } from 'chart.js';

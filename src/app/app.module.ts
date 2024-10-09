@@ -35,7 +35,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, HTTP_INTERCEPTORS, withInterceptorsFromDi, withFetch } from '@angular/common/http';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-import { AuthInterceptor } from '../app/service/auth.interceptor';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 // Component Imports
 // นำเข้าคอมโพเนนต์ที่ใช้ในแอปพลิเคชัน
@@ -57,6 +57,19 @@ import { AccountTransactionComponent } from './account-transaction/account-trans
 import { EditAccountTransactionComponent } from './edit-account-transaction/edit-account-transaction.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
+
+// Import components for dashboards, accounts, and transaction lists
+// นำเข้าส่วนประกอบสำหรับแดชบอร์ด บัญชี และรายการธุรกรรม
+import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
+import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
+import { TransactionsComponent } from './demo/account/transactions/transactions.component';
+
+// Import components for managing accounts and transactions
+// นำเข้าส่วนประกอบสำหรับการจัดการบัญชีและธุรกรรม
+import { CreateAccountComponent } from './demo/account/accounts/create-account/create-account.component';
+import { UpdateAccountComponent } from './demo/account/accounts/update-account/update-account.component';
+import { CreateTransactionComponent } from './demo/account/transactions/create-transaction/create-transaction.component';
+import { UpdateTransactionComponent } from './demo/account/transactions/update-transaction/update-transaction.component';
 
 // NgModule Decorator
 // โมดูลหลักของแอปพลิเคชันที่กำหนดคอมโพเนนต์, ฟีเจอร์ และบริการที่จำเป็น
@@ -81,6 +94,15 @@ import { LoginComponent } from './auth/login/login.component';
     EditAccountTransactionComponent,
     RegisterComponent,
     LoginComponent,
+    
+    // Demo
+    DemoDashboardComponent,
+    DemoAccountsComponent,
+    TransactionsComponent,
+    CreateAccountComponent,
+    UpdateAccountComponent,
+    CreateTransactionComponent,
+    UpdateTransactionComponent,
   ],
 
   imports: [

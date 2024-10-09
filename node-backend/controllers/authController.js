@@ -1,8 +1,8 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const User = require("../model/user");
-const UserPin = require("../model/userPin");
+const User = require("../models/user");
+const UserPin = require("../models/userPin");
 const secret = process.env.JWT_SECRET;
 
 // ฟังก์ชันสำหรับสร้าง token

@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CrudService } from '../service/crud.service';
+import { CrudService } from '../services/crud.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({

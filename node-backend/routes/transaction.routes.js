@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 const transactionRoute = express.Router();
-let Transaction = require('../model/transaction_');
+let Transaction = require('../models/transaction_');
 
 // Add transaction
 transactionRoute.route('/add-transaction').post( async (req, res, next) => {

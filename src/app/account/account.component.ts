@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { CrudService } from '../service/crud.service';
+import { CrudService } from '../services/crud.service';
 import { isPlatformBrowser } from '@angular/common';
 
 interface Account {
