@@ -42,7 +42,10 @@ export class AuthService {
     return headers;
   }
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
   // Functions for registration
   // ฟังก์ชันสำหรับการลงทะเบียน
   register(user: User): Observable<any> {
@@ -55,6 +58,30 @@ export class AuthService {
   // ฟังก์ชันสำหรับการล็อกอิน
   login(credentials: any): Observable<any> {
     let apiUrl = `${this.restApi}/login`;
+    return this.http
+      .post(apiUrl, credentials, {
+        headers: this.createHttpHeaders(),
+        responseType: 'json', // เปลี่ยนเป็น 'json' ถ้า response มีข้อมูล JSON
+      })
+      .pipe(
+        catchError(this.handleError),
+        tap((response: any) => {
+          const token = response.token || response.data.token; // ดึง token ออกมาให้ถูกต้อง
+          if (token) {
+            this.storeToken(token); // จัดเก็บ token ใน Local Storage
+            this.storeUser(credentials.username); // จัดเก็บชื่อผู้ใช้ใน Local Storage
+            console.log(token);
+          } else {
+            console.error('Token is undefined');
+          }
+        })
+      );
+  }
+
+  // Functions for PIN login
+  // ฟังก์ชันสำหรับการล็อกอินแบบพิน
+  loginPin(credentials: any): Observable<any> {
+    let apiUrl = `${this.restApi}/loginPin`;
     return this.http
       .post(apiUrl, credentials, {
         headers: this.createHttpHeaders(),

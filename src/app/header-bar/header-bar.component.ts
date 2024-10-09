@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-header-bar',
   templateUrl: './header-bar.component.html',
   styleUrls: ['./header-bar.component.css'],
 })
-export class HeaderBarComponent {
+export class HeaderBarComponent implements OnInit {
   // ใช้เพื่อควบคุมการแสดงผล
   menuVisible = false;
   menuBarVisible = false;
@@ -32,8 +33,26 @@ export class HeaderBarComponent {
     '#',
   ]; // ตัวเลขบนแป้นกด
 
+  credentialsForm: FormGroup;
+
   // ประกาศตัวแปร authService
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    public formBuilder: FormBuilder,
+    private ngZone: NgZone
+  ) {
+    // สร้างฟอร์มพร้อมกำหนดค่าเริ่มต้นให้ username
+    this.credentialsForm = this.formBuilder.group({
+      username: ['B', Validators.required], // กำหนดค่าเริ่มต้นที่นี่
+      pin: [
+        '',
+        [Validators.required, Validators.minLength(4), Validators.maxLength(4)],
+      ],
+    });
+  }
+
+  ngOnInit(): void {}
 
   toggleMenu() {
     this.menuVisible = !this.menuVisible;
@@ -83,9 +102,29 @@ export class HeaderBarComponent {
 
   loginWithPin() {
     if (this.pinCode.length === 4) {
-      // ทำการเข้าสู่ระบบด้วยรหัส PIN
-      console.log('PIN:', this.pinCode);
-      this.closePinLogin(); // ปิด popover หลังจากเข้าสู่ระบบสำเร็จ
+      // อัปเดตค่า PIN ในฟอร์มก่อนทำการ submit
+      this.credentialsForm.patchValue({
+        pin: this.pinCode,
+      });
+
+      // ตรวจสอบฟอร์มและทำการ submit
+      if (this.credentialsForm.valid) {
+        const formData = this.credentialsForm.value;
+        console.log('Form Data:', formData);
+        // การส่งข้อมูลไปยัง API
+        this.authService.loginPin(this.credentialsForm.value).subscribe({
+          next: () => {
+            console.log('User logged in');
+            this.ngZone.run(() => this.router.navigateByUrl('/'));
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+        this.closePinLogin(); // ปิด popover หลังจากเข้าสู่ระบบสำเร็จ
+      } else {
+        alert('Form is not valid');
+      }
     } else {
       alert('Please enter a 4-digit PIN');
     }

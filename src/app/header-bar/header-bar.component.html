@@ -101,8 +101,7 @@
         class="fixed inset-0 z-20 flex items-center justify-center"
       >
         <div
-          class="relative your-popover-class bg-white p-6 rounded-lg shadow-lg w-96 text-center border border-gray-200"
-          (click)="$event.stopPropagation()"
+          class="relative bg-white p-6 rounded-lg shadow-lg w-96 text-center border border-gray-200"
         >
           <!-- Close button (กากบาท) -->
           <button
@@ -129,6 +128,7 @@
           <!-- Number Pad -->
           <div class="grid grid-cols-3 gap-2 mb-4">
             <button
+              type="button"
               *ngFor="let number of numbers"
               class="bg-gray-200 hover:bg-gray-300 text-xl p-2 rounded"
               (click)="enterPin(number)"
@@ -136,6 +136,7 @@
               {{ number }}
             </button>
             <button
+              type="button"
               class="bg-red-200 hover:bg-red-300 text-xl p-2 rounded col-span-3"
               (click)="deletePin()"
             >

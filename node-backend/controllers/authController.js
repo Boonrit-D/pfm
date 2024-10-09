@@ -2,6 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../model/user");
+const UserPin = require("../model/userPin");
 const secret = process.env.JWT_SECRET;
 
 // ฟังก์ชันสำหรับสร้าง token
@@ -9,6 +10,19 @@ const generateToken = (user) => {
   return jwt.sign({ id: user._id, username: user.username }, secret, {
     expiresIn: "1h",
   });
+};
+
+// ฟังก์ชันสำหรับล็อกอินด้วย PIN และสร้าง token
+exports.loginPin = async (req, res) => {
+  const { username, pin } = req.body;
+  const user = await UserPin.findOne({ username });
+
+  // ตรวจสอบ PIN (สมมติว่าถูกเข้ารหัสด้วย bcrypt)
+  const isPinMatch = await bcrypt.compare(pin, user.pin);
+  if (!isPinMatch) return res.status(400).json({ message: "Invalid PIN" });
+
+  const token = generateToken(user);
+  res.json({ token });
 };
 
 // ฟังก์ชันสำหรับล็อกอินและสร้าง token
