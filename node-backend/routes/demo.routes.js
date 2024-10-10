@@ -10,8 +10,8 @@ Importing necessary modules and initializing the router:
 - นำเข้าโมเดล 'DemoAccount' เพื่อใช้งานกับคอลเลกชัน DemoAccount ในฐานข้อมูล
 - สร้างอินสแตนซ์ของ Router โดยใช้ 'express.Router()' เพื่อกำหนดเส้นทางสำหรับจัดการคำขอที่เกี่ยวข้องกับบัญชี
 */
-const express = require('express');
-const DemoAccount = require('../models/demo-account');
+const express = require("express");
+const DemoAccount = require("../models/demo-account");
 const demoRoutes = express.Router();
 
 /*
@@ -28,15 +28,39 @@ Retrieve all accounts:
 - หากดึงข้อมูลสำเร็จ จะคืนลิสต์ของบัญชีเป็นการตอบกลับในรูปแบบ JSON
 - ในกรณีที่เกิดข้อผิดพลาด จะจับข้อผิดพลาดและส่งไปยัง middleware ถัดไปเพื่อจัดการ
 */
-demoRoutes.route('/').get( async (req, res, next) => {
-    try {
-        const data = await DemoAccount.find();
-        res.json(data);
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-})
+demoRoutes.route("/").get(async (req, res, next) => {
+  try {
+    const data = await DemoAccount.find();
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+/*
+Route to retrieve a demo account by its ID:
+เส้นทางสำหรับดึงข้อมูลบัญชีเดโมโดยใช้ ID ของบัญชี:
+
+- This route uses the HTTP GET method to retrieve a specific demo account from the database based on the account ID.
+- It uses Mongoose's 'findById' method to search for the account.
+- If the account is found, it sends the data as a JSON response.
+- If an error occurs, it is logged to the console and passed to the next middleware for handling.
+
+- เส้นทางนี้ใช้เมธอด HTTP GET เพื่อดึงข้อมูลบัญชีเดโมจากฐานข้อมูลโดยใช้ ID ของบัญชี
+- ใช้เมธอด 'findById' ของ Mongoose ในการค้นหาบัญชี
+- ถ้าพบบัญชี จะส่งข้อมูลเป็น JSON กลับไป
+- หากเกิดข้อผิดพลาด จะแสดงในคอนโซลและส่งต่อให้ middleware ถัดไปจัดการ
+*/
+demoRoutes.route("/read-account/:id").get(async (req, res, next) => {
+  try {
+    const data = await DemoAccount.findById(req.params.id);
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
 
 /*
 Create a new account:
@@ -52,14 +76,45 @@ Create a new account:
 - หากสร้างสำเร็จ จะคืนข้อมูลบัญชีที่สร้างใหม่เป็นการตอบกลับ
 - ในกรณีที่เกิดข้อผิดพลาด จะจับข้อผิดพลาดและส่งไปยัง middleware ถัดไปเพื่อจัดการ
 */
-demoRoutes.route('/create-account').post( async (req, res, next) => {
+demoRoutes.route("/create-account").post(async (req, res, next) => {
+  try {
+    const data = await DemoAccount.create(req.body);
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+/*
+Route to update a demo account by its ID:
+เส้นทางสำหรับอัปเดตบัญชีเดโมโดยใช้ ID ของบัญชี:
+
+- This route handler uses the 'findByIdAndUpdate' method from Mongoose to update the specified account.
+- The '$set' operator is used to update only the fields provided in the request body.
+- The '{ new: true }' option returns the updated document after modification.
+- If the account is not found, a 404 error with a 'not found' message is returned.
+- Any errors encountered during the operation are caught and passed to the next middleware.
+
+- ตัวจัดการเส้นทางนี้ใช้เมธอด 'findByIdAndUpdate' ของ Mongoose เพื่ออัปเดตบัญชีที่ระบุ
+- ใช้โอเปอเรเตอร์ '$set' เพื่ออัปเดตเฉพาะฟิลด์ที่ถูกส่งมาในเนื้อหาของคำขอ
+- ตัวเลือก '{ new: true }' คืนค่าด๊อกคิวเมนต์ที่ถูกอัปเดตหลังจากการแก้ไข
+- หากไม่พบบัญชี จะส่งสถานะ 404 พร้อมข้อความ 'ไม่พบบัญชี'
+- ข้อผิดพลาดใด ๆ ที่พบระหว่างดำเนินการจะถูกจับและส่งต่อไปยังมิดเดิลแวร์ถัดไป
+*/
+demoRoutes.route('/update-account/:id').put(async (req, res, next) => {
     try {
-        const data = await DemoAccount.create(req.body);
+        const data = await DemoAccount.findByIdAndUpdate(req.params.id, {
+            $set: req.body
+        }, { new: true });
+        if (!data) {
+            return res.status(404).json({ msg: 'Account not found' });
+        }
         res.json(data);
     } catch (error) {
         console.log(error);
         next(error);
-    } 
+    }
 });
 
 /* 
@@ -76,16 +131,16 @@ Delete an account by ID:
 - หากลบสำเร็จ จะคืนสถานะ 200 พร้อมข้อมูลของบัญชีที่ถูกลบกลับไปเป็นการตอบกลับ
 - ในกรณีที่เกิดข้อผิดพลาด จะจับข้อผิดพลาดและส่งไปยัง middleware ถัดไปเพื่อจัดการ
 */
-demoRoutes.route('/delete-account/:id').delete( async (req, res, next) => {
-    try {
-        const data = await DemoAccount.findByIdAndDelete(req.params.id);
-        res.status(200).json({
-            msg:data
-        })
-    } catch (error) {
-        console.error(error);
-        next(error);
-    }
+demoRoutes.route("/delete-account/:id").delete(async (req, res, next) => {
+  try {
+    const data = await DemoAccount.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      msg: data,
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 /*
@@ -98,4 +153,4 @@ Exporting the demoRoutes module:
 - บรรทัดนี้ส่งออกวัตถุ 'demoRoutes' ทำให้สามารถนำเข้าในไฟล์อื่นได้
 - ช่วยให้ส่วนอื่น ๆ ของแอปพลิเคชันสามารถใช้เส้นทางที่กำหนดสำหรับจัดการคำขอที่เกี่ยวข้องกับ DemoAccount
 */
-module.exports = demoRoutes ;
+module.exports = demoRoutes;

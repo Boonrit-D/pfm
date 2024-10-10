@@ -95,9 +95,66 @@ export class DemoCrudService {
     return this.httpClient.get(API_URL).pipe(catchError(this.handleError));
   }
 
-  //
+  /*
+  Method to retrieve a demo account by its ID:
+  เมธอดสำหรับดึงข้อมูลบัญชีเดโมโดยใช้ ID ของบัญชี:
 
-  // 
+  - This method constructs the API URL by appending the account ID to the REST API's read route.
+  - It uses HttpClient's 'get' method to send an HTTP GET request to the server.
+  - The 'pipe' method is used to transform the response with the 'map' operator, ensuring an empty object is returned if no data is found.
+  - The 'catchError' operator handles any errors that may occur during the request.
+
+  - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีไปที่เส้นทางการดึงข้อมูลของ REST API
+  - ใช้เมธอด 'get' ของ HttpClient เพื่อส่งคำขอ HTTP GET ไปยังเซิร์ฟเวอร์
+  - ใช้เมธอด 'pipe' เพื่อประยุกต์ใช้โอเปอเรเตอร์ 'map' ในการแปลงข้อมูล และคืนค่าเป็นวัตถุว่างเปล่าในกรณีที่ไม่พบข้อมูล
+  - ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
+  getAccount(id: string): Observable<any> {
+    let API_URL = `${this.REST_API_DEMO_ACCOUNT}/read-account/${id}`;
+    return this.httpClient.get(API_URL).pipe(
+      map((res: any) => res || {}),
+      catchError(this.handleError)
+    );
+  }
+
+  /*
+  Method to update a demo account by its ID:
+  เมธอดสำหรับอัปเดตบัญชีเดโมโดยใช้ ID ของบัญชี:
+
+  - This method constructs the API URL by appending the account ID to the REST API's update route.
+  - It sends an HTTP PUT request with the updated account data using HttpClient.
+  - The 'tap' operator is used to log the server's response.
+  - The 'pipe' method applies the 'catchError' operator to handle any errors during the request.
+
+  - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีไปที่เส้นทางการอัปเดตของ REST API
+  - ส่งคำขอ HTTP PUT พร้อมข้อมูลบัญชีที่อัปเดตโดยใช้ HttpClient
+  - ใช้โอเปอเรเตอร์ 'tap' ในการบันทึกการตอบกลับจากเซิร์ฟเวอร์
+  - ใช้เมธอด 'pipe' เพื่อประยุกต์ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้น
+  */
+  updateAccount(id: string, data: Account): Observable<any> {
+    let API_URL = `${this.REST_API_DEMO_ACCOUNT}/update-account/${id}`;
+    console.log(`API URL: ${API_URL}`);
+
+    return this.httpClient.put(API_URL, data).pipe(
+      tap((response) => {
+        console.log('Response from update account:', response);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  /*
+  Method to delete a demo account by its ID:
+  เมธอดสำหรับลบบัญชีเดโมโดยใช้ ID ของบัญชี:
+
+  - This method constructs the API URL by appending the account ID to the REST API's delete route.
+  - It uses HttpClient's 'delete' method to send an HTTP DELETE request to the server.
+  - The 'pipe' method is used to apply the 'catchError' operator, which handles any errors that may occur during the request.
+
+  - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีไปที่เส้นทางการลบบัญชีของ REST API
+  - ใช้เมธอด 'delete' ของ HttpClient เพื่อส่งคำขอ HTTP DELETE ไปยังเซิร์ฟเวอร์
+  - ใช้เมธอด 'pipe' เพื่อประยุกต์ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
   deleteAccount(id: string): Observable<any> {
     const API_URL = `${this.REST_API_DEMO_ACCOUNT}/delete-account/${id}`;
     return this.httpClient
