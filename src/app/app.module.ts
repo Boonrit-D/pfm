@@ -67,7 +67,7 @@ import { TransactionsComponent } from './demo/account/transactions/transactions.
 // Import components for managing accounts and transactions
 // นำเข้าส่วนประกอบสำหรับการจัดการบัญชีและธุรกรรม
 import { CreateDemoAccountComponent } from './demo/account/accounts/create-account/create-account.component';
-import { UpdateAccountComponent } from './demo/account/accounts/update-account/update-account.component';
+import { UpdateDemoAccountComponent } from './demo/account/accounts/update-account/update-account.component';
 import { CreateTransactionComponent } from './demo/account/transactions/create-transaction/create-transaction.component';
 import { UpdateTransactionComponent } from './demo/account/transactions/update-transaction/update-transaction.component';
 
@@ -100,7 +100,7 @@ import { UpdateTransactionComponent } from './demo/account/transactions/update-t
     DemoAccountsComponent,
     TransactionsComponent,
     CreateDemoAccountComponent,
-    UpdateAccountComponent,
+    UpdateDemoAccountComponent,
     CreateTransactionComponent,
     UpdateTransactionComponent,
   ],

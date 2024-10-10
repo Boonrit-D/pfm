@@ -69,7 +69,7 @@ export class DemoCrudService {
   // การสร้างส่วนหลักของการร้องขอและการตอบกลับโดยกำหนดรูปแบบของเนื้อหาเป็นแบบเจสัน
   httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
 
-  // Constructor for the class, injecting HttpClient for making HTTP requests 
+  // Constructor for the class, injecting HttpClient for making HTTP requests
   // คอนสตรักเตอร์สำหรับคลาสนี้ใช้ในการฉีด HttpClient เพื่อทำการส่งคำขอ HTTP
   constructor(
     private httpClient: HttpClient,
@@ -88,11 +88,28 @@ export class DemoCrudService {
       .pipe(catchError(this.handleError));
   }
 
+  // Method to retrieve all accounts by sending a GET request to the API
+  // เมธอดสำหรับดึงข้อมูลบัญชีทั้งหมดโดยการส่งคำขอ GET ไปยัง API
+  getAccounts(): Observable<any> {
+    const API_URL = `${this.REST_API_DEMO_ACCOUNT}`;
+    return this.httpClient.get(API_URL).pipe(catchError(this.handleError));
+  }
+
+  //
+
+  // 
+  deleteAccount(id: string): Observable<any> {
+    const API_URL = `${this.REST_API_DEMO_ACCOUNT}/delete-account/${id}`;
+    return this.httpClient
+      .delete(API_URL)
+      .pipe(catchError(this.handleError));
+  }
+
   // Method to handle errors from HTTP requests
   // เมธอดสำหรับจัดการข้อผิดพลาดจากคำขอ HTTP
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';
-  
+
     if (isPlatformBrowser(this.platformId)) {
       if (error.error instanceof ErrorEvent) {
         // Handle client error
@@ -104,7 +121,7 @@ export class DemoCrudService {
       alert(errorMessage); // alert
       return throwError(() => new Error(errorMessage));
     }
-  
+
     // Handle server-side error
     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     return throwError(() => new Error('An unknown error occurred.'));

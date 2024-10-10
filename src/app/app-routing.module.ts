@@ -21,6 +21,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
 import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
 import { CreateDemoAccountComponent } from './demo/account/accounts/create-account/create-account.component';
+import { UpdateDemoAccountComponent } from './demo/account/accounts/update-account/update-account.component';
 
 const routes: Routes = [
 
@@ -121,6 +122,10 @@ const routes: Routes = [
   {
     path: 'demo/create-account', component: CreateDemoAccountComponent, title: 'Create Account'
   },
+  {
+    path: 'demo/update-account/:accountId', component: UpdateDemoAccountComponent, title: 'Update Account'
+  },
+
 ];
 
 @NgModule({
