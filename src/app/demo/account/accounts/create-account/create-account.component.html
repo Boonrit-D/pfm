@@ -23,8 +23,7 @@
       <div class="p-4 bg-gray-900 text-white text-center text-xl">
         สร้างบัญชีใหม่
       </div>
-      <!-- <form class="space-y-4" [formGroup]="accountForm" (ngSubmit)="onSubmit()"> -->
-      <form class="space-y-4 p-6">
+      <form class="space-y-4 p-6" [formGroup]="demoAccountForm" (ngSubmit)="onSubmit()">
         <!-- Name input -->
         <div class="form-group">
           <label class="block text-gray-700 text-sm mb-2" for="accountName">

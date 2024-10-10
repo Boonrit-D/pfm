@@ -18,7 +18,7 @@ demoRoutes.route('/').get( async (req, res, next) => {
 
 // Defining a route to add a new account using a POST request
 // กำหนดเส้นทางเพื่อเพิ่มบัญชีใหม่โดยใช้คำขอ POST
-demoRoutes.route('/add-account').post( async (req, res, next) => {
+demoRoutes.route('/create-account').post( async (req, res, next) => {
     try {
         const data = await DemoAccount.create(req.body);
         res.json(data);
