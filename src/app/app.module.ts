@@ -63,6 +63,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
 import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
 import { TransactionsComponent } from './demo/account/transactions/transactions.component';
+import { DemoAccountDashboardComponent } from './demo/account/dashboard/dashboard.component';
 
 // Import components for managing accounts and transactions
 // นำเข้าส่วนประกอบสำหรับการจัดการบัญชีและธุรกรรม
@@ -95,10 +96,14 @@ import { UpdateTransactionComponent } from './demo/account/transactions/update-t
     RegisterComponent,
     LoginComponent,
     
-    // Demo
+    // ►►► Demo ◄◄◄
+    // All
     DemoDashboardComponent,
     DemoAccountsComponent,
+    // Single
+    DemoAccountDashboardComponent,
     TransactionsComponent,
+    // Managing
     CreateDemoAccountComponent,
     UpdateDemoAccountComponent,
     CreateTransactionComponent,

@@ -22,6 +22,7 @@ import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
 import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
 import { CreateDemoAccountComponent } from './demo/account/accounts/create-account/create-account.component';
 import { UpdateDemoAccountComponent } from './demo/account/accounts/update-account/update-account.component';
+import { DemoAccountDashboardComponent } from './demo/account/dashboard/dashboard.component';
 
 const routes: Routes = [
 
@@ -110,7 +111,7 @@ const routes: Routes = [
     path: 'login', component: LoginComponent, title: 'Login' 
   }, 
 
-  // Demo
+  // ►►► Demo ◄◄◄
   // Dashboard
   {
     path: 'demo/dashboard', component: DemoDashboardComponent, title: 'Dashboard'
@@ -119,6 +120,11 @@ const routes: Routes = [
   {
     path: 'demo/accounts', component: DemoAccountsComponent, title: 'Account'
   },
+  // Account
+  {
+    path: 'demo/account/:accountId', component: DemoAccountDashboardComponent, title: 'Account'
+  },
+  // Managing
   {
     path: 'demo/create-account', component: CreateDemoAccountComponent, title: 'Create Account'
   },
