@@ -50,17 +50,14 @@
     <!-- Total Balance -->
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h3 class="text-xl font-semibold text-gray-700">ยอดเงินคงเหลือทั้งหมด</h3>
-      <!-- <span
-          [ngClass]="{
-            'text-red-500': account.balance < 0,
-            'text-green-500': account.balance > 0,
-            'text-3xl font-bold mt-2': true
-          }"
-        > -->
-      <span>
-        <!-- {{ account.balance | number : "1.2-2" }} {{ account.currency }} -->
-        {{ 5000 | number : "1.2-2" }}
-        <!-- เปลี่ยนเป็นค่าที่จะให้แสดง -->
+      <span
+        [ngClass]="{
+          'text-red-500': totalBalance < 0,
+          'text-green-500': totalBalance > 0,
+          'text-3xl font-bold mt-2': true
+        }"
+      >
+        {{ totalBalance | number : "1.2-2" }}
       </span>
     </div>
 
@@ -68,9 +65,7 @@
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h3 class="text-xl font-semibold text-gray-700">รายได้ประจำเดือน</h3>
       <p class="text-3xl text-green-500 mt-2">
-        <!-- {{ totalIncome | number : "1.2-2" }} {{ account.currency }} -->
-        {{ 10000 | number : "1.2-2" }}
-        <!-- เปลี่ยนเป็นค่าที่จะให้แสดง -->
+        {{ totalIncome | number : "1.2-2" }}
       </p>
     </div>
 
@@ -78,8 +73,7 @@
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h3 class="text-xl font-semibold text-gray-700">ค่าใช้จ่ายรายเดือน</h3>
       <p class="text-3xl text-red-500 mt-2">
-        <!-- {{ totalExpenses | number : "1.2-2" }} {{ account.currency }} -->
-        {{ 5000 | number : "1.2-2" }}
+        {{ totalExpenses | number : "1.2-2" }}
       </p>
     </div>
   </div>
@@ -93,49 +87,52 @@
       <thead>
         <tr class="w-full bg-gray-200">
           <th class="py-2 px-4 text-left">วันที่และเวลา</th>
+          <th class="py-2 px-4 text-left">บัญชี</th>
           <th class="py-2 px-4 text-left">หมวดหมู่</th>
           <th class="py-2 px-4 text-right">จำนวนเงิน</th>
         </tr>
       </thead>
-      <!-- <tbody>
-          <tr
-            *ngFor="let transactionOfAccount of recentTransactions; let i = index"
-            class="even:bg-gray-50 hover:bg-green-100"
-            [routerLink]="[
-              '/account/edit-transaction',
-              account._id,
-              transactionOfAccount._id
-            ]"
-            [queryParams]="{
-              amount: transactionOfAccount.amount >= 0 ? 'positive' : 'negative'
-            }"
-          >
-            <td class="py-2 px-4 hidden md:table-cell">
-              {{ transactionOfAccount.date | date : "dd/MM/yyyy" }} <br />
-              {{ transactionOfAccount.date | date : "HH:mm:ss" }}
-            </td>
-            <td class="py-2 px-4 table-cell md:hidden">
-              {{ transactionOfAccount.date | date : "d/M H:mm" }}
-            </td>
-            <td class="py-2 px-4">{{ transactionOfAccount.category }}</td>
-            <td class="py-2 px-4 text-right">
-              <span
-                [ngClass]="{
-                  'text-red-500': transactionOfAccount.amount < 0,
-                  'text-green-500': transactionOfAccount.amount >= 0
-                }"
-              >
-                {{ transactionOfAccount.amount | number : "1.2-2" }}
-              </span>
-            </td>
-          </tr>
-        </tbody> -->
+      <tbody>
+        <tr
+          *ngFor="let transaction of recentTransactions"
+          class="even:bg-gray-50 hover:bg-green-100"
+        >
+          <td class="py-2 px-4 hidden md:table-cell">
+            {{ transaction.date | date : "dd/MM/yyyy" }} <br />
+            {{ transaction.date | date : "HH:mm:ss" }}
+          </td>
+          <td class="py-2 px-4 table-cell md:hidden">
+            {{ transaction.date | date : "d/M H:mm" }}
+          </td>
+          <td class="py-2 px-4">
+            {{ transaction.accountName }}
+          </td>
+          <td class="py-2 px-4">{{ transaction.category }}</td>
+          <td class="py-2 px-4 text-right">
+            <span
+              [ngClass]="{
+                'text-red-500': transaction.amount < 0,
+                'text-green-500': transaction.amount >= 0
+              }"
+            >
+              {{ transaction.amount | number : "1.2-2" }}
+            </span>
+          </td>
+        </tr>
+        <!-- แสดงข้อความเมื่อไม่มีธุรกรรม -->
+        <tr *ngIf="!recentTransactions.length">
+          <td colspan="4" class="py-2 px-4 text-center text-gray-500">
+            ไม่มีรายการธุรกรรม
+          </td>
+        </tr>
+      </tbody>
     </table>
-    <!-- <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm mt-2"
-        routerLink="/account/transaction/{{ account._id }}"
-      >
-        ดูทั้งหมด
-      </button> -->
+    <!--  -->
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm mt-2"
+      routerLink="/account/transaction/id"
+    >
+      ดูทั้งหมด
+    </button>
   </div>
 </div>

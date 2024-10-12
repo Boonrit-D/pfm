@@ -18,11 +18,18 @@ import { EditAccountTransactionComponent } from './edit-account-transaction/edit
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
 // Demo
+// All
 import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
 import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
+import { DemoTransactionsComponent } from './demo/account/transactions/transactions.component';
+// Single
+import { DemoAccountDashboardComponent } from './demo/account/dashboard/dashboard.component';
+// Managing accounts
 import { CreateDemoAccountComponent } from './demo/account/accounts/create-account/create-account.component';
 import { UpdateDemoAccountComponent } from './demo/account/accounts/update-account/update-account.component';
-import { DemoAccountDashboardComponent } from './demo/account/dashboard/dashboard.component';
+// Managing transactions
+import { CreateDemoTransactionComponent } from './demo/account/transactions/create-transaction/create-transaction.component';
+
 
 const routes: Routes = [
 
@@ -124,14 +131,21 @@ const routes: Routes = [
   {
     path: 'demo/account/:accountId', component: DemoAccountDashboardComponent, title: 'Account'
   },
-  // Managing
+  // Transactions
+  {
+    path: 'demo/account/:accountId/transactions', component: DemoTransactionsComponent, title: 'Transactions'
+  },
+  // Managing accounts
   {
     path: 'demo/create-account', component: CreateDemoAccountComponent, title: 'Create Account'
   },
   {
     path: 'demo/update-account/:accountId', component: UpdateDemoAccountComponent, title: 'Update Account'
   },
-
+  //
+  {
+    path: 'demo/account/:accountId/create-transaction', component: CreateDemoTransactionComponent, title: 'Create Transaction'
+  },
 ];
 
 @NgModule({

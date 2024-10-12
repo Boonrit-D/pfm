@@ -109,8 +109,8 @@ export class DemoCrudService {
   - ใช้เมธอด 'pipe' เพื่อประยุกต์ใช้โอเปอเรเตอร์ 'map' ในการแปลงข้อมูล และคืนค่าเป็นวัตถุว่างเปล่าในกรณีที่ไม่พบข้อมูล
   - ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
   */
-  getAccount(id: string): Observable<any> {
-    let API_URL = `${this.REST_API_DEMO_ACCOUNT}/read-account/${id}`;
+  getAccount(accountId: string): Observable<any> {
+    let API_URL = `${this.REST_API_DEMO_ACCOUNT}/read-account/${accountId}`;
     return this.httpClient.get(API_URL).pipe(
       map((res: any) => res || {}),
       catchError(this.handleError)
@@ -131,8 +131,8 @@ export class DemoCrudService {
   - ใช้โอเปอเรเตอร์ 'tap' ในการบันทึกการตอบกลับจากเซิร์ฟเวอร์
   - ใช้เมธอด 'pipe' เพื่อประยุกต์ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้น
   */
-  updateAccount(id: string, data: Account): Observable<any> {
-    let API_URL = `${this.REST_API_DEMO_ACCOUNT}/update-account/${id}`;
+  updateAccount(accountId: string, data: Account): Observable<any> {
+    let API_URL = `${this.REST_API_DEMO_ACCOUNT}/update-account/${accountId}`;
     console.log(`API URL: ${API_URL}`);
 
     return this.httpClient.put(API_URL, data).pipe(
@@ -155,11 +155,52 @@ export class DemoCrudService {
   - ใช้เมธอด 'delete' ของ HttpClient เพื่อส่งคำขอ HTTP DELETE ไปยังเซิร์ฟเวอร์
   - ใช้เมธอด 'pipe' เพื่อประยุกต์ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
   */
-  deleteAccount(id: string): Observable<any> {
-    const API_URL = `${this.REST_API_DEMO_ACCOUNT}/delete-account/${id}`;
+  deleteAccount(accountId: string): Observable<any> {
+    const API_URL = `${this.REST_API_DEMO_ACCOUNT}/delete-account/${accountId}`;
     return this.httpClient
       .delete(API_URL)
       .pipe(catchError(this.handleError));
+  }
+
+  // ►►► Transaction API Methods ◄◄◄
+  // ►►► เมธอด API สำหรับจัดการธุรกรรม ◄◄◄
+
+  createTransaction(
+    data: Transaction,
+    accountId: string
+  ): Observable<any> {
+    const API_URL = `${this.REST_API_DEMO_ACCOUNT}/create-transaction/${accountId}`;
+    return this.httpClient
+      .post(API_URL, data)
+      .pipe(catchError(this.handleError));
+  }
+
+  //
+  getTransactionsForAccounts(): Observable<Transaction[]> {
+    return this.getAccounts().pipe(
+      map((accounts: Account[]) => 
+        accounts.flatMap(account => account.transactions) 
+      ),
+      catchError(this.handleError)
+    );
+  }
+
+  //
+  getTransactionsForCurrentAccount(accountId: string): Observable<any> {
+    const API_URL = `${this.REST_API_DEMO_ACCOUNT}/read-account-transactions/${accountId}`;
+    return this.httpClient.get(API_URL).pipe(
+      map((res: any) => res || {}),
+      catchError(this.handleError)
+    );
+  }
+
+  // Update balance
+  updateBalance(accountId: string, balance: number): Observable<any> {
+    return this.httpClient.put<any>(
+      `${this.REST_API_DEMO_ACCOUNT}/update-balance/${accountId}`,
+      { balance },
+      
+    );
   }
 
   // Method to handle errors from HTTP requests

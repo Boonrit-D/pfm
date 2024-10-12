@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CrudService } from '../../services/crud.service';
+import { DemoCrudService } from '../../services/demo-crud.service';
 import { FormBuilder } from '@angular/forms';
 import { ChartConfiguration } from 'chart.js';
 import { Chart, registerables } from 'chart.js';
@@ -13,13 +13,22 @@ import { isPlatformBrowser } from '@angular/common';
 })
 //
 export class DemoDashboardComponent implements OnInit {
-
-  // 
+  // Declaring
+  demoTransactionsForAccounts: any;
+  demoAccounts: any;
+  // Calculator variables
+  totalIncome: number = 0;
+  totalExpenses: number = 0;
+  totalBalance: number = 0;
+  //
   currentDate = new Date();
-  // 
+  //
   isLoading: boolean = true;
-  // 
+  //
   isBrowser: boolean;
+  //
+  recentTransactions: any[] = [];
+  allTransaction: any[] = [];
 
   // Chart
   title = 'dashboard-charts-demo';
@@ -28,8 +37,7 @@ export class DemoDashboardComponent implements OnInit {
   public barChartPlugins = [];
 
   public barChartData: ChartConfiguration<'bar'>['data'] = {
-    // labels: this.getLastSixMonths(),
-    labels: ['เงิน'],
+    labels: this.getLastSixMonths(),
     datasets: [
       {
         data: [],
@@ -148,23 +156,175 @@ export class DemoDashboardComponent implements OnInit {
     ];
   }
 
+  // ฟังก์ชันเพื่ออัปเดตข้อมูลกราฟ
+
+  updateChartData() {
+    if (this.barChartData.labels) {
+      const incomeData = Array(this.barChartData.labels.length).fill(0);
+      const expensesData = Array(this.barChartData.labels.length).fill(0);
+
+      this.demoTransactionsForAccounts.forEach((txn: any) => {
+        const monthIndex = this.getLastSixMonths().findIndex(
+          (month) =>
+            month ===
+            new Date(txn.date).toLocaleString('default', { month: 'long' })
+        );
+        if (monthIndex >= 0) {
+          if (txn.amount > 0) {
+            incomeData[monthIndex] += txn.amount; // เพิ่มข้อมูลที่เป็นบวกลงในเงินเข้า
+          } else {
+            expensesData[monthIndex] += Math.abs(txn.amount); // เพิ่มข้อมูลที่เป็นลบลงในเงินออก
+          }
+        }
+      });
+
+      this.barChartData.datasets[0].data = incomeData; // อัปเดตข้อมูลเงินเข้า
+      this.barChartData.datasets[1].data = expensesData; // อัปเดตข้อมูลเงินออก
+    }
+  }
+
   constructor(
     public formBuilder: FormBuilder,
     private router: Router,
     private ngZone: NgZone,
     private activatedRouter: ActivatedRoute,
-    private CrudService: CrudService,
+    private demoCrudService: DemoCrudService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit(): void {
-    // Register Chart.js controllers, elements, and plugins
-    Chart.register(...registerables);
+    if (this.isBrowser) {
+      // Register Chart.js controllers, elements, and plugins
+      Chart.register(...registerables);
 
-    setTimeout(() => {
-      this.isLoading = false; // เปลี่ยนสถานะการโหลดเป็น false
-    }, 1000); // หน่วงเวลา 2000 มิลลิวินาที หรือ 2 วินาที
+      this.demoCrudService.getAccounts().subscribe((res) => {
+        this.demoAccounts = res;
+
+        // เรียกใช้ฟังก์ชันเพื่อดึงธุรกรรมล่าสุด
+        this.getRecentTransactions();
+      });
+
+      // Get all transactions of all accounts
+      this.demoCrudService.getTransactionsForAccounts().subscribe((res) => {
+        this.demoTransactionsForAccounts = res;
+
+        // คำนวณยอดรายได้และค่าใช้จ่ายประจำเดือน
+        this.calculateTotalIncome();
+        this.calculateTotalExpenses();
+        this.calculateTotalBalance();
+
+        // อัปเดตข้อมูลในกราฟหลังจากได้ข้อมูลธุรกรรมแล้ว
+        this.updateChartData(); // เรียกใช้ฟังก์ชันนี้เพื่ออัปเดตกราฟ
+
+        // คำนวณเงินเข้าและเงินออกของเดือนนี้
+        const { income, expenses } =
+          this.calculateCurrentMonthIncomeAndExpenses();
+        this.setChartData(income, expenses); // อัปเดตข้อมูลใน Pie Chart
+
+        // ตั้งเวลาให้รอ 2 วินาทีก่อนแสดงกราฟ
+        setTimeout(() => {
+          this.isLoading = false; // เปลี่ยนสถานะการโหลดเป็น false
+        }, 1000); // หน่วงเวลา 2000 มิลลิวินาที หรือ 2 วินาที
+      });
+    }
+  }
+
+  calculateTotalIncome() {
+    this.totalIncome = this.demoTransactionsForAccounts
+      .filter((txn: any) => txn.amount > 0)
+      .reduce((acc: number, txn: any) => acc + txn.amount, 0);
+  }
+
+  calculateTotalExpenses() {
+    this.totalExpenses = this.demoTransactionsForAccounts
+      .filter((txn: any) => txn.amount < 0)
+      .reduce((acc: number, txn: any) => acc + Math.abs(txn.amount), 0);
+  }
+
+  calculateTotalBalance() {
+    this.calculateTotalIncome(); // คำนวณยอดรวมรายได้
+    this.calculateTotalExpenses(); // คำนวณยอดรวมค่าใช้จ่าย
+
+    // คำนวณยอดคงเหลือ
+    this.totalBalance = this.totalIncome - this.totalExpenses;
+  }
+
+  //
+  getLastSixMonths(): string[] {
+    if (typeof window === 'undefined') {
+      return [];
+    }
+    const months: string[] = [];
+    const currentDate = new Date();
+
+    const isSmallScreen = window.innerWidth < 768;
+    const numberOfMonths = isSmallScreen ? 3 : 6;
+
+    for (let i = 0; i < numberOfMonths; i++) {
+      const month = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - i,
+        1
+      );
+      months.unshift(month.toLocaleString('default', { month: 'long' }));
+    }
+
+    return months;
+  }
+
+  // คำนวณเงินเข้าและเงินออกของเดือนนี้
+  calculateCurrentMonthIncomeAndExpenses() {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const income = this.demoTransactionsForAccounts
+      .filter(
+        (txn: any) =>
+          txn.amount > 0 &&
+          new Date(txn.date).getMonth() === currentMonth &&
+          new Date(txn.date).getFullYear() === currentYear
+      )
+      .reduce((acc: number, txn: any) => acc + txn.amount, 0);
+
+    const expenses = this.demoTransactionsForAccounts
+      .filter(
+        (txn: any) =>
+          txn.amount < 0 &&
+          new Date(txn.date).getMonth() === currentMonth &&
+          new Date(txn.date).getFullYear() === currentYear
+      )
+      .reduce((acc: number, txn: any) => acc + Math.abs(txn.amount), 0);
+
+    return { income, expenses };
+  }
+
+  getRecentTransactions() {
+    const transactions: any[] = [];
+
+    // วนลูปเพื่อดึงธุรกรรมจากแต่ละบัญชีและเพิ่มชื่อบัญชีเข้าไปในแต่ละรายการ
+    this.demoAccounts.forEach((account: any) => {
+      if (account.transactions && account.transactions.length > 0) {
+        account.transactions.forEach((transaction: any) => {
+          // เพิ่ม accountName เข้าไปใน transaction
+          transactions.push({
+            ...transaction,
+            accountName: account.accountName,
+          });
+        });
+      }
+    });
+
+    // เรียงลำดับธุรกรรมจากใหม่ไปเก่า
+    this.recentTransactions = transactions
+      .sort((a, b) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      })
+      .slice(0, 3); // ตัดให้แสดงแค่ 3 รายการล่าสุด
+
+    // // เรียงลำดับธุรกรรมจากใหม่ไปเก่า
+    // this.allTransaction = transactions.sort((a, b) => {
+    //   return new Date(b.date).getTime() - new Date(a.date).getTime();
+    // });
   }
 }

@@ -143,6 +143,62 @@ demoRoutes.route("/delete-account/:id").delete(async (req, res, next) => {
   }
 });
 
+//
+demoRoutes.route('/create-transaction/:id').post( async (req, res, next) => {
+  try {
+      const accountId = req.params.id;
+      const account = await DemoAccount.findById(accountId);
+
+      if (!account) {
+          return res.status(404).json({ message: "Account not found" });
+      }
+
+      // Add the new transaction to the account's transactions array
+      account.transactions.push(req.body);
+
+      // Save the account with the new transaction
+      const updatedAccount = await account.save();
+
+      res.json(updatedAccount);
+  } catch (error) {
+      console.error(error);
+      next(error);
+  } 
+});
+
+// Get transactions of a specific account
+demoRoutes.route('/read-account-transactions/:id').get( async (req, res, next) => {
+  try {
+      const account = await DemoAccount.findById(req.params.id);
+      if (!account) {
+          return res.status(404).json({ message: 'Account not found' });
+      }
+      res.json(account.transactions);
+  } catch (error) {
+      console.error(error);
+      next(error);
+  }
+});
+
+// Update account balance
+demoRoutes.route('/update-balance/:id').put(async (req, res, next) => {
+  try {
+      const accountId = req.params.id;
+      const { balance } = req.body; // รับค่า balance จาก body ของ request
+
+      const updatedAccount = await DemoAccount.findByIdAndUpdate(accountId, { balance }, { new: true });
+
+      if (!updatedAccount) {
+          return res.status(404).json({ msg: 'Account not found' });
+      }
+      
+      res.json(updatedAccount);
+  } catch (error) {
+      console.error(error);
+      next(error);
+  }
+});
+
 /*
 Exporting the demoRoutes module:
 ส่งออกโมดูล demoRoutes:

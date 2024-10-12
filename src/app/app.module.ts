@@ -62,14 +62,14 @@ import { LoginComponent } from './auth/login/login.component';
 // นำเข้าส่วนประกอบสำหรับแดชบอร์ด บัญชี และรายการธุรกรรม
 import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
 import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
-import { TransactionsComponent } from './demo/account/transactions/transactions.component';
 import { DemoAccountDashboardComponent } from './demo/account/dashboard/dashboard.component';
+import { DemoTransactionsComponent } from './demo/account/transactions/transactions.component';
 
 // Import components for managing accounts and transactions
 // นำเข้าส่วนประกอบสำหรับการจัดการบัญชีและธุรกรรม
 import { CreateDemoAccountComponent } from './demo/account/accounts/create-account/create-account.component';
 import { UpdateDemoAccountComponent } from './demo/account/accounts/update-account/update-account.component';
-import { CreateTransactionComponent } from './demo/account/transactions/create-transaction/create-transaction.component';
+import { CreateDemoTransactionComponent } from './demo/account/transactions/create-transaction/create-transaction.component';
 import { UpdateTransactionComponent } from './demo/account/transactions/update-transaction/update-transaction.component';
 
 // NgModule Decorator
@@ -102,11 +102,11 @@ import { UpdateTransactionComponent } from './demo/account/transactions/update-t
     DemoAccountsComponent,
     // Single
     DemoAccountDashboardComponent,
-    TransactionsComponent,
+    DemoTransactionsComponent,
     // Managing
     CreateDemoAccountComponent,
     UpdateDemoAccountComponent,
-    CreateTransactionComponent,
+    CreateDemoTransactionComponent,
     UpdateTransactionComponent,
   ],
 
