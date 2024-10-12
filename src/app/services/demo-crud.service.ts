@@ -194,6 +194,17 @@ export class DemoCrudService {
     );
   }
 
+  getTransactionForAccount(
+    accountId: string,
+    transactionId: string
+  ): Observable<any> {
+    let API_URL = `${this.REST_API_DEMO_ACCOUNT}/read-account-transaction/${accountId}/${transactionId}`;
+    return this.httpClient.get(API_URL).pipe(
+      map((res: any) => res || {}),
+      catchError(this.handleError)
+    );
+  }
+
   // Update balance
   updateBalance(accountId: string, balance: number): Observable<any> {
     return this.httpClient.put<any>(

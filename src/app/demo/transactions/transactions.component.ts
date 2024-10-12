@@ -48,6 +48,7 @@ export class DemoTransactionsComponent implements OnInit {
           transactions.push({
             ...transaction,
             accountName: account.accountName,
+            accountId: account._id,
           });
         });
       }

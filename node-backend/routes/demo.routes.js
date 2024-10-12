@@ -180,6 +180,27 @@ demoRoutes.route('/read-account-transactions/:id').get( async (req, res, next) =
   }
 });
 
+// Get a specific transaction of a specific account
+demoRoutes.route('/read-account-transaction/:accountId/:transactionId').get(async (req, res, next) => {
+  try {
+      const account = await DemoAccount.findById(req.params.accountId);
+      if (!account) {
+          return res.status(404).json({ message: 'Account not found' });
+      }
+
+      // Find the transaction by its ID
+      const transaction = account.transactions.id(req.params.transactionId);
+      if (!transaction) {
+          return res.status(404).json({ message: 'Transaction not found' });
+      }
+
+      res.json(transaction);
+  } catch (error) {
+      console.error(error);
+      next(error);
+  }
+});
+
 // Update account balance
 demoRoutes.route('/update-balance/:id').put(async (req, res, next) => {
   try {

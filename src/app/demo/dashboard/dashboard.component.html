@@ -97,6 +97,7 @@
           *ngFor="let transaction of recentTransactions"
           class="even:bg-gray-50 hover:bg-green-100"
           routerLink="/demo/account/{{transaction.accountId}}/update-transaction/{{transaction._id}}"
+          [queryParams]="{ amount: (transaction.amount >= 0 ? 'positive' : 'negative') }"
         >
           <td class="py-2 px-4 hidden md:table-cell">
             {{ transaction.date | date : "dd/MM/yyyy" }} <br />
