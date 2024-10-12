@@ -1,53 +1,55 @@
 <!-- <p>demo transactions for account works!</p> -->
 <div class="mt-4 max-w-screen-xl mx-auto">
-    <div
-      class="lg:flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3 text-center md:text-left"
-    >
-      <h2 class="mx-2">รายการธุรกรรม ({{demoAccount.accountName}})</h2>
-      <p>วันที่ปัจจุบัน: {{ currentDate | date : "dd/MM/yyyy HH:mm:ss" }}</p>
-    </div>
-    <!-- Recent Transactions -->
-    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-      <table class="min-w-full bg-white">
-        <thead>
-          <tr class="w-full bg-gray-200">
-            <th class="py-2 px-4 text-left">วันที่และเวลา</th>
-            <th class="py-2 px-4 text-left">หมวดหมู่</th>
-            <th class="py-2 px-4 text-right">จำนวนเงิน</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="let transaction of demoTransactionForAccount"
-            class="even:bg-gray-50 hover:bg-green-100"
-          >
-            <td class="py-2 px-4 hidden md:table-cell">
-              {{ transaction.date | date : "dd/MM/yyyy" }} <br />
-              {{ transaction.date | date : "HH:mm:ss" }}
-            </td>
-            <td class="py-2 px-4 table-cell md:hidden">
-              {{ transaction.date | date : "d/M H:mm" }}
-            </td>
-            <td class="py-2 px-4">{{ transaction.category }}</td>
-            <td class="py-2 px-4 text-right">
-              <span
-                [ngClass]="{
-                  'text-red-500': transaction.amount < 0,
-                  'text-green-500': transaction.amount >= 0
-                }"
-              >
-                {{ transaction.amount | number : "1.2-2" }}
-              </span>
-            </td>
-          </tr>
-          <!-- แสดงข้อความเมื่อไม่มีธุรกรรม -->
-          <tr *ngIf="!demoTransactionForAccount.length">
-            <td colspan="4" class="py-2 px-4 text-center text-gray-500">
-              ไม่มีรายการธุรกรรม
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div
+    class="lg:flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3 text-center lg:text-left"
+  >
+    <h2 class="mx-2 flex flex-col lg:flex-row">
+      รายการธุรกรรม <span class="ml-2">({{ demoAccount.accountName }})</span>
+    </h2>
+    <p>วันที่ปัจจุบัน: {{ currentDate | date : "dd/MM/yyyy HH:mm:ss" }}</p>
   </div>
-  
+  <p class="text-center lg:text-right text-sm text-gray-300">กดเลือกรายการที่ท่านต้องการอัปเดตหรือแก้ไขได้เลย</p>
+  <!-- Recent Transactions -->
+  <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+    <table class="min-w-full bg-white">
+      <thead>
+        <tr class="w-full bg-gray-200">
+          <th class="py-2 px-4 text-left">วันที่และเวลา</th>
+          <th class="py-2 px-4 text-left">หมวดหมู่</th>
+          <th class="py-2 px-4 text-right">จำนวนเงิน</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let transaction of demoTransactionForAccount"
+          class="even:bg-gray-50 hover:bg-green-100"
+        >
+          <td class="py-2 px-4 hidden md:table-cell">
+            {{ transaction.date | date : "dd/MM/yyyy" }} <br />
+            {{ transaction.date | date : "HH:mm:ss" }}
+          </td>
+          <td class="py-2 px-4 table-cell md:hidden">
+            {{ transaction.date | date : "d/M H:mm" }}
+          </td>
+          <td class="py-2 px-4">{{ transaction.category }}</td>
+          <td class="py-2 px-4 text-right">
+            <span
+              [ngClass]="{
+                'text-red-500': transaction.amount < 0,
+                'text-green-500': transaction.amount >= 0
+              }"
+            >
+              {{ transaction.amount | number : "1.2-2" }}
+            </span>
+          </td>
+        </tr>
+        <!-- แสดงข้อความเมื่อไม่มีธุรกรรม -->
+        <tr *ngIf="!demoTransactionForAccount.length">
+          <td colspan="4" class="py-2 px-4 text-center text-gray-500">
+            ไม่มีรายการธุรกรรม
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
