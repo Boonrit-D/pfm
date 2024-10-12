@@ -30,6 +30,7 @@ import { CreateDemoAccountComponent } from './demo/account/accounts/create-accou
 import { UpdateDemoAccountComponent } from './demo/account/accounts/update-account/update-account.component';
 // Managing transactions
 import { CreateDemoTransactionComponent } from './demo/account/transactions/create-transaction/create-transaction.component';
+import { UpdateDemoTransactionComponent } from './demo/account/transactions/update-transaction/update-transaction.component';
 
 
 const routes: Routes = [
@@ -147,9 +148,12 @@ const routes: Routes = [
   {
     path: 'demo/update-account/:accountId', component: UpdateDemoAccountComponent, title: 'Update Account'
   },
-  //
+  // Managing transactions
   {
     path: 'demo/account/:accountId/create-transaction', component: CreateDemoTransactionComponent, title: 'Create Transaction'
+  },
+  {
+    path: 'demo/account/:accountId/update-transaction/:transactionId', component:UpdateDemoTransactionComponent, title: 'Update Transaction'
   },
 ];
 

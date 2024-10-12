@@ -72,7 +72,7 @@ import { DemoTransactionsForAccountComponent } from './demo/account/transactions
 import { CreateDemoAccountComponent } from './demo/account/accounts/create-account/create-account.component';
 import { UpdateDemoAccountComponent } from './demo/account/accounts/update-account/update-account.component';
 import { CreateDemoTransactionComponent } from './demo/account/transactions/create-transaction/create-transaction.component';
-import { UpdateTransactionComponent } from './demo/account/transactions/update-transaction/update-transaction.component';
+import { UpdateDemoTransactionComponent } from './demo/account/transactions/update-transaction/update-transaction.component';
 
 // NgModule Decorator
 // โมดูลหลักของแอปพลิเคชันที่กำหนดคอมโพเนนต์, ฟีเจอร์ และบริการที่จำเป็น
@@ -109,7 +109,7 @@ import { UpdateTransactionComponent } from './demo/account/transactions/update-t
     CreateDemoAccountComponent,
     UpdateDemoAccountComponent,
     CreateDemoTransactionComponent,
-    UpdateTransactionComponent,
+    UpdateDemoTransactionComponent,
     DemoTransactionsComponent,
   ],
 

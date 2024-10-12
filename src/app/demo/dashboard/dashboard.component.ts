@@ -310,6 +310,7 @@ export class DemoDashboardComponent implements OnInit {
           transactions.push({
             ...transaction,
             accountName: account.accountName,
+            accountId: account._id,
           });
         });
       }
