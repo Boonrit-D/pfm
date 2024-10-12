@@ -1,0 +1,36 @@
+h2,
+.form-group,
+button,
+h3,
+tr,
+canvas {
+  font-family: Mitr;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center; /* จัดให้อยู่กลางแนวตั้ง */
+  justify-content: center; /* จัดให้อยู่กลางแนวนอน */
+  height: 100%; /* ความสูง 100% */
+}
+
+.loading-text {
+  color: #4A5568; /* สีเทา */
+  font-size: 1.25rem; /* ขนาดฟอนต์ */
+  font-weight: 600; /* น้ำหนักฟอนต์ */
+  margin-left: 0.5rem; /* ระยะห่าง */
+}
+
+.loader {
+  border: 8px solid #f3f3f3; /* สีพื้นหลัง */
+  border-top: 8px solid #3498db; /* สีของเส้นที่เคลื่อนที่ */
+  border-radius: 50%; /* ทำให้เป็นวงกลม */
+  width: 40px; /* ขนาดของ spinner */
+  height: 40px; /* ขนาดของ spinner */
+  animation: spin 1s linear infinite; /* การหมุน */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

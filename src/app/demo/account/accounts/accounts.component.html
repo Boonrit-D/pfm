@@ -72,10 +72,14 @@
                 [src]="accountImages[i]"
                 alt="Random Icon"
                 class="h-20 cursor-pointer"
+                routerLink="/demo/account/{{ demoAccount._id }}"
               />
             </div>
             <div>
-              <h4 class="font-bold cursor-pointer hover:text-red-500">
+              <h4 
+                class="font-bold cursor-pointer hover:text-red-500"
+                routerLink="/demo/account/{{ demoAccount._id }}"
+              >
                 {{ demoAccount.accountName }}
               </h4>
               <p class="text-sm text-gray-500">{{ demoAccount.description }}</p>
