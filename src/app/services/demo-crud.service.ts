@@ -157,18 +157,13 @@ export class DemoCrudService {
   */
   deleteAccount(accountId: string): Observable<any> {
     const API_URL = `${this.REST_API_DEMO_ACCOUNT}/delete-account/${accountId}`;
-    return this.httpClient
-      .delete(API_URL)
-      .pipe(catchError(this.handleError));
+    return this.httpClient.delete(API_URL).pipe(catchError(this.handleError));
   }
 
   // ►►► Transaction API Methods ◄◄◄
   // ►►► เมธอด API สำหรับจัดการธุรกรรม ◄◄◄
 
-  createTransaction(
-    data: Transaction,
-    accountId: string
-  ): Observable<any> {
+  createTransaction(data: Transaction, accountId: string): Observable<any> {
     const API_URL = `${this.REST_API_DEMO_ACCOUNT}/create-transaction/${accountId}`;
     return this.httpClient
       .post(API_URL, data)
@@ -178,8 +173,8 @@ export class DemoCrudService {
   //
   getTransactionsForAccounts(): Observable<Transaction[]> {
     return this.getAccounts().pipe(
-      map((accounts: Account[]) => 
-        accounts.flatMap(account => account.transactions) 
+      map((accounts: Account[]) =>
+        accounts.flatMap((account) => account.transactions)
       ),
       catchError(this.handleError)
     );
@@ -205,12 +200,27 @@ export class DemoCrudService {
     );
   }
 
+  updateTransactionForAccount(
+    data: Transaction,
+    accountId: string,
+    transactionId: string
+  ): Observable<any> {
+    let API_URL = `${this.REST_API_DEMO_ACCOUNT}/update-account-transaction/${accountId}/${transactionId}`;
+
+    // ทำการ PUT โดยส่งข้อมูลของ transaction และ headers ไปยัง API
+    return this.httpClient.put(API_URL, data).pipe(
+      tap((response) => {
+        console.log('Response from update transaction of account:', response);
+      }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
+      catchError(this.handleError) // จัดการข้อผิดพลาด
+    );
+  }
+
   // Update balance
   updateBalance(accountId: string, balance: number): Observable<any> {
     return this.httpClient.put<any>(
       `${this.REST_API_DEMO_ACCOUNT}/update-balance/${accountId}`,
-      { balance },
-      
+      { balance }
     );
   }
 

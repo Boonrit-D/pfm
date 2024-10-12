@@ -102,19 +102,23 @@ Route to update a demo account by its ID:
 - หากไม่พบบัญชี จะส่งสถานะ 404 พร้อมข้อความ 'ไม่พบบัญชี'
 - ข้อผิดพลาดใด ๆ ที่พบระหว่างดำเนินการจะถูกจับและส่งต่อไปยังมิดเดิลแวร์ถัดไป
 */
-demoRoutes.route('/update-account/:id').put(async (req, res, next) => {
-    try {
-        const data = await DemoAccount.findByIdAndUpdate(req.params.id, {
-            $set: req.body
-        }, { new: true });
-        if (!data) {
-            return res.status(404).json({ msg: 'Account not found' });
-        }
-        res.json(data);
-    } catch (error) {
-        console.log(error);
-        next(error);
+demoRoutes.route("/update-account/:id").put(async (req, res, next) => {
+  try {
+    const data = await DemoAccount.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    if (!data) {
+      return res.status(404).json({ msg: "Account not found" });
     }
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 });
 
 /* 
@@ -144,79 +148,112 @@ demoRoutes.route("/delete-account/:id").delete(async (req, res, next) => {
 });
 
 //
-demoRoutes.route('/create-transaction/:id').post( async (req, res, next) => {
+demoRoutes.route("/create-transaction/:id").post(async (req, res, next) => {
   try {
-      const accountId = req.params.id;
-      const account = await DemoAccount.findById(accountId);
+    const accountId = req.params.id;
+    const account = await DemoAccount.findById(accountId);
 
-      if (!account) {
-          return res.status(404).json({ message: "Account not found" });
-      }
+    if (!account) {
+      return res.status(404).json({ message: "Account not found" });
+    }
 
-      // Add the new transaction to the account's transactions array
-      account.transactions.push(req.body);
+    // Add the new transaction to the account's transactions array
+    account.transactions.push(req.body);
 
-      // Save the account with the new transaction
-      const updatedAccount = await account.save();
+    // Save the account with the new transaction
+    const updatedAccount = await account.save();
 
-      res.json(updatedAccount);
+    res.json(updatedAccount);
   } catch (error) {
-      console.error(error);
-      next(error);
-  } 
-});
-
-// Get transactions of a specific account
-demoRoutes.route('/read-account-transactions/:id').get( async (req, res, next) => {
-  try {
-      const account = await DemoAccount.findById(req.params.id);
-      if (!account) {
-          return res.status(404).json({ message: 'Account not found' });
-      }
-      res.json(account.transactions);
-  } catch (error) {
-      console.error(error);
-      next(error);
+    console.error(error);
+    next(error);
   }
 });
 
+// Get transactions of a specific account
+demoRoutes
+  .route("/read-account-transactions/:id")
+  .get(async (req, res, next) => {
+    try {
+      const account = await DemoAccount.findById(req.params.id);
+      if (!account) {
+        return res.status(404).json({ message: "Account not found" });
+      }
+      res.json(account.transactions);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  });
+
 // Get a specific transaction of a specific account
-demoRoutes.route('/read-account-transaction/:accountId/:transactionId').get(async (req, res, next) => {
-  try {
+demoRoutes
+  .route("/read-account-transaction/:accountId/:transactionId")
+  .get(async (req, res, next) => {
+    try {
       const account = await DemoAccount.findById(req.params.accountId);
       if (!account) {
-          return res.status(404).json({ message: 'Account not found' });
+        return res.status(404).json({ message: "Account not found" });
       }
 
       // Find the transaction by its ID
       const transaction = account.transactions.id(req.params.transactionId);
       if (!transaction) {
-          return res.status(404).json({ message: 'Transaction not found' });
+        return res.status(404).json({ message: "Transaction not found" });
       }
 
       res.json(transaction);
-  } catch (error) {
+    } catch (error) {
       console.error(error);
       next(error);
-  }
-});
+    }
+  });
+
+// Update a specific transaction of a specific account
+demoRoutes
+  .route("/update-account-transaction/:accountId/:transactionId")
+  .put(async (req, res, next) => {
+    try {
+      const account = await DemoAccount.findById(req.params.accountId);
+      const transaction = account?.transactions.id(req.params.transactionId);
+
+      if (!account || !transaction) {
+        return res
+          .status(404)
+          .json({ message: "Account or Transaction not found" });
+      }
+
+      // Update the transaction details
+      Object.assign(transaction, req.body);
+      await account.save();
+
+      res.json(transaction);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  });
 
 // Update account balance
-demoRoutes.route('/update-balance/:id').put(async (req, res, next) => {
+demoRoutes.route("/update-balance/:id").put(async (req, res, next) => {
   try {
-      const accountId = req.params.id;
-      const { balance } = req.body; // รับค่า balance จาก body ของ request
+    const accountId = req.params.id;
+    const { balance } = req.body; // รับค่า balance จาก body ของ request
 
-      const updatedAccount = await DemoAccount.findByIdAndUpdate(accountId, { balance }, { new: true });
+    const updatedAccount = await DemoAccount.findByIdAndUpdate(
+      accountId,
+      { balance },
+      { new: true }
+    );
 
-      if (!updatedAccount) {
-          return res.status(404).json({ msg: 'Account not found' });
-      }
-      
-      res.json(updatedAccount);
+    if (!updatedAccount) {
+      return res.status(404).json({ msg: "Account not found" });
+    }
+
+    res.json(updatedAccount);
   } catch (error) {
-      console.error(error);
-      next(error);
+    console.error(error);
+    next(error);
   }
 });
 

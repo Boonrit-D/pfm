@@ -105,4 +105,70 @@ export class UpdateDemoTransactionComponent implements OnInit {
       }
     });
   }
+
+  onSubmit(): any {
+    if (this.demoTransactionForm.invalid) {
+      return; // ไม่ทำงานต่อถ้าฟอร์มไม่ถูกต้อง
+    }
+
+    let amountValue = this.demoTransactionForm.value.amount;
+
+    // ตั้งค่าให้ติดลบหรือบวกตามประเภท
+    if (this.activatedRouter.snapshot.queryParams['amount'] === 'negative') {
+      if (amountValue > 0) {
+        amountValue = -Math.abs(amountValue); // ถ้าเป็น "เงินออก" ให้ติดลบ
+      }
+    } else if (
+      this.activatedRouter.snapshot.queryParams['amount'] === 'positive'
+    ) {
+      amountValue = Math.abs(amountValue); // ถ้าเป็น "เงินเข้า" ให้เป็นบวก
+    }
+
+    // อัปเดตค่าในฟอร์ม
+    this.demoTransactionForm.patchValue({ amount: amountValue });
+
+    // ส่งข้อมูลไปอัปเดต
+    this.demoCrudService
+      .updateTransactionForAccount(
+        this.demoTransactionForm.value,
+        this.getAccountId,
+        this.getTransactionId
+      )
+      .subscribe({
+        next: () => {
+          console.log('Updated transaction successfully');
+          // อัปเดตยอดเงินคงเหลือ
+          this.updateBalance();
+          this.ngZone.run(() =>
+            this.router.navigateByUrl(`/demo/account/${this.getAccountId}`)
+          );
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  // Calculate and update balance
+  updateBalance() {
+    this.demoCrudService
+      .getTransactionsForCurrentAccount(this.getAccountId)
+      .subscribe((transactions) => {
+        this.demoTransactionForAccount = transactions;
+
+        // Calculate the total balance from all transactions.
+        const totalBalance: number = this.demoTransactionForAccount.reduce(
+          (acc: number, txn: { amount: number }) => acc + txn.amount,
+          0
+        );
+        this.demoAccount.balance = totalBalance;
+
+        // Update the balance in the database
+        this.demoCrudService
+          .updateBalance(this.getAccountId, totalBalance)
+          .subscribe((res) => {
+            console.log('ยอดเงินคงเหลือถูกอัปเดต:', res);
+          });
+      });
+  }
 }

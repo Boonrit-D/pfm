@@ -9,7 +9,6 @@ import { CrudService } from '../services/crud.service';
   styleUrl: './edit-account-transaction.component.css',
 })
 export class EditAccountTransactionComponent implements OnInit {
-
   // Category
   categories: string[] = ['รายได้', 'รายจ่าย']; // หมวดหมู่เริ่มต้น
   newCategory: string = ''; // ตัวแปรสำหรับเก็บหมวดหมู่ใหม่
@@ -72,20 +71,20 @@ export class EditAccountTransactionComponent implements OnInit {
         });
       });
 
-      // Get all transaction of current account
-    this.crudService.GetTransactionOfAccount(this.getAccountId).subscribe((res) => {
-      this.transactionsOfAccount = res;
-      console.log(this.transactionsOfAccount);
+    // Get all transaction of current account
+    this.crudService
+      .GetTransactionOfAccount(this.getAccountId)
+      .subscribe((res) => {
+        this.transactionsOfAccount = res;
+        console.log(this.transactionsOfAccount);
 
-      
-      // คำนวณและอัปเดตยอดเงินคงเหลือ
-      this.updateBalance();   
+        // คำนวณและอัปเดตยอดเงินคงเหลือ
+        this.updateBalance();
 
-      // คำนวณยอดรายได้และค่าใช้จ่ายประจำเดือน
-      this.calculateTotalIncome();
-      this.calculateTotalExpenses();
-
-    });
+        // คำนวณยอดรายได้และค่าใช้จ่ายประจำเดือน
+        this.calculateTotalIncome();
+        this.calculateTotalExpenses();
+      });
 
     // ดึงค่า queryParams ที่ถูกส่งมาจากหน้า transaction
     this.activatedRouter.queryParams.subscribe((params) => {
@@ -173,13 +172,18 @@ export class EditAccountTransactionComponent implements OnInit {
   // Calculate and update balance
   updateBalance() {
     if (this.transactionsOfAccount) {
-        // Calculate the total balance from all transactions.
-        const totalBalance: number = this.transactionsOfAccount.reduce((acc: number, txn: { amount: number }) => acc + txn.amount, 0);
-        this.account.balance = totalBalance;
+      // Calculate the total balance from all transactions.
+      const totalBalance: number = this.transactionsOfAccount.reduce(
+        (acc: number, txn: { amount: number }) => acc + txn.amount,
+        0
+      );
+      this.account.balance = totalBalance;
 
-        // Update the balance in the database
-        this.crudService.updateBalance(this.getAccountId, totalBalance).subscribe((res) => {
-            console.log('ยอดเงินคงเหลือถูกอัปเดต:', res);
+      // Update the balance in the database
+      this.crudService
+        .updateBalance(this.getAccountId, totalBalance)
+        .subscribe((res) => {
+          console.log('ยอดเงินคงเหลือถูกอัปเดต:', res);
         });
     }
   }
@@ -192,7 +196,7 @@ export class EditAccountTransactionComponent implements OnInit {
 
   calculateTotalExpenses() {
     this.totalExpenses = this.transactionsOfAccount
-      .filter((txn: any) => txn.amount < 0) 
+      .filter((txn: any) => txn.amount < 0)
       .reduce((acc: number, txn: any) => acc + Math.abs(txn.amount), 0);
   }
 }
