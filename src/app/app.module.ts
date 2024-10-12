@@ -62,8 +62,10 @@ import { LoginComponent } from './auth/login/login.component';
 // นำเข้าส่วนประกอบสำหรับแดชบอร์ด บัญชี และรายการธุรกรรม
 import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
 import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
+import { DemoTransactionsComponent } from './demo/transactions/transactions.component';
+//
 import { DemoAccountDashboardComponent } from './demo/account/dashboard/dashboard.component';
-import { DemoTransactionsComponent } from './demo/account/transactions/transactions.component';
+import { DemoTransactionsForAccountComponent } from './demo/account/transactions/transactions.component';
 
 // Import components for managing accounts and transactions
 // นำเข้าส่วนประกอบสำหรับการจัดการบัญชีและธุรกรรม
@@ -102,12 +104,13 @@ import { UpdateTransactionComponent } from './demo/account/transactions/update-t
     DemoAccountsComponent,
     // Single
     DemoAccountDashboardComponent,
-    DemoTransactionsComponent,
+    DemoTransactionsForAccountComponent,
     // Managing
     CreateDemoAccountComponent,
     UpdateDemoAccountComponent,
     CreateDemoTransactionComponent,
     UpdateTransactionComponent,
+    DemoTransactionsComponent,
   ],
 
   imports: [
@@ -116,7 +119,6 @@ import { UpdateTransactionComponent } from './demo/account/transactions/update-t
     FormsModule,
     ReactiveFormsModule,
     BaseChartDirective,
-    
   ],
 
   providers: [

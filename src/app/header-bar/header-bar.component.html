@@ -39,7 +39,7 @@
               <a
                 class="nav-link"
                 routerLinkActive="active"
-                routerLink="demo/dashboard"
+                routerLink="/demo/dashboard"
                 >แดชบอร์ด</a
               >
             </li>
@@ -47,7 +47,7 @@
               <a
                 class="nav-link"
                 routerLinkActive="active"
-                routerLink="demo/accounts"
+                routerLink="/demo/accounts"
                 >บัญชี</a
               >
             </li>
@@ -55,7 +55,7 @@
               <a
                 class="nav-link"
                 routerLinkActive="active"
-                routerLink="/add-transactionV2"
+                routerLink="/demo/transactions"
                 >รายการธุรกรรม</a
               >
             </li>
@@ -235,29 +235,25 @@
             </span>
 
             <ul class="block bg-red-100 text-sm" *ngIf="menuBarVisible">
-              <li class="mx-4 hover:text-red-500 cursor-pointer py-2">
-                <span
-                  (click)="isDropdownOpen = false"
-                  routerLinkActive="active"
-                  routerLink="demo/dashboard"
-                >
-                  • แดชบอร์ด
-                </span>
+              <li
+                class="mx-4 hover:text-red-500 cursor-pointer py-2"
+                routerLinkActive="active"
+                routerLink="/demo/dashboard"
+              >
+                <span (click)="isDropdownOpen = false"> • แดชบอร์ด </span>
+              </li>
+              <li
+                class="mx-4 hover:text-red-500 cursor-pointer py-2"
+                routerLinkActive="active"
+                routerLink="/demo/accounts"
+              >
+                <span (click)="isDropdownOpen = false"> • บัญชี </span>
               </li>
               <li class="mx-4 hover:text-red-500 cursor-pointer py-2">
                 <span
                   (click)="isDropdownOpen = false"
                   routerLinkActive="active"
-                  routerLink="demo/accounts"
-                >
-                  • บัญชี
-                </span>
-              </li>
-              <li class="mx-4 hover:text-red-500 cursor-pointer py-2">
-                <span
-                  (click)="isDropdownOpen = false"
-                  routerLinkActive="active"
-                  routerLink="/add-transactionV2"
+                  routerLink="/demo/transactions"
                 >
                   • รายการธุรกรรม
                 </span>

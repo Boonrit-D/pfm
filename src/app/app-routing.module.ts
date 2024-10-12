@@ -21,9 +21,10 @@ import { LoginComponent } from './auth/login/login.component';
 // All
 import { DemoDashboardComponent } from './demo/dashboard/dashboard.component';
 import { DemoAccountsComponent } from './demo/account/accounts/accounts.component';
-import { DemoTransactionsComponent } from './demo/account/transactions/transactions.component';
+import { DemoTransactionsComponent } from './demo/transactions/transactions.component';
 // Single
 import { DemoAccountDashboardComponent } from './demo/account/dashboard/dashboard.component';
+import { DemoTransactionsForAccountComponent } from './demo/account/transactions/transactions.component';
 // Managing accounts
 import { CreateDemoAccountComponent } from './demo/account/accounts/create-account/create-account.component';
 import { UpdateDemoAccountComponent } from './demo/account/accounts/update-account/update-account.component';
@@ -133,7 +134,11 @@ const routes: Routes = [
   },
   // Transactions
   {
-    path: 'demo/account/:accountId/transactions', component: DemoTransactionsComponent, title: 'Transactions'
+    path: 'demo/transactions', component: DemoTransactionsComponent, title: 'Transactions'
+  },
+  // Transactions For Account
+  {
+    path: 'demo/account/:accountId/transactions', component: DemoTransactionsForAccountComponent, title: 'Transactions For Account'
   },
   // Managing accounts
   {

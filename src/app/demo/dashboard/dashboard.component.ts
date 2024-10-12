@@ -321,10 +321,5 @@ export class DemoDashboardComponent implements OnInit {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
       })
       .slice(0, 3); // ตัดให้แสดงแค่ 3 รายการล่าสุด
-
-    // // เรียงลำดับธุรกรรมจากใหม่ไปเก่า
-    // this.allTransaction = transactions.sort((a, b) => {
-    //   return new Date(b.date).getTime() - new Date(a.date).getTime();
-    // });
   }
 }
