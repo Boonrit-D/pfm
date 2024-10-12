@@ -206,6 +206,11 @@ export class DemoAccountDashboardComponent implements OnInit {
       this.demoAccount = res;
     });
 
+    // ตั้งเวลาให้รอ 2 วินาทีก่อนแสดงกราฟ
+    setTimeout(() => {
+      this.isLoading = false; // เปลี่ยนสถานะการโหลดเป็น false
+    }, 1000); // หน่วงเวลา 2000 มิลลิวินาที หรือ 2 วินาที
+
   }
 
   // 
