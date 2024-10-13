@@ -7,7 +7,6 @@ Importing necessary Angular modules for the application:
 - PLATFORM_ID: Token representing the platform the app is running on.
 - catchError: Operator for handling errors in observables.
 - map: Operator for transforming data in observables.
-- tap: Operator for performing side effects in observables.
 - Observable: Class representing a stream of data.
 - throwError: Function for creating an observable that emits an error.
 - HttpClient: Service for making HTTP requests.
@@ -20,7 +19,6 @@ Importing necessary Angular modules for the application:
 - PLATFORM_ID: โทเคนที่แสดงถึงแพลตฟอร์มที่แอปกำลังทำงานอยู่
 - catchError: โอเปอเรเตอร์สำหรับจัดการข้อผิดพลาดใน observable
 - map: โอเปอเรเตอร์สำหรับแปลงข้อมูลใน observable
-- tap: โอเปอเรเตอร์สำหรับทำผลข้างเคียงใน observable
 - Observable: คลาสที่แสดงถึงสตรีมของข้อมูล
 - throwError: ฟังก์ชันสำหรับสร้าง observable ที่ส่งออกข้อผิดพลาด
 - HttpClient: บริการสำหรับทำคำขอ HTTP
@@ -29,7 +27,7 @@ Importing necessary Angular modules for the application:
 - isPlatformBrowser: ฟังก์ชันยูทิลิตี้เพื่อตรวจสอบว่าแอปกำลังทำงานอยู่ในเบราว์เซอร์หรือไม่
 */
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import {
   HttpClient,
@@ -123,24 +121,19 @@ export class DemoCrudService {
 
   - This method constructs the API URL by appending the account ID to the REST API's update route.
   - It sends an HTTP PUT request with the updated account data using HttpClient.
-  - The 'tap' operator is used to log the server's response.
   - The 'pipe' method applies the 'catchError' operator to handle any errors during the request.
 
   - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีไปที่เส้นทางการอัปเดตของ REST API
   - ส่งคำขอ HTTP PUT พร้อมข้อมูลบัญชีที่อัปเดตโดยใช้ HttpClient
-  - ใช้โอเปอเรเตอร์ 'tap' ในการบันทึกการตอบกลับจากเซิร์ฟเวอร์
   - ใช้เมธอด 'pipe' เพื่อประยุกต์ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้น
   */
   updateAccount(accountId: string, data: Account): Observable<any> {
     let API_URL = `${this.REST_API_DEMO_ACCOUNT}/update-account/${accountId}`;
     console.log(`API URL: ${API_URL}`);
 
-    return this.httpClient.put(API_URL, data).pipe(
-      tap((response) => {
-        console.log('Response from update account:', response);
-      }),
-      catchError(this.handleError)
-    );
+    return this.httpClient
+      .put(API_URL, data)
+      .pipe(catchError(this.handleError));
   }
 
   /*
@@ -163,6 +156,18 @@ export class DemoCrudService {
   // ►►► Transaction API Methods ◄◄◄
   // ►►► เมธอด API สำหรับจัดการธุรกรรม ◄◄◄
 
+  /*
+    Method to create a new transaction for a demo account:
+    เมธอดสำหรับสร้างธุรกรรมใหม่สำหรับบัญชีเดโม:
+
+    - This method constructs the API URL by appending the account ID to the create transaction route of the REST API.
+    - It uses HttpClient's 'post' method to send transaction data along with the account ID to the server.
+    - The 'pipe' method is used to apply the 'catchError' operator, which handles any errors that may occur during the request.
+
+    - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีไปที่เส้นทางการสร้างธุรกรรมของ REST API
+    - ใช้เมธอด 'post' ของ HttpClient เพื่อส่งข้อมูลธุรกรรมพร้อมกับ ID ของบัญชีไปยังเซิร์ฟเวอร์
+    - ใช้เมธอด 'pipe' เพื่อประยุกต์ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
   createTransaction(data: Transaction, accountId: string): Observable<any> {
     const API_URL = `${this.REST_API_DEMO_ACCOUNT}/create-transaction/${accountId}`;
     return this.httpClient
@@ -170,7 +175,18 @@ export class DemoCrudService {
       .pipe(catchError(this.handleError));
   }
 
-  //
+  /*
+    Method to retrieve all transactions from all demo accounts:
+    เมธอดสำหรับดึงข้อมูลธุรกรรมทั้งหมดจากบัญชีเดโมทั้งหมด:
+
+    - This method first fetches all demo accounts by calling the 'getAccounts' method.
+    - It uses the 'map' operator to iterate over the accounts and extract all transactions using the 'flatMap' function.
+    - The 'catchError' operator is used to handle any errors that occur during the process.
+
+    - เมธอดนี้ดึงบัญชีเดโมทั้งหมดโดยเรียกใช้เมธอด 'getAccounts'
+    - ใช้โอเปอเรเตอร์ 'map' เพื่อวนลูปผ่านบัญชีและดึงข้อมูลธุรกรรมทั้งหมดด้วย 'flatMap'
+    - ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการดำเนินการ
+  */
   getTransactionsForAccounts(): Observable<Transaction[]> {
     return this.getAccounts().pipe(
       map((accounts: Account[]) =>
@@ -180,7 +196,20 @@ export class DemoCrudService {
     );
   }
 
-  //
+  /*
+    Method to retrieve transactions for the current demo account by its ID:
+    เมธอดสำหรับดึงข้อมูลธุรกรรมของบัญชีเดโมปัจจุบันโดยใช้ ID ของบัญชี:
+
+    - This method constructs the API URL by appending the account ID to the REST API's route for reading account transactions.
+    - It uses HttpClient's 'get' method to send an HTTP GET request to the server.
+    - The 'map' operator processes the response, ensuring that an empty object is returned if the response is null.
+    - The 'catchError' operator handles any errors that may occur during the request.
+
+    - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีไปที่เส้นทางของ REST API สำหรับการดึงข้อมูลธุรกรรมของบัญชี
+    - ใช้เมธอด 'get' ของ HttpClient เพื่อส่งคำขอ HTTP GET ไปยังเซิร์ฟเวอร์
+    - ใช้โอเปอเรเตอร์ 'map' เพื่อประมวลผลการตอบกลับ และคืนค่าเป็นออบเจ็กต์ว่างหากการตอบกลับเป็นค่าว่าง
+    - ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
   getTransactionsForCurrentAccount(accountId: string): Observable<any> {
     const API_URL = `${this.REST_API_DEMO_ACCOUNT}/read-account-transactions/${accountId}`;
     return this.httpClient.get(API_URL).pipe(
@@ -189,6 +218,20 @@ export class DemoCrudService {
     );
   }
 
+  /*
+    Method to retrieve a specific transaction for an account by account ID and transaction ID:
+    เมธอดสำหรับดึงข้อมูลธุรกรรมเฉพาะของบัญชีโดยใช้ ID ของบัญชีและ ID ของธุรกรรม:
+
+    - This method constructs the API URL by appending both the account ID and the transaction ID to the REST API's route for reading a specific transaction.
+    - It uses HttpClient's 'get' method to send an HTTP GET request to the server.
+    - The 'map' operator processes the response, ensuring that an empty object is returned if the response is null.
+    - The 'catchError' operator handles any errors that may occur during the request.
+
+    - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีและ ID ของธุรกรรมไปที่เส้นทางของ REST API สำหรับการดึงข้อมูลธุรกรรมเฉพาะ
+    - ใช้เมธอด 'get' ของ HttpClient เพื่อส่งคำขอ HTTP GET ไปยังเซิร์ฟเวอร์
+    - ใช้โอเปอเรเตอร์ 'map' เพื่อประมวลผลการตอบกลับ และคืนค่าเป็นออบเจ็กต์ว่างหากการตอบกลับเป็นค่าว่าง
+    - ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
   getTransactionForAccount(
     accountId: string,
     transactionId: string
@@ -200,6 +243,18 @@ export class DemoCrudService {
     );
   }
 
+  /*
+    Method to update a transaction for a specific account by its ID:
+    เมธอดสำหรับอัปเดตธุรกรรมของบัญชีเฉพาะโดยใช้ ID ของธุรกรรมและบัญชี:
+
+    - This method constructs the API URL using both the account ID and transaction ID.
+    - It sends an HTTP PUT request to the server with the updated transaction data.
+    - The 'catchError' operator is used to handle any errors that occur during the request.
+
+    - เมธอดนี้สร้าง URL ของ API โดยใช้ทั้ง ID ของบัญชีและธุรกรรม
+    - ใช้คำสั่ง PUT เพื่อส่งข้อมูลธุรกรรมที่อัปเดตไปยังเซิร์ฟเวอร์
+    - ใช้โอเปอเรเตอร์ 'catchError' เพื่อจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
   updateTransactionForAccount(
     data: Transaction,
     accountId: string,
@@ -207,16 +262,23 @@ export class DemoCrudService {
   ): Observable<any> {
     let API_URL = `${this.REST_API_DEMO_ACCOUNT}/update-account-transaction/${accountId}/${transactionId}`;
 
-    // ทำการ PUT โดยส่งข้อมูลของ transaction และ headers ไปยัง API
-    return this.httpClient.put(API_URL, data).pipe(
-      tap((response) => {
-        console.log('Response from update transaction of account:', response);
-      }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
-      catchError(this.handleError) // จัดการข้อผิดพลาด
-    );
+    return this.httpClient
+      .put(API_URL, data)
+      .pipe(catchError(this.handleError));
   }
 
-  // Update balance
+  /*
+    Method to update the balance of a specific account:
+    เมธอดสำหรับอัปเดตยอดคงเหลือของบัญชีเฉพาะ:
+
+    - This method constructs the API URL by appending the account ID to the update balance route.
+    - It sends an HTTP PUT request to the server with the new balance in the request body.
+    - The response from the server will contain the result of the update operation.
+
+    - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีไปที่เส้นทางอัปเดตยอดคงเหลือ
+    - ส่งคำสั่ง PUT พร้อมยอดคงเหลือใหม่ใน body ของคำขอไปยังเซิร์ฟเวอร์
+    - การตอบกลับจากเซิร์ฟเวอร์จะมีผลลัพธ์ของการอัปเดต
+  */
   updateBalance(accountId: string, balance: number): Observable<any> {
     return this.httpClient.put<any>(
       `${this.REST_API_DEMO_ACCOUNT}/update-balance/${accountId}`,
@@ -224,18 +286,25 @@ export class DemoCrudService {
     );
   }
 
-  //Delete transaction for account
+  /*
+    Method to delete a specific transaction for an account:
+    เมธอดสำหรับลบธุรกรรมเฉพาะของบัญชี:
+
+    - This method constructs the API URL by appending both the account ID and transaction ID to the delete route.
+    - It sends an HTTP DELETE request to the server to remove the specified transaction.
+    - The 'catchError' operator is applied to handle any errors that may occur during the request.
+
+    - เมธอดนี้สร้าง URL ของ API โดยเพิ่มทั้ง ID ของบัญชีและ ID ของธุรกรรมไปที่เส้นทางการลบ
+    - ส่งคำขอ HTTP DELETE ไปยังเซิร์ฟเวอร์เพื่อลบธุรกรรมที่ระบุ
+    - ใช้โอเปอเรเตอร์ 'catchError' เพื่อจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
   deleteTransactionForAccount(
     accountId: string,
     transactionId: string
   ): Observable<any> {
     let API_URL = `${this.REST_API_DEMO_ACCOUNT}/delete-account-transaction/${accountId}/${transactionId}`;
 
-    // ทำการ DELETE
     return this.httpClient.delete(API_URL).pipe(
-      tap((response) => {
-        console.log('Deleted transaction of account:', response);
-      }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
       catchError(this.handleError) // จัดการข้อผิดพลาด
     );
   }
@@ -247,17 +316,14 @@ export class DemoCrudService {
 
     if (isPlatformBrowser(this.platformId)) {
       if (error.error instanceof ErrorEvent) {
-        // Handle client error
         errorMessage = error.error.message;
       } else {
-        // Handle server error
         errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
       }
-      alert(errorMessage); // alert
+      alert(errorMessage);
       return throwError(() => new Error(errorMessage));
     }
 
-    // Handle server-side error
     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     return throwError(() => new Error('An unknown error occurred.'));
   }

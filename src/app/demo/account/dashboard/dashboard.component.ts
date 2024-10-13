@@ -4,6 +4,7 @@ import { DemoCrudService } from '../../../services/demo-crud.service';
 import { ChartConfiguration } from 'chart.js';
 import { Chart, registerables } from 'chart.js';
 import { isPlatformBrowser } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,6 +33,7 @@ export class DemoAccountDashboardComponent implements OnInit {
   constructor(
     private activatedRouter: ActivatedRoute,
     private demoCrudService: DemoCrudService,
+    private title: Title,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     // Get ID
@@ -42,7 +44,7 @@ export class DemoAccountDashboardComponent implements OnInit {
 
   // ►►► Charts ◄◄◄
   //
-  title = 'demo-chart-account';
+  // title = 'demo-chart-account';
 
   //
   public barChartLegend = true;
@@ -204,6 +206,7 @@ export class DemoAccountDashboardComponent implements OnInit {
       // Get current account
       this.demoCrudService.getAccount(this.getAccountId).subscribe((res) => {
         this.demoAccount = res;
+        this.title.setTitle(this.demoAccount.accountName);
       });
 
       // Get all transaction of current account

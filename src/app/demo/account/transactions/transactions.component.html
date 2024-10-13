@@ -37,8 +37,8 @@
         <tr
           *ngFor="let transaction of demoTransactionForAccount"
           class="even:bg-gray-50 hover:bg-green-100"
-          routerLink="/demo/account/{{ demoAccount._id }}/update-transaction/{{
-            transaction._id
+          routerLink="/demo/account/{{ demoAccount?._id }}/update-transaction/{{
+            transaction?._id
           }}"
           [queryParams]="{
             amount: transaction.amount >= 0 ? 'positive' : 'negative'
@@ -66,7 +66,7 @@
           </td>
         </tr>
         <!-- แสดงข้อความเมื่อไม่มีธุรกรรม -->
-        <tr *ngIf="!demoTransactionForAccount.length">
+        <tr *ngIf="!demoTransactionForAccount?.length">
           <td colspan="4" class="py-2 px-4 text-center text-gray-500">
             ไม่มีรายการธุรกรรม
           </td>

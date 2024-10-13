@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'html'
+  name: 'html',
 })
 export class HtmlPipe implements PipeTransform {
   transform(value: string): any {
