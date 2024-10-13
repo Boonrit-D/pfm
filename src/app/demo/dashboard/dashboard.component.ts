@@ -29,6 +29,10 @@ export class DemoDashboardComponent implements OnInit {
   //
   recentTransactions: any[] = [];
   allTransaction: any[] = [];
+  //
+  showPopover = false;
+  mouseX: number = 0;
+  mouseY: number = 0;
 
   // Chart
   title = 'dashboard-charts-demo';
@@ -228,6 +232,9 @@ export class DemoDashboardComponent implements OnInit {
           this.isLoading = false; // เปลี่ยนสถานะการโหลดเป็น false
         }, 1000); // หน่วงเวลา 2000 มิลลิวินาที หรือ 2 วินาที
       });
+
+      // Listen to mousemove event on the document
+      document.addEventListener('mousemove', this.onMouseMove.bind(this));
     }
   }
 
@@ -322,5 +329,20 @@ export class DemoDashboardComponent implements OnInit {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
       })
       .slice(0, 3); // ตัดให้แสดงแค่ 3 รายการล่าสุด
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (this.isBrowser) {
+      // Update mouseX and mouseY with the current mouse position including the scroll offset
+      this.mouseX = event.clientX + window.scrollX; // รวมการ scroll แนวนอน
+      this.mouseY = event.clientY + window.scrollY; // รวมการ scroll แนวตั้ง
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.isBrowser) {
+      // Clean up the event listener when the component is destroyed
+      document.removeEventListener('mousemove', this.onMouseMove.bind(this));
+    }
   }
 }

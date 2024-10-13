@@ -5,13 +5,16 @@ import { DemoCrudService } from '../../services/demo-crud.service';
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
-  styleUrl: './transactions.component.css'
+  styleUrl: './transactions.component.css',
 })
 export class DemoTransactionsComponent implements OnInit {
   currentDate = new Date();
   demoAccounts: any;
   allTransaction: any[] = [];
 
+  showPopover = false;
+  mouseX: number = 0;
+  mouseY: number = 0;
   isBrowser: boolean;
 
   constructor(
@@ -27,12 +30,13 @@ export class DemoTransactionsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isBrowser) {
-
       this.demoCrudService.getAccounts().subscribe((res) => {
         this.demoAccounts = res;
-  
+
         // เรียกใช้ฟังก์ชันเพื่อดึงธุรกรรมล่าสุด
         this.getRecentTransactions();
+        // Listen to mousemove event on the document
+        document.addEventListener('mousemove', this.onMouseMove.bind(this));
       });
     }
   }
@@ -58,5 +62,20 @@ export class DemoTransactionsComponent implements OnInit {
     this.allTransaction = transactions.sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (this.isBrowser) {
+      // Update mouseX and mouseY with the current mouse position including the scroll offset
+      this.mouseX = event.clientX + window.scrollX; // รวมการ scroll แนวนอน
+      this.mouseY = event.clientY + window.scrollY; // รวมการ scroll แนวตั้ง
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.isBrowser) {
+      // Clean up the event listener when the component is destroyed
+      document.removeEventListener('mousemove', this.onMouseMove.bind(this));
+    }
   }
 }

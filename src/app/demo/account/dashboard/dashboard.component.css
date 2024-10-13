@@ -3,7 +3,8 @@ h2,
 button,
 h3,
 tr,
-canvas {
+canvas,
+span {
   font-family: Mitr;
 }
 

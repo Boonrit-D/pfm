@@ -93,11 +93,25 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Popover -->
+        <div
+          *ngIf="showPopover"
+          class="absolute z-10 w-46 p-1 text-sm text-gray-500 bg-red-100 border border-gray-200 rounded-lg shadow-md opacity-80"
+          [ngStyle]="{ top: mouseY + 'px', left: mouseX + 'px' }"
+        >
+          <span class="border-b font-semibold text-red-500"
+            >คลิกเลือกรายการที่ต้องการ!</span
+          >
+          <br />
+          <span> เพื่ออัปเดตหรือแก้ไข </span>
+        </div>
         <tr
           *ngFor="let transaction of recentTransactions"
-          class="even:bg-gray-50 hover:bg-green-100"
+          class="even:bg-gray-50 hover:bg-green-100 relative"
           routerLink="/demo/account/{{transaction.accountId}}/update-transaction/{{transaction._id}}"
           [queryParams]="{ amount: (transaction.amount >= 0 ? 'positive' : 'negative') }"
+          (mouseenter)="showPopover = true"
+          (mouseleave)="showPopover = false"
         >
           <td class="py-2 px-4 hidden md:table-cell">
             {{ transaction.date | date : "dd/MM/yyyy" }} <br />

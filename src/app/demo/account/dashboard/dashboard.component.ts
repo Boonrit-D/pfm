@@ -24,6 +24,9 @@ export class DemoAccountDashboardComponent implements OnInit {
   isLoading: boolean = true;
   isBrowser: boolean;
   recentTransactions: any;
+  showPopover = false;
+  mouseX: number = 0;
+  mouseY: number = 0;
 
   // ►►► Constructor ◄◄◄
   constructor(
@@ -235,6 +238,9 @@ export class DemoAccountDashboardComponent implements OnInit {
             this.isLoading = false; // เปลี่ยนสถานะการโหลดเป็น false
           }, 1000); // หน่วงเวลา 2000 มิลลิวินาที หรือ 2 วินาที
         });
+
+        // Listen to mousemove event on the document
+        document.addEventListener('mousemove', this.onMouseMove.bind(this));
     }
   }
 
@@ -316,5 +322,20 @@ export class DemoAccountDashboardComponent implements OnInit {
       .reduce((acc: number, txn: any) => acc + Math.abs(txn.amount), 0);
 
     return { income, expenses };
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (this.isBrowser) {
+      // Update mouseX and mouseY with the current mouse position including the scroll offset
+      this.mouseX = event.clientX + window.scrollX; // รวมการ scroll แนวนอน
+      this.mouseY = event.clientY + window.scrollY; // รวมการ scroll แนวตั้ง
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.isBrowser) {
+      // Clean up the event listener when the component is destroyed
+      document.removeEventListener('mousemove', this.onMouseMove.bind(this));
+    }
   }
 }

@@ -4,6 +4,7 @@ button,
 h3,
 tr,
 canvas,
-p {
+p,
+span {
   font-family: Mitr;
 }

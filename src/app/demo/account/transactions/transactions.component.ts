@@ -16,6 +16,9 @@ export class DemoTransactionsForAccountComponent implements OnInit {
   demoAccount: any;
 
   isBrowser: boolean;
+  showPopover = false;
+  mouseX: number = 0;
+  mouseY: number = 0;
 
   constructor(
     // public formBuilder: FormBuilder,
@@ -43,6 +46,24 @@ export class DemoTransactionsForAccountComponent implements OnInit {
       this.demoCrudService.getAccount(this.getAccountId).subscribe((res) => {
         this.demoAccount = res;
       });
+
+      // Listen to mousemove event on the document
+      document.addEventListener('mousemove', this.onMouseMove.bind(this));
+    }
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (this.isBrowser) {
+      // Update mouseX and mouseY with the current mouse position including the scroll offset
+      this.mouseX = event.clientX + window.scrollX; // รวมการ scroll แนวนอน
+      this.mouseY = event.clientY + window.scrollY; // รวมการ scroll แนวตั้ง
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.isBrowser) {
+      // Clean up the event listener when the component is destroyed
+      document.removeEventListener('mousemove', this.onMouseMove.bind(this));
     }
   }
 }
