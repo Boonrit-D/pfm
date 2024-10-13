@@ -257,6 +257,36 @@ demoRoutes.route("/update-balance/:id").put(async (req, res, next) => {
   }
 });
 
+// Delete a specific transaction of a specific account
+demoRoutes.route('/delete-account-transaction/:accountId/:transactionId').delete(async (req, res, next) => {
+  try {
+      // ดึง Account จาก req.params.accountId
+      const account = await DemoAccount.findById(req.params.accountId);
+
+      if (!account) {
+          return res.status(404).json({ message: 'Account not found' });
+      }
+
+      // ค้นหาและลบ transaction จากบัญชี
+      const transaction = account.transactions.id(req.params.transactionId);
+      if (!transaction) {
+          return res.status(404).json({ message: 'Transaction not found' });
+      }
+
+      // ลบ transaction ออกจาก array
+      account.transactions.pull(transaction); // ใช้ pull แทน remove
+      await account.save(); // บันทึกการเปลี่ยนแปลงหลังจากลบ
+
+      res.status(200).json({
+          message: 'Transaction deleted successfully',
+          deletedTransaction: transaction
+      });
+  } catch (error) {
+      console.error(error);
+      next(error);
+  }
+});
+
 /*
 Exporting the demoRoutes module:
 ส่งออกโมดูล demoRoutes:

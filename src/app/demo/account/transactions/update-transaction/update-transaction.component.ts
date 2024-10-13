@@ -171,4 +171,25 @@ export class UpdateDemoTransactionComponent implements OnInit {
           });
       });
   }
+
+  delete(): any {
+    if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบธุรกรรมนี้?')) {
+      this.demoCrudService
+        .deleteTransactionForAccount(this.getAccountId, this.getTransactionId)
+        .subscribe({
+          next: () => {
+            console.log('Deleted transaction successfully');
+            this.updateBalance();
+            this.ngZone.run(() =>
+              this.router.navigateByUrl(
+                `/demo/account/${this.getAccountId}`
+              )
+            );
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+    }
+  }
 }

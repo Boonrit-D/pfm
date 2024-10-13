@@ -7,13 +7,16 @@
     <h2 class="text-2xl text-gray-900 text-center">
       {{ demoAccount.accountName }}
     </h2>
+    <div class="flex items-center justify-center sm:hidden">
+      <span>เพิ่มรายการธุรกรรม</span>
+    </div>
     <div class="flex items-center justify-center">
       <button
         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded m-1"
         routerLink="/demo/account/{{ demoAccount._id }}/create-transaction"
         [queryParams]="{ amount: 'positive' }"
       >
-        <span class="block sm:hidden">+</span>
+        <span class="block sm:hidden">เงินเข้า +</span>
         <span class="hidden sm:block">เงินเข้า +</span>
       </button>
 
@@ -22,7 +25,7 @@
         routerLink="/demo/account/{{ demoAccount._id }}/create-transaction"
         [queryParams]="{ amount: 'negative' }"
       >
-        <span class="block sm:hidden">-</span>
+        <span class="block sm:hidden">เงินออก -</span>
         <span class="hidden sm:block">เงินออก -</span>
       </button>
     </div>

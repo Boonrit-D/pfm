@@ -224,6 +224,22 @@ export class DemoCrudService {
     );
   }
 
+  //Delete transaction for account
+  deleteTransactionForAccount(
+    accountId: string,
+    transactionId: string
+  ): Observable<any> {
+    let API_URL = `${this.REST_API_DEMO_ACCOUNT}/delete-account-transaction/${accountId}/${transactionId}`;
+
+    // ทำการ DELETE
+    return this.httpClient.delete(API_URL).pipe(
+      tap((response) => {
+        console.log('Deleted transaction of account:', response);
+      }), // ใช้ tap เพื่อตรวจสอบ response ที่ได้รับ
+      catchError(this.handleError) // จัดการข้อผิดพลาด
+    );
+  }
+
   // Method to handle errors from HTTP requests
   // เมธอดสำหรับจัดการข้อผิดพลาดจากคำขอ HTTP
   handleError(error: HttpErrorResponse) {
