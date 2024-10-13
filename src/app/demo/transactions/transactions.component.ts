@@ -67,8 +67,10 @@ export class DemoTransactionsComponent implements OnInit {
   onMouseMove(event: MouseEvent) {
     if (this.isBrowser) {
       // Update mouseX and mouseY with the current mouse position including the scroll offset
-      this.mouseX = event.clientX + window.scrollX; // รวมการ scroll แนวนอน
-      this.mouseY = event.clientY + window.scrollY; // รวมการ scroll แนวตั้ง
+      const offsetX = 10; // ระยะห่างในแนวนอน (สามารถปรับค่าได้ตามต้องการ)
+      const offsetY = 10; // ระยะห่างในแนวตั้ง (สามารถปรับค่าได้ตามต้องการ)
+      this.mouseX = event.clientX + window.scrollX + offsetX;; // รวมการ scroll แนวนอน
+      this.mouseY = event.clientY + window.scrollY + offsetY;; // รวมการ scroll แนวตั้ง
     }
   }
 
