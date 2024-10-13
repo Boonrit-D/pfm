@@ -36,7 +36,10 @@
         </div>
         <tr
           *ngFor="let transaction of demoTransactionForAccount"
-          class="even:bg-gray-50 hover:bg-green-100"
+          [ngClass]="{
+            'even:bg-gray-50': !showPopover,
+            'hover:bg-green-100 bg-gray-50 even:bg-white': showPopover
+          }"
           routerLink="/demo/account/{{ demoAccount?._id }}/update-transaction/{{
             transaction?._id
           }}"

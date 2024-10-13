@@ -107,7 +107,10 @@
         </div>
         <tr
           *ngFor="let transaction of recentTransactions"
-          class="even:bg-gray-50 hover:bg-green-100 relative"
+          [ngClass]="{
+            'even:bg-gray-50': !showPopover,
+            'hover:bg-green-100 bg-gray-50 even:bg-white': showPopover
+          }"
           routerLink="/demo/account/{{transaction.accountId}}/update-transaction/{{transaction._id}}"
           [queryParams]="{ amount: (transaction.amount >= 0 ? 'positive' : 'negative') }"
           (mouseenter)="showPopover = true"
