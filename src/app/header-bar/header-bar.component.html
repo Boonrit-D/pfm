@@ -62,21 +62,40 @@
           </ul>
         </ul>
 
+        <!-- Next to the home button -->
+        <li>
+          <a
+            class="nav-link"
+            *ngIf="authService.isLoggedIn()"
+            routerLinkActive="active"
+            routerLink="/dashboard"
+          >
+            แดชบอร์ด
+          </a>
+        </li>
+
         <li>
           <a
             class="nav-link"
             *ngIf="authService.isLoggedIn()"
             routerLinkActive="active"
             routerLink="/account"
-            >บัญชี</a
           >
-          <ng-template #loggedOut>
-            <div routerLinkActive="active" routerLink="/login" class="flipper">
-              <div class="logInA"></div>
-              <div class="logInB"></div>
-            </div>
-          </ng-template>
+            บัญชี
+          </a>
         </li>
+
+        <li>
+          <a
+            class="nav-link"
+            *ngIf="authService.isLoggedIn()"
+            routerLinkActive="active"
+            routerLink="/account"
+          >
+            รายการธุรกรรม
+          </a>
+        </li>
+        
       </ul>
     </div>
 
