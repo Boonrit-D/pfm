@@ -103,8 +103,14 @@ import { UpdateDemoAccountComponent } from './demo/account/accounts/update-accou
 import { CreateDemoTransactionComponent } from './demo/account/transactions/create-transaction/create-transaction.component';
 import { UpdateDemoTransactionComponent } from './demo/account/transactions/update-transaction/update-transaction.component';
 
+// ►►► Live version components ◄◄◄
+// ►►► คอมโพเนนต์ของเวอร์ชันใช้งานจริง ◄◄◄
+
+// Import components for the live version of dashboards, accounts, and transaction lists
+// นำเข้าคอมโพเนนต์สำหรับเวอร์ชันใช้งานจริงของแดชบอร์ด บัญชี และรายการธุรกรรม
+import { DashboardComponent } from './live/dashboard/dashboard.component';
+
 // ส่วนตัวอย่าง || ส่วนที่จะถูกแก้ไข || ส่วนที่จะถูนำออกในเวอร์ชันใช้งานจริง
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { AddTransactionComponent } from './add-transaction/add-transaction.component';
 import { EditTransactionComponent } from './edit-transaction/edit-transaction.component';
 import { AddTransactionV2Component } from './add-transaction-v2/add-transaction-v2.component';
