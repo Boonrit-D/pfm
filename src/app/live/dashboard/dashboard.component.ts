@@ -8,6 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
+  host: { '[attr.data-id]': 'uniqueId' },
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
