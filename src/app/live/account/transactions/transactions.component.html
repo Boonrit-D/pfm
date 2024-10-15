@@ -1,1 +1,80 @@
-<p>transactions works!</p>
+<!-- <p>transactions works!</p> -->
+<div class="mt-4 max-w-screen-xl mx-auto">
+  <div
+    class="lg:flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3 text-center lg:text-left"
+  >
+    <h2 class="mx-2 flex flex-col lg:flex-row" *ngIf="account">
+      รายการธุรกรรม <span class="ml-2">({{ account.accountName }})</span>
+    </h2>
+    <p>วันที่ปัจจุบัน: {{ currentDate | date : "dd/MM/yyyy HH:mm:ss" }}</p>
+  </div>
+  <p class="text-center lg:text-right text-sm text-gray-300">
+    กดเลือกรายการที่ท่านต้องการอัปเดตหรือแก้ไขได้เลย
+  </p>
+  <!-- Recent Transactions -->
+  <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+    <table class="min-w-full bg-white">
+      <thead>
+        <tr class="w-full bg-gray-200">
+          <th class="py-2 px-4 text-left">วันที่และเวลา</th>
+          <th class="py-2 px-4 text-left">หมวดหมู่</th>
+          <th class="py-2 px-4 text-right">จำนวนเงิน</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Popover -->
+        <div
+          *ngIf="showPopover"
+          class="absolute z-10 w-46 p-1 text-sm text-gray-500 bg-red-100 border border-gray-200 rounded-lg shadow-md opacity-80"
+          [ngStyle]="{ top: mouseY + 'px', left: mouseX + 'px' }"
+        >
+          <span class="border-b font-semibold text-red-500"
+            >คลิกเลือกรายการที่ต้องการ!</span
+          >
+          <br />
+          <span> เพื่ออัปเดตหรือแก้ไข </span>
+        </div>
+        <tr
+          *ngFor="let transaction of transactionForAccount"
+          [ngClass]="{
+            'even:bg-gray-50': !showPopover,
+            'hover:bg-green-100 bg-gray-50 even:bg-white': showPopover
+          }"
+          routerLink="/account/{{ account?._id }}/update-transaction/{{
+            transaction?._id
+          }}"
+          [queryParams]="{
+            amount: transaction.amount >= 0 ? 'positive' : 'negative'
+          }"
+          (mouseenter)="showPopover = true"
+          (mouseleave)="showPopover = false"
+        >
+          <td class="py-2 px-4 hidden md:table-cell">
+            {{ transaction.date | date : "dd/MM/yyyy" }} <br />
+            {{ transaction.date | date : "HH:mm:ss" }}
+          </td>
+          <td class="py-2 px-4 table-cell md:hidden">
+            {{ transaction.date | date : "d/M H:mm" }}
+          </td>
+          <td class="py-2 px-4">{{ transaction.category }}</td>
+          <td class="py-2 px-4 text-right">
+            <span
+              [ngClass]="{
+                'text-red-500': transaction.amount < 0,
+                'text-green-500': transaction.amount >= 0
+              }"
+            >
+              {{ transaction.amount | number : "1.2-2" }}
+            </span>
+          </td>
+        </tr>
+        <!-- แสดงข้อความเมื่อไม่มีธุรกรรม -->
+        <tr *ngIf="!transactionForAccount?.length">
+          <td colspan="4" class="py-2 px-4 text-center text-gray-500">
+            ไม่มีรายการธุรกรรม
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

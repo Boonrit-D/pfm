@@ -192,6 +192,31 @@ export class CrudService {
   }
 
   /*
+    Method to retrieve a specific transaction for an account by account ID and transaction ID:
+    เมธอดสำหรับดึงข้อมูลธุรกรรมเฉพาะของบัญชีโดยใช้ ID ของบัญชีและ ID ของธุรกรรม:
+
+    - This method constructs the API URL by appending both the account ID and the transaction ID to the REST API's route for reading a specific transaction.
+    - It uses HttpClient's 'get' method to send an HTTP GET request to the server.
+    - The 'map' operator processes the response, ensuring that an empty object is returned if the response is null.
+    - The 'catchError' operator handles any errors that may occur during the request.
+
+    - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีและ ID ของธุรกรรมไปที่เส้นทางของ REST API สำหรับการดึงข้อมูลธุรกรรมเฉพาะ
+    - ใช้เมธอด 'get' ของ HttpClient เพื่อส่งคำขอ HTTP GET ไปยังเซิร์ฟเวอร์
+    - ใช้โอเปอเรเตอร์ 'map' เพื่อประมวลผลการตอบกลับ และคืนค่าเป็นออบเจ็กต์ว่างหากการตอบกลับเป็นค่าว่าง
+    - ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
+    getTransactionForAccount(
+      accountId: string,
+      transactionId: string
+    ): Observable<any> {
+      let API_URL = `${this.REST_API}/read-account-transaction/${accountId}/${transactionId}`;
+      return this.httpClient.get(API_URL).pipe(
+        map((res: any) => res || {}),
+        catchError(this.handleError)
+      );
+    }
+
+  /*
     Method to update the balance of a specific account:
     เมธอดสำหรับอัปเดตยอดคงเหลือของบัญชีเฉพาะ:
 
