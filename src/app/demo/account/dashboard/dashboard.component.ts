@@ -7,7 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-demo-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
