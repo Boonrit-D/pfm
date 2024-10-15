@@ -79,7 +79,7 @@
             class="nav-link"
             *ngIf="authService.isLoggedIn()"
             routerLinkActive="active"
-            routerLink="/account"
+            routerLink="/accounts"
           >
             บัญชี
           </a>
@@ -90,7 +90,7 @@
             class="nav-link"
             *ngIf="authService.isLoggedIn()"
             routerLinkActive="active"
-            routerLink="/account"
+            routerLink="/transactions"
           >
             รายการธุรกรรม
           </a>
@@ -325,8 +325,15 @@
       >
         <a class="nav-link">แดชบอร์ด</a>
       </li>
-      <li routerLinkActive="active" routerLink="/account" (click)="closeMenu()">
+      <li routerLinkActive="active" routerLink="/accounts" (click)="closeMenu()">
         <a class="nav-link">บัญชี</a>
+      </li>
+      <li
+        routerLinkActive="active"
+        routerLink="/transactions"
+        (click)="closeMenu()"
+      >
+        <a class="nav-link">รายการธุรกรรม</a>
       </li>
     </ul>
 

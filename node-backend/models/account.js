@@ -1,28 +1,36 @@
-const { type } = require("mongoose");
+// Importing the mongoose library for MongoDB object modeling
+// นำเข้าไลบรารี mongoose สำหรับการสร้างโมเดลใน MongoDB
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
-// สร้าง schema สำหรับ transactions โดยให้ MongoDB สร้าง _id อัตโนมัติ
+// Defining the schema for transactions
+// กำหนดสคีมาสำหรับธุรกรรม
 const transactionSchema = new mongoose.Schema({
-  _id: { type: mongoose.Schema.Types.ObjectId, auto: true }, // ใช้ ObjectId และให้สร้างอัตโนมัติ
+  _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
   category: { type: String, required: true },
   amount: { type: Number, required: true },
   description: { type: String },
   date: { type: Date, required: true },
 });
 
-// สร้าง schema สำหรับ account โดยไม่ต้องกำหนด id เอง
-const accountSchema = new mongoose.Schema({
-  accountName: { type: String, required: true },
-  currency: { type: String, required: true },
-  description: { type: String },
-  balance: { type: Number, required: true },
-  transactions: [transactionSchema], // ใช้ array ของ transactions
-},{
-    collection : 'accounts'
-});
+// Defining the schema for accounts
+// กำหนดสคีมาสำหรับบัญชี
+const accountSchema = new mongoose.Schema(
+  {
+    accountName: { type: String, required: true },
+    currency: { type: String, required: true },
+    description: { type: String },
+    balance: { type: Number, required: true },
+    transactions: [transactionSchema],
+  },
+  {
+    collection: "accounts",
+  }
+);
 
-// สร้าง model ที่ใช้ schema นี้
+// Creating the Account model from the account schema
+// สร้างโมเดล Account จากสคีมาบัญชี
 const Account = mongoose.model("Account", accountSchema);
 
+// Exporting the Account model for use in other parts of the application
+// ส่งออกโมเดล Account เพื่อใช้ในส่วนอื่นของแอปพลิเคชัน
 module.exports = Account;

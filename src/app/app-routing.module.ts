@@ -10,18 +10,6 @@ import { RouterModule, Routes } from '@angular/router';
 // นำเข้าคอมโพเนนต์หลักสำหรับโครงสร้างของแอปพลิเคชัน
 import { HomeComponent } from './home/home.component';
 
-// ส่วนตัวอย่าง || ส่วนที่จะถูกแก้ไข || ส่วนที่จะถูนำออกในเวอร์ชันใช้งานจริง
-import { AddTransactionComponent } from './add-transaction/add-transaction.component';
-import { AddTransactionV2Component } from './add-transaction-v2/add-transaction-v2.component';
-import { EditTransactionComponent } from './edit-transaction/edit-transaction.component';
-import { EditTransactionV2Component } from './edit-transaction-v2/edit-transaction-v2.component';
-import { AccountComponent } from './account/account.component';
-import { AddAccountComponent } from './add-account/add-account.component';
-import { EditAccountComponent } from './edit-account/edit-account.component';
-import { AccountDashboardComponent } from './account-dashboard/account-dashboard.component';
-import { AddAccountTransactionComponent } from './add-account-transaction/add-account-transaction.component';
-import { AccountTransactionComponent } from './account-transaction/account-transaction.component';
-import { EditAccountTransactionComponent } from './edit-account-transaction/edit-account-transaction.component';
 
 // ►►► Authentication components ◄◄◄
 // ►►► คอมโพเนนต์การยืนยันตัวตนเพื่อใช้งาน ◄◄◄
@@ -58,6 +46,8 @@ import { UpdateDemoTransactionComponent } from './demo/account/transactions/upda
 // Import components for the live version of dashboards, accounts, and transaction lists
 // นำเข้าคอมโพเนนต์สำหรับเวอร์ชันใช้งานจริงของแดชบอร์ด บัญชี และรายการธุรกรรม
 import { DashboardComponent } from './live/dashboard/dashboard.component';
+import { AccountsComponent } from './live/account/accounts/accounts.component';
+import { TransactionsComponent } from './live/account/transactions/transactions.component';
 
 // Defines the routes for the application using the Routes interface.
 // กำหนดเส้นทางสำหรับแอปพลิเคชันโดยใช้ interface Routes.
@@ -71,92 +61,6 @@ const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
     title: 'Personal Financial Management',
-  },
-
-  // ส่วนตัวอย่าง || ส่วนที่จะถูกแก้ไข || ส่วนที่จะถูนำออกในเวอร์ชันใช้งานจริง
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    title: 'Dashboard',
-  },
-
-  // Transaction version 1
-  {
-    path: 'add-transaction',
-    component: AddTransactionComponent,
-    title: 'Add Transaction', // หน้าสำหรับเพิ่ม Transaction
-  },
-  {
-    path: 'add-transactionV2',
-    component: AddTransactionV2Component,
-    title: 'Add TransactionV2', // หน้าสำหรับเพิ่ม Transaction Version 2
-  },
-
-  // Transaction version 2
-  {
-    path: 'edit-transaction/:id',
-    component: EditTransactionComponent,
-    title: 'Edit Transaction', // หน้าสำหรับแก้ไข Transaction
-  },
-  {
-    path: 'edit-transactionV2/:id',
-    component: EditTransactionV2Component,
-    title: 'Edit TransactionV2', // หน้าสำหรับเพิ่ม Transaction Version 2
-  },
-
-  // Account Path
-  // เส้นทางของบัญชี
-  {
-    // Account Page
-    // หน้าบัญชี
-    path: 'account',
-    component: AccountComponent,
-    title: 'Account',
-  },
-  {
-    // Add Account Page
-    // หน้าเพิ่มบัญชี
-    path: 'add-account',
-    component: AddAccountComponent,
-    title: 'Add account',
-  },
-  {
-    // Edit Account Page
-    // หน้าแก้ไขบัญชี
-    path: 'edit-account/:id',
-    component: EditAccountComponent,
-    title: 'Edit account',
-  },
-  {
-    // Account Dashboard Page
-    // หน้าภาพรวมของบัญชี
-    path: 'account/dashboard/:id',
-    component: AccountDashboardComponent,
-    title: 'Account dashboard',
-  },
-
-  // Account Transaction Path
-  // เส้นทางของการทำธุรกรรมของบัญชี
-  {
-    // Page For Adding Account Transactions
-    // หน้าเพิ่มรายการธุรกรรมของบัญชี
-    path: 'account/add-transaction/:id',
-    component: AddAccountTransactionComponent,
-    title: "Add transaction's account",
-  },
-  {
-    // Account Transaction Page
-    // หน้ารายการธุรกรรมของบัญชี
-    path: 'account/transaction/:id',
-    component: AccountTransactionComponent,
-    title: "transaction's account",
-  },
-  {
-    // Page For Editing Account Transactions
-    // หน้าแก้ไขรายการธุรกรรมของบัญชี
-    path: 'account/edit-transaction/:accountId/:transactionId',
-    component: EditAccountTransactionComponent,
-    title: "edit transaction's account",
   },
 
   // ►►► Authentication Paths ◄◄◄
@@ -227,6 +131,27 @@ const routes: Routes = [
     path: 'demo/account/:accountId/update-transaction/:transactionId',
     component: UpdateDemoTransactionComponent,
     title: 'Update Transaction',
+  },
+
+  // ►►► Live version paths ◄◄◄
+  // ►►► เส้นทางของเวอร์ชันใช้งานจริง ◄◄◄
+
+  // Path for the live version that display overall information
+  // เส้นทางสำหรับเวอร์ชันช้งานจริงที่แสดงข้อมูลโดยรวม
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    title: 'Dashboard',
+  },
+  {
+    path: 'accounts',
+    component: AccountsComponent,
+    title: 'Accounts',
+  },
+  {
+    path: 'transactions',
+    component: TransactionsComponent,
+    title: 'transactions',
   },
 ];
 

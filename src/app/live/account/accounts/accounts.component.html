@@ -1,0 +1,133 @@
+<!-- <p>accounts works!</p> -->
+<div class="mt-4 max-w-screen-xl mx-auto">
+    <div class="md:container md:mx-auto mt-4 mx-4">
+      <!-- Container for account section header with responsive layout -->
+      <!-- คอนเทนเนอร์สำหรับส่วนหัวของบัญชีพร้อมการจัดเลย์เอาต์ที่ตอบสนอง -->
+      <div
+        class="lg:flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3 text-center md:text-left"
+      >
+        <h2 class="font-bold">บัญชี</h2>
+      </div>
+  
+      <!-- Conditional rendering of demo accounts list -->
+      <!-- การแสดงรายการบัญชีตัวอย่างตามเงื่อนไข -->
+      <div *ngIf="accounts && accounts.length > 0; else noAccounts">
+        <div
+          *ngFor="let account of accounts; let i = index"
+          class="even:bg-rose-50 mt-2 rounded-md"
+        >
+          <div class="relative">
+            <img
+              *ngIf="!hoveredIndexes[i]"
+              src="https://cdn-icons-png.flaticon.com/512/7216/7216132.png"
+              alt="Settings"
+              class="h-6 w-6 right-0 absolute cursor-pointer"
+              (mouseenter)="hoveredIndexes[i] = true"
+              (mouseleave)="hoveredIndexes[i] = false"
+              (click)="toggleDropdown(i)"
+            />
+            <img
+              *ngIf="hoveredIndexes[i]"
+              src="https://cdn-icons-png.flaticon.com/512/8428/8428385.png"
+              alt="Settings"
+              class="h-6 w-6 right-0 absolute cursor-pointer"
+              (mouseenter)="hoveredIndexes[i] = true"
+              (mouseleave)="hoveredIndexes[i] = false"
+              (click)="toggleDropdown(i)"
+            />
+            <div
+              *ngIf="dropdownOpen[i]"
+              class="absolute right-0 top-2 mt-2 w-24 text-center bg-white border-2 border-gray-200 shadow-md rounded-full"
+            >
+              <ul>
+                <li
+                  class="p-2 hover:rounded-t-full hover:bg-red-500 hover:text-white hover:font-bold cursor-pointer border-b"
+                  routerLinkActive="active"
+                  routerLink="/demo/update-account/{{ account._id }}"
+                >
+                  อัปเดตหรือแก้ไข
+                </li>
+                <li
+                  class="p-2 hover:rounded-b-full hover:bg-red-500 hover:text-white hover:font-bold cursor-pointer border-t"
+                  (click)="toggleDropdown(i)"
+                  (click)="deleteAccount(account._id, i)"
+                >
+                  ลบ
+                </li>
+              </ul>
+            </div>
+          </div>
+  
+          <!-- Account information -->
+          <!-- ข้อมูลของบัญชี -->
+          <div
+            class="flex items-center justify-between p-4 border-b border-red-100"
+          >
+            <div class="flex items-center">
+              <div
+                [ngClass]="accountBackgroundColors[i]"
+                class="rounded-full p-2 mr-4"
+              >
+                <img
+                  [src]="accountImages[i]"
+                  alt="Random Icon"
+                  class="h-20 cursor-pointer"
+                  routerLink="/demo/account/{{ account._id }}"
+                />
+              </div>
+              <div>
+                <h4 
+                  class="font-bold cursor-pointer hover:text-red-500"
+                  routerLink="/demo/account/{{ account._id }}"
+                >
+                  {{ account.accountName }}
+                </h4>
+                <p class="text-sm text-gray-500">{{ account.description }}</p>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <p
+                [ngClass]="{
+                  'text-green-500': account.balance > 0,
+                  'text-red-500': account.balance < 0,
+                  'text-right font-bold': true
+                }"
+              >
+                {{ account.balance | number : "1.2-2" }}
+                {{ account.currency }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- No Account -->
+      <!-- ในกรณีที่ไม่มีบัญชี -->
+  
+      <ng-template #noAccounts class="block">
+        <p class="text-center text-3xl mt-4 text-gray-500">ไม่มีบัญชีในระบบ</p>
+        <div class="flex-between flex">
+          <img src="assets/images/pointing-down.png" class="h-40 left-0" />
+          <img src="assets/images/pointing-left.png" class="h-40 mx-auto" />
+        </div>
+      </ng-template>
+  
+      <!-- Create New Account Button -->
+      <!-- ปุ่มสร้างบัญชีใหม่ -->
+  
+      <div class="text-left mt-2 flex">
+        <button
+          class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-md font-semibold text-gray-900 rounded-lg group bg-gradient-to-br from-red-500 to-red-400 group-hover:from-red-500 group-hover:to-red-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+          routerLinkActive="active"
+          routerLink="/demo/create-account"
+        >
+          <span
+            class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+          >
+            สร้างบัญชีใหม่
+          </span>
+        </button>
+        <img class="h-8 bg-white my-auto" src="assets/images/arrow.png" alt="" />
+      </div>
+    </div>
+  </div>

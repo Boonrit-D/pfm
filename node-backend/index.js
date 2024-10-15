@@ -43,6 +43,10 @@ const authRoute = require('./routes/auth.routes');
 // นำเข้าเส้นทางของ demo จากไฟล์เส้นทางที่ระบุ
 const demoRoutes = require('./routes/demo.routes')
 
+// Importing the live routes from the specified routes file
+// นำเข้าเส้นทางของการใช้งานจากไฟล์เส้นทางที่ระบุ
+const routes = require('./routes/live.routes')
+
 mongoose.Promise = global.Promise;
 mongoose.connect(mongoDb.db, {
 }).then(() => {
@@ -62,7 +66,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'dist/')));
 
 // Base route
-app.get('/', (req, res) => {
+app.get('/index', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
@@ -72,7 +76,7 @@ app.use('/transactionVersion2', transactionRouteV2);
 
 // API root of Account
 // app.use('/account', accountRoute);
-app.use('/account', jwtMiddleware, accountRoute);
+// app.use('/account', jwtMiddleware, accountRoute);
 
 // API root of User
 app.use('/auth', authRoute);
@@ -81,6 +85,10 @@ app.use('/auth', authRoute);
 // Mounting the demo routes under the '/demo' path
 // ติดตั้งเส้นทางของ demo ภายใต้เส้นทาง '/demo'
 app.use('/demo', demoRoutes);
+
+// Mounting the live routes under the '/' path
+// ติดตั้งเส้นทางของการใช้งานภายใต้เส้นทาง '/'
+app.use('/accounts', jwtMiddleware, routes);
 
 // PORT
 const port = process.env.PORT || 8000;

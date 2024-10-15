@@ -13,21 +13,35 @@ import { isPlatformBrowser } from '@angular/common';
 })
 //
 export class DashboardComponent implements OnInit {
-  Transactions: any = [];
-  TransactionsV2: any = [];
+  // Declaring
+  transactionsForAccounts: any;
+  accounts: any;
+  // Calculator variables
+  totalIncome: number = 0;
+  totalExpenses: number = 0;
+  totalBalance: number = 0;
+  //
   currentDate = new Date();
+  //
   isLoading: boolean = true;
+  //
   isBrowser: boolean;
+  //
+  recentTransactions: any[] = [];
+  allTransaction: any[] = [];
+  //
+  showPopover = false;
+  mouseX: number = 0;
+  mouseY: number = 0;
 
   // Chart
-  title = 'dashboard-charts-demo';
+  title = 'dashboard-charts';
 
   public barChartLegend = true;
   public barChartPlugins = [];
 
   public barChartData: ChartConfiguration<'bar'>['data'] = {
-    // labels: this.getLastSixMonths(),
-    labels: ["เงิน"],
+    labels: this.getLastSixMonths(),
     datasets: [
       {
         data: [],
@@ -146,56 +160,191 @@ export class DashboardComponent implements OnInit {
     ];
   }
 
+  // ฟังก์ชันเพื่ออัปเดตข้อมูลกราฟ
+
+  updateChartData() {
+    if (this.barChartData.labels) {
+      const incomeData = Array(this.barChartData.labels.length).fill(0);
+      const expensesData = Array(this.barChartData.labels.length).fill(0);
+
+      this.transactionsForAccounts.forEach((txn: any) => {
+        const monthIndex = this.getLastSixMonths().findIndex(
+          (month) =>
+            month ===
+            new Date(txn.date).toLocaleString('default', { month: 'long' })
+        );
+        if (monthIndex >= 0) {
+          if (txn.amount > 0) {
+            incomeData[monthIndex] += txn.amount; // เพิ่มข้อมูลที่เป็นบวกลงในเงินเข้า
+          } else {
+            expensesData[monthIndex] += Math.abs(txn.amount); // เพิ่มข้อมูลที่เป็นลบลงในเงินออก
+          }
+        }
+      });
+
+      this.barChartData.datasets[0].data = incomeData; // อัปเดตข้อมูลเงินเข้า
+      this.barChartData.datasets[1].data = expensesData; // อัปเดตข้อมูลเงินออก
+    }
+  }
+
   constructor(
     public formBuilder: FormBuilder,
     private router: Router,
     private ngZone: NgZone,
     private activatedRouter: ActivatedRoute,
-    private CrudService: CrudService,
+    private crudService: CrudService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {this.isBrowser = isPlatformBrowser(this.platformId);}
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
-    // Register Chart.js controllers, elements, and plugins
-    Chart.register(...registerables);
+    if (this.isBrowser) {
+      // Register Chart.js controllers, elements, and plugins
+      Chart.register(...registerables);
 
-    // V1
-    this.CrudService.GetTransactions().subscribe((res) => {
-      console.log(res);
-      this.Transactions = res;
-    });
+      this.crudService.getAccounts().subscribe((res) => {
+        this.accounts = res;
 
-    // V2
-    this.CrudService.GetTransactionsV2().subscribe((res) => {
-      console.log(res);
-      this.TransactionsV2 = res;
-    });
-
-    setTimeout(() => {
-      this.isLoading = false; // เปลี่ยนสถานะการโหลดเป็น false
-    }, 1000); // หน่วงเวลา 2000 มิลลิวินาที หรือ 2 วินาที
-  }
-
-  // V1
-  delete(id: any, i: any) {
-    console.log(id);
-    if (window.confirm('Do you want to go ahead?')) {
-      this.CrudService.deleteTransaction(id).subscribe((res) => {
-        this.Transactions.splice(i, 1);
+        // เรียกใช้ฟังก์ชันเพื่อดึงธุรกรรมล่าสุด
+        this.getRecentTransactions();
       });
+
+      // Get all transactions of all accounts
+      this.crudService.getTransactionsForAccounts().subscribe((res) => {
+        this.transactionsForAccounts = res;
+
+        // คำนวณยอดรายได้และค่าใช้จ่ายประจำเดือน
+        this.calculateTotalIncome();
+        this.calculateTotalExpenses();
+        this.calculateTotalBalance();
+
+        // อัปเดตข้อมูลในกราฟหลังจากได้ข้อมูลธุรกรรมแล้ว
+        this.updateChartData(); // เรียกใช้ฟังก์ชันนี้เพื่ออัปเดตกราฟ
+
+        // คำนวณเงินเข้าและเงินออกของเดือนนี้
+        const { income, expenses } =
+          this.calculateCurrentMonthIncomeAndExpenses();
+        this.setChartData(income, expenses); // อัปเดตข้อมูลใน Pie Chart
+
+        // ตั้งเวลาให้รอ 2 วินาทีก่อนแสดงกราฟ
+        setTimeout(() => {
+          this.isLoading = false; // เปลี่ยนสถานะการโหลดเป็น false
+        }, 1000); // หน่วงเวลา 2000 มิลลิวินาที หรือ 2 วินาที
+      });
+
+      // Listen to mousemove event on the document
+      document.addEventListener('mousemove', this.onMouseMove.bind(this));
     }
   }
 
-  // V2
-  deleteV2(id: any, i: any) {
-    console.log(id);
-    if (window.confirm('Do you want to go ahead?')) {
-      this.CrudService.deleteTransactionV2(id).subscribe((res) => {
-        this.TransactionsV2.splice(i, 1);
-      });
+  calculateTotalIncome() {
+    this.totalIncome = this.transactionsForAccounts
+      .filter((txn: any) => txn.amount > 0)
+      .reduce((acc: number, txn: any) => acc + txn.amount, 0);
+  }
+
+  calculateTotalExpenses() {
+    this.totalExpenses = this.transactionsForAccounts
+      .filter((txn: any) => txn.amount < 0)
+      .reduce((acc: number, txn: any) => acc + Math.abs(txn.amount), 0);
+  }
+
+  calculateTotalBalance() {
+    this.calculateTotalIncome(); // คำนวณยอดรวมรายได้
+    this.calculateTotalExpenses(); // คำนวณยอดรวมค่าใช้จ่าย
+
+    // คำนวณยอดคงเหลือ
+    this.totalBalance = this.totalIncome - this.totalExpenses;
+  }
+
+  //
+  getLastSixMonths(): string[] {
+    if (typeof window === 'undefined') {
+      return [];
+    }
+    const months: string[] = [];
+    const currentDate = new Date();
+
+    const isSmallScreen = window.innerWidth < 768;
+    const numberOfMonths = isSmallScreen ? 3 : 6;
+
+    for (let i = 0; i < numberOfMonths; i++) {
+      const month = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - i,
+        1
+      );
+      months.unshift(month.toLocaleString('default', { month: 'long' }));
+    }
+
+    return months;
+  }
+
+  // คำนวณเงินเข้าและเงินออกของเดือนนี้
+  calculateCurrentMonthIncomeAndExpenses() {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const income = this.transactionsForAccounts
+      .filter(
+        (txn: any) =>
+          txn.amount > 0 &&
+          new Date(txn.date).getMonth() === currentMonth &&
+          new Date(txn.date).getFullYear() === currentYear
+      )
+      .reduce((acc: number, txn: any) => acc + txn.amount, 0);
+
+    const expenses = this.transactionsForAccounts
+      .filter(
+        (txn: any) =>
+          txn.amount < 0 &&
+          new Date(txn.date).getMonth() === currentMonth &&
+          new Date(txn.date).getFullYear() === currentYear
+      )
+      .reduce((acc: number, txn: any) => acc + Math.abs(txn.amount), 0);
+
+    return { income, expenses };
+  }
+
+  getRecentTransactions() {
+    const transactions: any[] = [];
+
+    // วนลูปเพื่อดึงธุรกรรมจากแต่ละบัญชีและเพิ่มชื่อบัญชีเข้าไปในแต่ละรายการ
+    this.accounts.forEach((account: any) => {
+      if (account.transactions && account.transactions.length > 0) {
+        account.transactions.forEach((transaction: any) => {
+          // เพิ่ม accountName เข้าไปใน transaction
+          transactions.push({
+            ...transaction,
+            accountName: account.accountName,
+            accountId: account._id,
+          });
+        });
+      }
+    });
+
+    // เรียงลำดับธุรกรรมจากใหม่ไปเก่า
+    this.recentTransactions = transactions
+      .sort((a, b) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      })
+      .slice(0, 3); // ตัดให้แสดงแค่ 3 รายการล่าสุด
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (this.isBrowser) {
+      // Update mouseX and mouseY with the current mouse position including the scroll offset
+      const offsetX = 10; // ระยะห่างในแนวนอน (สามารถปรับค่าได้ตามต้องการ)
+      const offsetY = 10; // ระยะห่างในแนวตั้ง (สามารถปรับค่าได้ตามต้องการ)
+      this.mouseX = event.clientX + window.scrollX + offsetX;; // รวมการ scroll แนวนอน
+      this.mouseY = event.clientY + window.scrollY + offsetY;; // รวมการ scroll แนวตั้ง
     }
   }
 
-  // 
-  
+  ngOnDestroy(): void {
+    if (this.isBrowser) {
+      // Clean up the event listener when the component is destroyed
+      document.removeEventListener('mousemove', this.onMouseMove.bind(this));
+    }
+  }
 }

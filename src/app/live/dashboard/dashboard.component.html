@@ -1,6 +1,6 @@
-<p>dashboard works!</p>
+<!-- <p>live dashboard works!</p> -->
 <div class="mt-4 max-w-screen-xl mx-auto">
-    <div
+  <div
     class="lg:flex justify-between flex-wrap md:flex-nowrap items-center pt-2 pb-2 mb-3 text-center md:text-left"
   >
     <h2 class="mx-2">แดชบอร์ด</h2>
@@ -50,17 +50,14 @@
     <!-- Total Balance -->
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h3 class="text-xl font-semibold text-gray-700">ยอดเงินคงเหลือทั้งหมด</h3>
-      <!-- <span
+      <span
         [ngClass]="{
-          'text-red-500': account.balance < 0,
-          'text-green-500': account.balance > 0,
+          'text-red-500': totalBalance < 0,
+          'text-green-500': totalBalance > 0,
           'text-3xl font-bold mt-2': true
         }"
-      > -->
-      <span>
-        <!-- {{ account.balance | number : "1.2-2" }} {{ account.currency }} -->
-        {{ 5000 | number : "1.2-2" }}
-        <!-- เปลี่ยนเป็นค่าที่จะให้แสดง -->
+      >
+        {{ totalBalance | number : "1.2-2" }}
       </span>
     </div>
 
@@ -68,9 +65,7 @@
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h3 class="text-xl font-semibold text-gray-700">รายได้ประจำเดือน</h3>
       <p class="text-3xl text-green-500 mt-2">
-        <!-- {{ totalIncome | number : "1.2-2" }} {{ account.currency }} -->
-        {{ 10000 | number : "1.2-2" }}
-        <!-- เปลี่ยนเป็นค่าที่จะให้แสดง -->
+        {{ totalIncome | number : "1.2-2" }}
       </p>
     </div>
 
@@ -78,8 +73,7 @@
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h3 class="text-xl font-semibold text-gray-700">ค่าใช้จ่ายรายเดือน</h3>
       <p class="text-3xl text-red-500 mt-2">
-        <!-- {{ totalExpenses | number : "1.2-2" }} {{ account.currency }} -->
-        {{ 5000 | number : "1.2-2" }}
+        {{ totalExpenses | number : "1.2-2" }}
       </p>
     </div>
   </div>
@@ -93,177 +87,75 @@
       <thead>
         <tr class="w-full bg-gray-200">
           <th class="py-2 px-4 text-left">วันที่และเวลา</th>
+          <th class="py-2 px-4 text-left">บัญชี</th>
           <th class="py-2 px-4 text-left">หมวดหมู่</th>
           <th class="py-2 px-4 text-right">จำนวนเงิน</th>
         </tr>
       </thead>
-      <!-- <tbody>
+      <tbody>
+        <!-- Popover -->
+        <div
+          *ngIf="showPopover"
+          class="absolute z-10 w-46 p-1 text-sm text-gray-500 bg-red-100 border border-gray-200 rounded-lg shadow-md opacity-80"
+          [ngStyle]="{ top: mouseY + 'px', left: mouseX + 'px' }"
+        >
+          <span class="border-b font-semibold text-red-500"
+            >คลิกเลือกรายการที่ต้องการ!</span
+          >
+          <br />
+          <span> เพื่ออัปเดตหรือแก้ไข </span>
+        </div>
         <tr
-          *ngFor="let transactionOfAccount of recentTransactions; let i = index"
-          class="even:bg-gray-50 hover:bg-green-100"
-          [routerLink]="[
-            '/account/edit-transaction',
-            account._id,
-            transactionOfAccount._id
-          ]"
-          [queryParams]="{
-            amount: transactionOfAccount.amount >= 0 ? 'positive' : 'negative'
+          *ngFor="let transaction of recentTransactions"
+          [ngClass]="{
+            'even:bg-gray-50': !showPopover,
+            'hover:bg-green-100 bg-gray-50 even:bg-white': showPopover
           }"
+          routerLink="/demo/account/{{
+            transaction.accountId
+          }}/update-transaction/{{ transaction._id }}"
+          [queryParams]="{
+            amount: transaction.amount >= 0 ? 'positive' : 'negative'
+          }"
+          (mouseenter)="showPopover = true"
+          (mouseleave)="showPopover = false"
         >
           <td class="py-2 px-4 hidden md:table-cell">
-            {{ transactionOfAccount.date | date : "dd/MM/yyyy" }} <br />
-            {{ transactionOfAccount.date | date : "HH:mm:ss" }}
+            {{ transaction.date | date : "dd/MM/yyyy" }} <br />
+            {{ transaction.date | date : "HH:mm:ss" }}
           </td>
           <td class="py-2 px-4 table-cell md:hidden">
-            {{ transactionOfAccount.date | date : "d/M H:mm" }}
+            {{ transaction.date | date : "d/M H:mm" }}
           </td>
-          <td class="py-2 px-4">{{ transactionOfAccount.category }}</td>
+          <td class="py-2 px-4">
+            {{ transaction.accountName }}
+          </td>
+          <td class="py-2 px-4">{{ transaction.category }}</td>
           <td class="py-2 px-4 text-right">
             <span
               [ngClass]="{
-                'text-red-500': transactionOfAccount.amount < 0,
-                'text-green-500': transactionOfAccount.amount >= 0
+                'text-red-500': transaction.amount < 0,
+                'text-green-500': transaction.amount >= 0
               }"
             >
-              {{ transactionOfAccount.amount | number : "1.2-2" }}
+              {{ transaction.amount | number : "1.2-2" }}
             </span>
           </td>
         </tr>
-      </tbody> -->
+        <!-- แสดงข้อความเมื่อไม่มีธุรกรรม -->
+        <tr *ngIf="!recentTransactions.length">
+          <td colspan="4" class="py-2 px-4 text-center text-gray-500">
+            ไม่มีรายการธุรกรรม
+          </td>
+        </tr>
+      </tbody>
     </table>
-    <!-- <button
+    <!--  -->
+    <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm mt-2"
-      routerLink="/account/transaction/{{ account._id }}"
+      routerLink="/demo/transactions"
     >
       ดูทั้งหมด
-    </button> -->
+    </button>
   </div>
-
-  <!-- V1 table -->
-
-  <!-- <div class="overflow-x-auto w-full sm:w-auto rounded-md">
-    <table class="min-w-full border border-gray-300">
-      <thead class="bg-gray-200">
-        <tr>
-          <th
-            class="px-4 py-2 border-b border-gray-300 text-left hidden sm:table-cell"
-          >
-            ไอดี
-          </th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">หัวข้อ</th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">
-            ประเภทของธุรกรรม
-          </th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">
-            จำนวนเงิน
-          </th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left text-center">
-            แก้ไข/ลบ
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let transaction of Transactions; let i = index"
-          class="even:bg-gray-50"
-        >
-          <th
-            class="px-4 py-2 border-b border-gray-300 text-left hidden sm:table-cell"
-          >
-            {{ transaction._id }}
-          </th>
-          <td class="px-4 py-2 border-b border-gray-300">
-            {{ transaction.title }}
-          </td>
-          <td class="px-4 py-2 border-b border-gray-300">
-            {{ transaction.type }}
-          </td>
-          <td class="px-4 py-2 border-b border-gray-300">
-            {{ transaction.amount }}
-          </td>
-          <td class="px-4 py-2 border-b border-gray-300 text-center">
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm m-1"
-              routerLink="/edit-transaction/{{ transaction._id }}"
-            >
-              แก้ไข
-            </button>
-            <button
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm m-1"
-              (click)="delete(transaction._id, i)"
-            >
-              ลบ
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
-
-  <!-- V2 table -->
-
-  <!-- <div class="overflow-x-auto w-full sm:w-auto rounded-md mt-10">
-    <table class="min-w-full border border-gray-300">
-      <thead class="bg-gray-200">
-        <tr>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">
-            วันที่ทำธุรกรรม
-          </th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">
-            ประเภทของธุรกรรม
-          </th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">
-            จำนวนเงินที่เกี่ยวข้อง
-          </th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">
-            รายละเอียดเพิ่มเติม
-          </th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">
-            หมวดหมู่ของค่าใช้จ่าย
-          </th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left text-center">
-            แก้ไข/ลบ
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let transactionV2 of TransactionsV2; let i = index"
-          class="even:bg-gray-50"
-        >
-          <th class="px-4 py-2 border-b border-gray-300 text-left">
-            {{ transactionV2.date | date : "dd/MM/yyyy" }}
-            <br />
-            {{ transactionV2.date | date : "HH:mm:ss" }}
-          </th>
-          <td class="px-4 py-2 border-b border-gray-300">
-            {{ transactionV2.type }}
-          </td>
-          <td class="px-4 py-2 border-b border-gray-300">
-            {{ transactionV2.amount }}
-          </td>
-          <td class="px-4 py-2 border-b border-gray-300">
-            {{ transactionV2.description }}
-          </td>
-          <td class="px-4 py-2 border-b border-gray-300">
-            {{ transactionV2.category }}
-          </td>
-          <td class="px-4 py-2 border-b border-gray-300 text-center">
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm m-1"
-              routerLink="/edit-transactionV2/{{ transactionV2._id }}"
-            >
-              แก้ไข
-            </button>
-            <button
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm m-1"
-              (click)="deleteV2(transactionV2._id, i)"
-            >
-              ลบ
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div> -->
+</div>
