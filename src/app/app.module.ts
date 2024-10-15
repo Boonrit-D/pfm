@@ -117,6 +117,10 @@ import { TransactionsComponent } from './live/account/transactions/transactions.
 import { CreateAccountComponent } from './live/account/accounts/create-account/create-account.component';
 import { UpdateAccountComponent } from './live/account/accounts/update-account/update-account.component';
 
+// Import components for the demo version of the specific account dashboard and its transaction lists
+// นำเข้าคอมโพเนนต์สำหรับเวอร์ชันเดโมของแดชบอร์ดบัญชีที่กำหนดและรายการธุรกรรมของบัญชีนั้น
+import { AccountDashboardComponent } from './live/account/dashboard/dashboard.component';
+
 /* 
 NgModule Decorator
 The main module of the application that defines necessary components, features, and services.
@@ -185,6 +189,9 @@ The main module of the application that defines necessary components, features, 
     DashboardComponent,
     AccountsComponent,
     TransactionsComponent,
+    // Components for the live version of the specific account
+    // คอมโพเนนต์สำหรับเวอร์ชันใช้งานจริงของบัญชีที่กำหนด
+    AccountDashboardComponent,
     // Components for managing
     // คอมโพเนนต์สำหรับการจัดการ
     CreateAccountComponent,

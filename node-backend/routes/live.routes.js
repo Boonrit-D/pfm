@@ -121,6 +121,66 @@ routes.route("/update-account/:id").put(async (req, res, next) => {
   }
 });
 
+// Get transactions of a specific account
+routes.route("/read-account-transactions/:id").get(async (req, res, next) => {
+  try {
+    const account = await Account.findById(req.params.id);
+    if (!account) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+    res.json(account.transactions);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// Get a specific transaction of a specific account
+routes
+  .route("/read-account-transaction/:accountId/:transactionId")
+  .get(async (req, res, next) => {
+    try {
+      const account = await Account.findById(req.params.accountId);
+      if (!account) {
+        return res.status(404).json({ message: "Account not found" });
+      }
+
+      // Find the transaction by its ID
+      const transaction = account.transactions.id(req.params.transactionId);
+      if (!transaction) {
+        return res.status(404).json({ message: "Transaction not found" });
+      }
+
+      res.json(transaction);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  });
+
+// Update account balance
+routes.route("/update-balance/:id").put(async (req, res, next) => {
+  try {
+    const accountId = req.params.id;
+    const { balance } = req.body;
+
+    const updatedAccount = await Account.findByIdAndUpdate(
+      accountId,
+      { balance },
+      { new: true }
+    );
+
+    if (!updatedAccount) {
+      return res.status(404).json({ msg: "Account not found" });
+    }
+
+    res.json(updatedAccount);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 /* 
 Delete an account by ID:
 ลบบัญชีตาม ID:

@@ -85,7 +85,7 @@ export class CrudService {
     return this.httpClient.get(API_URL).pipe(catchError(this.handleError));
   }
 
-   /*
+  /*
   Method to retrieve a demo account by its ID:
   เมธอดสำหรับดึงข้อมูลบัญชีเดโมโดยใช้ ID ของบัญชี:
 
@@ -169,6 +169,47 @@ export class CrudService {
     );
   }
 
+  /*
+    Method to retrieve transactions for the current demo account by its ID:
+    เมธอดสำหรับดึงข้อมูลธุรกรรมของบัญชีเดโมปัจจุบันโดยใช้ ID ของบัญชี:
+
+    - This method constructs the API URL by appending the account ID to the REST API's route for reading account transactions.
+    - It uses HttpClient's 'get' method to send an HTTP GET request to the server.
+    - The 'map' operator processes the response, ensuring that an empty object is returned if the response is null.
+    - The 'catchError' operator handles any errors that may occur during the request.
+
+    - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีไปที่เส้นทางของ REST API สำหรับการดึงข้อมูลธุรกรรมของบัญชี
+    - ใช้เมธอด 'get' ของ HttpClient เพื่อส่งคำขอ HTTP GET ไปยังเซิร์ฟเวอร์
+    - ใช้โอเปอเรเตอร์ 'map' เพื่อประมวลผลการตอบกลับ และคืนค่าเป็นออบเจ็กต์ว่างหากการตอบกลับเป็นค่าว่าง
+    - ใช้โอเปอเรเตอร์ 'catchError' ในการจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
+  getTransactionsForCurrentAccount(accountId: string): Observable<any> {
+    const API_URL = `${this.REST_API}/read-account-transactions/${accountId}`;
+    return this.httpClient.get(API_URL).pipe(
+      map((res: any) => res || {}),
+      catchError(this.handleError)
+    );
+  }
+
+  /*
+    Method to update the balance of a specific account:
+    เมธอดสำหรับอัปเดตยอดคงเหลือของบัญชีเฉพาะ:
+
+    - This method constructs the API URL by appending the account ID to the update balance route.
+    - It sends an HTTP PUT request to the server with the new balance in the request body.
+    - The response from the server will contain the result of the update operation.
+
+    - เมธอดนี้สร้าง URL ของ API โดยเพิ่ม ID ของบัญชีไปที่เส้นทางอัปเดตยอดคงเหลือ
+    - ส่งคำสั่ง PUT พร้อมยอดคงเหลือใหม่ใน body ของคำขอไปยังเซิร์ฟเวอร์
+    - การตอบกลับจากเซิร์ฟเวอร์จะมีผลลัพธ์ของการอัปเดต
+  */
+    updateBalance(accountId: string, balance: number): Observable<any> {
+      return this.httpClient.put<any>(
+        `${this.REST_API}/update-balance/${accountId}`,
+        { balance }
+      );
+    }
+
   // Method to handle errors from HTTP requests
   // เมธอดสำหรับจัดการข้อผิดพลาดจากคำขอ HTTP
   handleError(error: HttpErrorResponse) {
@@ -187,5 +228,4 @@ export class CrudService {
     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     return throwError(() => new Error('An unknown error occurred.'));
   }
-
 }

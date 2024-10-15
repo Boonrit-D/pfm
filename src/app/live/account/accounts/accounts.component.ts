@@ -23,6 +23,7 @@ import { CrudService } from '../../../services/crud.service';
 // กำหนดคอมโพเนนต์ CreateAccount:
 @Component({
   selector: 'app-accounts',
+  host: { '[attr.data-id]': 'uniqueId' },
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.css',
 })

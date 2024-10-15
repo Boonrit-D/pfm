@@ -49,7 +49,11 @@ import { DashboardComponent } from './live/dashboard/dashboard.component';
 import { AccountsComponent } from './live/account/accounts/accounts.component';
 import { TransactionsComponent } from './live/account/transactions/transactions.component';
 
-// Import components for managing demo accounts and demo transactions
+// Import components for the live version of the specific account dashboard and its transaction lists
+// นำเข้าคอมโพเนนต์สำหรับเวอร์ชันการใช้งานจริงของแดชบอร์ดบัญชีที่กำหนดและรายการธุรกรรมของบัญชีนั้น
+import { AccountDashboardComponent } from './live/account/dashboard/dashboard.component';
+
+// Import components for managing accounts and transactions
 // นำเข้าคอมโพเนนต์สำหรับการจัดการบัญชีและธุรกรรม
 import { CreateAccountComponent } from './live/account/accounts/create-account/create-account.component';
 import { UpdateAccountComponent } from './live/account/accounts/update-account/update-account.component';
@@ -157,6 +161,13 @@ const routes: Routes = [
     path: 'transactions',
     component: TransactionsComponent,
     title: 'transactions',
+  },
+  
+  // Path for the live version of the specific account
+  // เส้นทางสำหรับเวอร์ชันใช้งานจริงของบัญชีที่กำหนด 
+  {
+    path: 'account/:accountId',
+    component: AccountDashboardComponent,
   },
 
   // Path for the live managing
