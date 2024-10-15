@@ -1,0 +1,102 @@
+<!-- <p>update-account works!</p> -->
+<div
+  class="relative bg-opacity-90 rounded-lg shadow-lg p-12 max-w-4xl mx-auto flex justify-between items-start mt-10"
+>
+  <img
+    src="https://images.unsplash.com/photo-1588784778900-a4fe804024d9?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    alt=""
+    class="absolute inset-0 z-[-3] h-full w-full object-cover object-right md:object-center filter blur-[1px] brightness-120 opacity-10"
+  />
+  <!-- Left side: envelope icon -->
+  <img
+    src="https://plus.unsplash.com/premium_photo-1726729274971-4ef1018ee08a?q=80&w=768&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    alt=""
+    class="hidden md:block h-3/4 right-[-100px] bottom-[70px] object-cover object-right md:object-center absolute rounded-md z-[-2]"
+  />
+
+  <!-- Right side: Contact form -->
+  <div class="w-full max-w-md">
+    <div
+      class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden glow"
+    >
+      <div class="p-4 bg-gray-900 text-white text-center text-xl">
+        อัปเดตบัญชี
+      </div>
+      <form
+        class="space-y-4 p-6"
+        [formGroup]="updateAccount"
+        (ngSubmit)="onUpdate()"
+      >
+        <!-- Name input -->
+        <div class="form-group">
+          <label class="block text-gray-700 text-sm mb-2" for="accountName">
+            ชื่อบัญชี
+          </label>
+          <input
+            formControlName="accountName"
+            placeholder="ชื่อบัญชี"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+          />
+        </div>
+        <!-- Currency dropdown input -->
+        <div class="form-group">
+          <label class="block text-gray-700 text-sm mb-2" for="accountName">
+            สกุลเงิน
+          </label>
+          <input
+            list="currency-list"
+            formControlName="currency"
+            name="currency"
+            placeholder="สกุลเงิน"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+          />
+
+          <datalist id="currency-list">
+            <option value="THB"></option>
+            <option value="USD"></option>
+            <option value="EUR"></option>
+            <option value="JPY"></option>
+            <option value="CNY"></option>
+          </datalist>
+        </div>
+        <!-- Description input -->
+        <div class="form-group">
+          <label class="block text-gray-700 text-sm mb-2" for="accountName">
+            คำอธิบายของบัญชี
+          </label>
+          <textarea
+            formControlName="description"
+            rows="4"
+            placeholder="รายละเอียด"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+          ></textarea>
+        </div>
+        <!-- Submit button -->
+        <div class="flex">
+          <button
+            class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-md font-semibold text-gray-900 rounded-lg group bg-gradient-to-br from-red-500 to-red-400 group-hover:from-red-500 group-hover:to-red-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+            type="submit"
+          >
+            <span
+              class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+            >
+              อัปเดต
+            </span>
+          </button>
+          <button
+            type="button"
+            class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-md font-semibold text-gray-900 rounded-lg group bg-gradient-to-br from-gray-500 to-gray-400 group-hover:from-gray-500 group-hover:to-gray-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-800"
+            routerLinkActive="active"
+            routerLink="/accounts"
+          >
+            <span
+              class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+            >
+              ยกเลิก
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

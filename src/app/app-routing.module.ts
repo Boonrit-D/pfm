@@ -52,6 +52,7 @@ import { TransactionsComponent } from './live/account/transactions/transactions.
 // Import components for managing demo accounts and demo transactions
 // นำเข้าคอมโพเนนต์สำหรับการจัดการบัญชีและธุรกรรม
 import { CreateAccountComponent } from './live/account/accounts/create-account/create-account.component';
+import { UpdateAccountComponent } from './live/account/accounts/update-account/update-account.component';
 
 // Defines the routes for the application using the Routes interface.
 // กำหนดเส้นทางสำหรับแอปพลิเคชันโดยใช้ interface Routes.
@@ -164,6 +165,11 @@ const routes: Routes = [
     path: 'create-account',
     component: CreateAccountComponent,
     title: 'Create Account',
+  },
+  {
+    path: 'update-account/:accountId',
+    component: UpdateAccountComponent,
+    title: 'Update Account',
   },
 ];
 
