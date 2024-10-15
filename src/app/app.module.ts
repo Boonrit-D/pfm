@@ -115,6 +115,7 @@ import { TransactionsComponent } from './live/transactions/transactions.componen
 // Import components for the demo version of the specific account dashboard and its transaction lists
 // นำเข้าคอมโพเนนต์สำหรับเวอร์ชันเดโมของแดชบอร์ดบัญชีที่กำหนดและรายการธุรกรรมของบัญชีนั้น
 import { AccountDashboardComponent } from './live/account/dashboard/dashboard.component';
+import { TransactionsForAccountComponent } from './live/account/transactions/transactions.component';
 
 // Import components for managing accounts and demo transactions
 // นำเข้าคอมโพเนนต์สำหรับการจัดการบัญชีและธุรกรรม
@@ -194,6 +195,7 @@ The main module of the application that defines necessary components, features, 
     // Components for the live version of the specific account
     // คอมโพเนนต์สำหรับเวอร์ชันใช้งานจริงของบัญชีที่กำหนด
     AccountDashboardComponent,
+    TransactionsForAccountComponent,
     // Components for managing
     // คอมโพเนนต์สำหรับการจัดการ
     CreateAccountComponent,

@@ -4,6 +4,7 @@ import { CrudService } from '../../services/crud.service';
 
 @Component({
   selector: 'app-transactions',
+  host: { '[attr.data-id]': 'uniqueId' },
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })

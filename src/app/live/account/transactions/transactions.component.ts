@@ -9,8 +9,9 @@ import { CrudService } from '../../../services/crud.service';
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
-export class TransactionsComponent implements OnInit {
+export class TransactionsForAccountComponent implements OnInit {
   // Declaring
+  getAccountId: any;
   currentDate = new Date();
   transactionForAccount: any;
   account: any;
@@ -28,29 +29,23 @@ export class TransactionsComponent implements OnInit {
     private crudService: CrudService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+    // Get ID
+    this.getAccountId = this.activatedRouter.snapshot.paramMap.get('accountId');
     //
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit(): void {
     if (this.isBrowser) {
-      this.crudService.getAccounts().subscribe((accounts) => {
-        this.crudService.getAccounts().subscribe((accounts) => {
-          this.account = accounts;
-          if (this.account && this.account.length > 0) {
-            this.transactionForAccount = []; // สร้างอาเรย์เพื่อเก็บธุรกรรมทั้งหมด
-        
-            // ใช้ forEach เพื่อดึงข้อมูลธุรกรรมสำหรับทุกบัญชี
-            this.account.forEach((currentAccount: any) => {
-              this.crudService.getTransactionsForCurrentAccount(currentAccount._id).subscribe((transactions) => {
-                // เพิ่มธุรกรรมในอาเรย์
-                this.transactionForAccount.push(...transactions.reverse());
-              });
-            });
-          } else {
-            console.error('No accounts found.');
-          }
+      // ดึงข้อมูลธุรกรรมทั้งหมด
+      this.crudService
+        .getTransactionsForCurrentAccount(this.getAccountId)
+        .subscribe((res) => {
+          this.transactionForAccount = res.reverse();
         });
+      //
+      this.crudService.getAccount(this.getAccountId).subscribe((res) => {
+        this.account = res;
       });
 
       // Listen to mousemove event on the document

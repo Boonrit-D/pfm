@@ -134,7 +134,7 @@
             'even:bg-gray-50': !showPopover,
             'hover:bg-green-100 bg-gray-50 even:bg-white': showPopover
           }"
-          routerLink="/demo/account/{{ account._id }}/update-transaction/{{
+          routerLink="/account/{{ account._id }}/update-transaction/{{
             demoTransactionsForCurrentAccount._id
           }}"
           [queryParams]="{
@@ -172,7 +172,7 @@
     </table>
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm mt-2"
-      routerLink="/demo/account/{{ account._id }}/transactions"
+      routerLink="/account/{{ account._id }}/transactions"
     >
       ดูทั้งหมด
     </button>

@@ -52,6 +52,7 @@ import { TransactionsComponent } from './live/transactions/transactions.componen
 // Import components for the live version of the specific account dashboard and its transaction lists
 // นำเข้าคอมโพเนนต์สำหรับเวอร์ชันการใช้งานจริงของแดชบอร์ดบัญชีที่กำหนดและรายการธุรกรรมของบัญชีนั้น
 import { AccountDashboardComponent } from './live/account/dashboard/dashboard.component';
+import { TransactionsForAccountComponent } from './live/account/transactions/transactions.component';
 
 // Import components for managing accounts and transactions
 // นำเข้าคอมโพเนนต์สำหรับการจัดการบัญชีและธุรกรรม
@@ -170,6 +171,11 @@ const routes: Routes = [
   {
     path: 'account/:accountId',
     component: AccountDashboardComponent,
+  },
+  {
+    path: 'account/:accountId/transactions',
+    component: TransactionsForAccountComponent,
+    title: 'Transactions For Account',
   },
 
   // Path for the live managing

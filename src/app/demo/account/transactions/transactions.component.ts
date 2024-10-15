@@ -10,6 +10,7 @@ import { DemoCrudService } from '../../../services/demo-crud.service';
 })
 export class DemoTransactionsForAccountComponent implements OnInit {
   // Declaring
+  getAccountId: any;
   currentDate = new Date();
   demoTransactionForAccount: any;
   demoAccount: any;
@@ -27,24 +28,23 @@ export class DemoTransactionsForAccountComponent implements OnInit {
     private demoCrudService: DemoCrudService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+    // Get ID
+    this.getAccountId = this.activatedRouter.snapshot.paramMap.get('accountId');
     //
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit(): void {
     if (this.isBrowser) {
-      this.demoCrudService.getAccounts().subscribe((accounts) => {
-        this.demoAccount = accounts;
-        if (this.demoAccount && this.demoAccount.length > 0) {
-          const currentAccount = this.demoAccount[0];
-          this.demoCrudService
-            .getTransactionsForCurrentAccount(currentAccount._id)
-            .subscribe((transactions) => {
-              this.demoTransactionForAccount = transactions.reverse();
-            });
-        } else {
-          console.error('No accounts found.');
-        }
+      // ดึงข้อมูลธุรกรรมทั้งหมด
+      this.demoCrudService
+        .getTransactionsForCurrentAccount(this.getAccountId)
+        .subscribe((res) => {
+          this.demoTransactionForAccount = res.reverse();
+        });
+      //
+      this.demoCrudService.getAccount(this.getAccountId).subscribe((res) => {
+        this.demoAccount = res;
       });
 
       // Listen to mousemove event on the document
@@ -57,8 +57,8 @@ export class DemoTransactionsForAccountComponent implements OnInit {
       // Update mouseX and mouseY with the current mouse position including the scroll offset
       const offsetX = 10; // ระยะห่างในแนวนอน (สามารถปรับค่าได้ตามต้องการ)
       const offsetY = 10; // ระยะห่างในแนวตั้ง (สามารถปรับค่าได้ตามต้องการ)
-      this.mouseX = event.clientX + window.scrollX + offsetX; // รวมการ scroll แนวนอน
-      this.mouseY = event.clientY + window.scrollY + offsetY; // รวมการ scroll แนวตั้ง
+      this.mouseX = event.clientX + window.scrollX + offsetX;; // รวมการ scroll แนวนอน
+      this.mouseY = event.clientY + window.scrollY + offsetY;; // รวมการ scroll แนวตั้ง
     }
   }
 

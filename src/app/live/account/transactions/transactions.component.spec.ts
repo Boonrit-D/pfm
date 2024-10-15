@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TransactionsComponent } from './transactions.component';
+import { TransactionsForAccountComponent } from './transactions.component';
 
 describe('TransactionsComponent', () => {
-  let component: TransactionsComponent;
-  let fixture: ComponentFixture<TransactionsComponent>;
+  let component: TransactionsForAccountComponent;
+  let fixture: ComponentFixture<TransactionsForAccountComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionsComponent]
+      declarations: [TransactionsForAccountComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TransactionsComponent);
+    fixture = TestBed.createComponent(TransactionsForAccountComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

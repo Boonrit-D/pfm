@@ -236,6 +236,30 @@ export class CrudService {
   }
 
   /*
+    Method to update a transaction for a specific account by its ID:
+    เมธอดสำหรับอัปเดตธุรกรรมของบัญชีเฉพาะโดยใช้ ID ของธุรกรรมและบัญชี:
+
+    - This method constructs the API URL using both the account ID and transaction ID.
+    - It sends an HTTP PUT request to the server with the updated transaction data.
+    - The 'catchError' operator is used to handle any errors that occur during the request.
+
+    - เมธอดนี้สร้าง URL ของ API โดยใช้ทั้ง ID ของบัญชีและธุรกรรม
+    - ใช้คำสั่ง PUT เพื่อส่งข้อมูลธุรกรรมที่อัปเดตไปยังเซิร์ฟเวอร์
+    - ใช้โอเปอเรเตอร์ 'catchError' เพื่อจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
+  updateTransactionForAccount(
+    data: Transaction,
+    accountId: string,
+    transactionId: string
+  ): Observable<any> {
+    let API_URL = `${this.REST_API}/update-account-transaction/${accountId}/${transactionId}`;
+
+    return this.httpClient
+      .put(API_URL, data)
+      .pipe(catchError(this.handleError));
+  }
+
+  /*
     Method to update the balance of a specific account:
     เมธอดสำหรับอัปเดตยอดคงเหลือของบัญชีเฉพาะ:
 
@@ -251,6 +275,29 @@ export class CrudService {
     return this.httpClient.put<any>(
       `${this.REST_API}/update-balance/${accountId}`,
       { balance }
+    );
+  }
+
+  /*
+    Method to delete a specific transaction for an account:
+    เมธอดสำหรับลบธุรกรรมเฉพาะของบัญชี:
+
+    - This method constructs the API URL by appending both the account ID and transaction ID to the delete route.
+    - It sends an HTTP DELETE request to the server to remove the specified transaction.
+    - The 'catchError' operator is applied to handle any errors that may occur during the request.
+
+    - เมธอดนี้สร้าง URL ของ API โดยเพิ่มทั้ง ID ของบัญชีและ ID ของธุรกรรมไปที่เส้นทางการลบ
+    - ส่งคำขอ HTTP DELETE ไปยังเซิร์ฟเวอร์เพื่อลบธุรกรรมที่ระบุ
+    - ใช้โอเปอเรเตอร์ 'catchError' เพื่อจัดการข้อผิดพลาดที่อาจเกิดขึ้นระหว่างการส่งคำขอ
+  */
+  deleteTransactionForAccount(
+    accountId: string,
+    transactionId: string
+  ): Observable<any> {
+    let API_URL = `${this.REST_API}/delete-account-transaction/${accountId}/${transactionId}`;
+
+    return this.httpClient.delete(API_URL).pipe(
+      catchError(this.handleError) // จัดการข้อผิดพลาด
     );
   }
 
