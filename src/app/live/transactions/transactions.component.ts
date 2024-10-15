@@ -1,61 +1,67 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
-import { CrudService } from '../../../services/crud.service';
+import { CrudService } from '../../services/crud.service';
 
 @Component({
   selector: 'app-transactions',
-  host: { '[attr.data-id]': 'uniqueId' },
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
 export class TransactionsComponent implements OnInit {
-  // Declaring
   currentDate = new Date();
-  transactionForAccount: any;
-  account: any;
+  accounts: any;
+  allTransaction: any[] = [];
 
-  isBrowser: boolean;
   showPopover = false;
   mouseX: number = 0;
   mouseY: number = 0;
+  isBrowser: boolean;
 
   constructor(
     // public formBuilder: FormBuilder,
     // private router: Router,
     // private ngZone: NgZone,
-    private activatedRouter: ActivatedRoute,
+    // private activatedRouter: ActivatedRoute,
     private crudService: CrudService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    //
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit(): void {
     if (this.isBrowser) {
-      this.crudService.getAccounts().subscribe((accounts) => {
-        this.crudService.getAccounts().subscribe((accounts) => {
-          this.account = accounts;
-          if (this.account && this.account.length > 0) {
-            this.transactionForAccount = []; // สร้างอาเรย์เพื่อเก็บธุรกรรมทั้งหมด
-        
-            // ใช้ forEach เพื่อดึงข้อมูลธุรกรรมสำหรับทุกบัญชี
-            this.account.forEach((currentAccount: any) => {
-              this.crudService.getTransactionsForCurrentAccount(currentAccount._id).subscribe((transactions) => {
-                // เพิ่มธุรกรรมในอาเรย์
-                this.transactionForAccount.push(...transactions.reverse());
-              });
-            });
-          } else {
-            console.error('No accounts found.');
-          }
-        });
-      });
+      this.crudService.getAccounts().subscribe((res) => {
+        this.accounts = res;
 
-      // Listen to mousemove event on the document
-      document.addEventListener('mousemove', this.onMouseMove.bind(this));
+        // เรียกใช้ฟังก์ชันเพื่อดึงธุรกรรมล่าสุด
+        this.getRecentTransactions();
+        // Listen to mousemove event on the document
+        document.addEventListener('mousemove', this.onMouseMove.bind(this));
+      });
     }
+  }
+
+  getRecentTransactions() {
+    const transactions: any[] = [];
+
+    // วนลูปเพื่อดึงธุรกรรมจากแต่ละบัญชีและเพิ่มชื่อบัญชีเข้าไปในแต่ละรายการ
+    this.accounts.forEach((account: any) => {
+      if (account.transactions && account.transactions.length > 0) {
+        account.transactions.forEach((transaction: any) => {
+          // เพิ่ม accountName เข้าไปใน transaction
+          transactions.push({
+            ...transaction,
+            accountName: account.accountName,
+            accountId: account._id,
+          });
+        });
+      }
+    });
+
+    // // เรียงลำดับธุรกรรมจากใหม่ไปเก่า
+    this.allTransaction = transactions.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
   }
 
   onMouseMove(event: MouseEvent) {

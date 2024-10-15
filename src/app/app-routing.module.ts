@@ -47,7 +47,7 @@ import { UpdateDemoTransactionComponent } from './demo/account/transactions/upda
 // นำเข้าคอมโพเนนต์สำหรับเวอร์ชันใช้งานจริงของแดชบอร์ด บัญชี และรายการธุรกรรม
 import { DashboardComponent } from './live/dashboard/dashboard.component';
 import { AccountsComponent } from './live/account/accounts/accounts.component';
-import { TransactionsComponent } from './live/account/transactions/transactions.component';
+import { TransactionsComponent } from './live/transactions/transactions.component';
 
 // Import components for the live version of the specific account dashboard and its transaction lists
 // นำเข้าคอมโพเนนต์สำหรับเวอร์ชันการใช้งานจริงของแดชบอร์ดบัญชีที่กำหนดและรายการธุรกรรมของบัญชีนั้น
@@ -57,6 +57,8 @@ import { AccountDashboardComponent } from './live/account/dashboard/dashboard.co
 // นำเข้าคอมโพเนนต์สำหรับการจัดการบัญชีและธุรกรรม
 import { CreateAccountComponent } from './live/account/accounts/create-account/create-account.component';
 import { UpdateAccountComponent } from './live/account/accounts/update-account/update-account.component';
+import { CreateTransactionComponent } from './live/account/transactions/create-transaction/create-transaction.component';
+import { UpdateTransactionComponent } from './live/account/transactions/update-transaction/update-transaction.component';
 
 // Defines the routes for the application using the Routes interface.
 // กำหนดเส้นทางสำหรับแอปพลิเคชันโดยใช้ interface Routes.
@@ -181,6 +183,16 @@ const routes: Routes = [
     path: 'update-account/:accountId',
     component: UpdateAccountComponent,
     title: 'Update Account',
+  },
+  {
+    path: 'account/:accountId/create-transaction',
+    component: CreateTransactionComponent,
+    title: 'Create Account',
+  },
+  {
+    path: 'account/:accountId/update-transaction/:transactionId',
+    component: UpdateTransactionComponent,
+    title: 'Update Transaction',
   },
 ];
 
