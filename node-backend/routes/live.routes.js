@@ -121,6 +121,32 @@ routes.route("/update-account/:id").put(async (req, res, next) => {
   }
 });
 
+/* 
+Delete an account by ID:
+ลบบัญชีตาม ID:
+
+- This route handles the deletion of an account from the database based on the provided account ID.
+- It uses the 'findByIdAndDelete' method from Mongoose to find and delete the specified account.
+- If successful, it returns a status of 200 with the deleted account's data as the response.
+- In case of an error, it catches the error and passes it to the next middleware for further handling.
+
+- เส้นทางนี้ใช้สำหรับลบบัญชีจากฐานข้อมูลโดยอ้างอิงจาก ID ของบัญชีที่ส่งมา
+- ใช้เมธอด 'findByIdAndDelete' ของ Mongoose เพื่อลบข้อมูลบัญชีที่ระบุ
+- หากลบสำเร็จ จะคืนสถานะ 200 พร้อมข้อมูลของบัญชีที่ถูกลบกลับไปเป็นการตอบกลับ
+- ในกรณีที่เกิดข้อผิดพลาด จะจับข้อผิดพลาดและส่งไปยัง middleware ถัดไปเพื่อจัดการ
+*/
+routes.route("/delete-account/:id").delete(async (req, res, next) => {
+  try {
+    const data = await Account.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      msg: data,
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 /*
 Exporting the demoRoutes module:
 ส่งออกโมดูล demoRoutes:
