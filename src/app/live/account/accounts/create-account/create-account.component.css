@@ -1,0 +1,10 @@
+h2,
+.form-group,
+button,
+div {
+  font-family: Mitr;
+}
+
+.glow {
+  box-shadow: 0 0 50px 1px rgba(0, 0, 0, 0.6); /* เอฟเฟกต์ glow สีแดง */
+}

@@ -49,6 +49,10 @@ import { DashboardComponent } from './live/dashboard/dashboard.component';
 import { AccountsComponent } from './live/account/accounts/accounts.component';
 import { TransactionsComponent } from './live/account/transactions/transactions.component';
 
+// Import components for managing demo accounts and demo transactions
+// นำเข้าคอมโพเนนต์สำหรับการจัดการบัญชีและธุรกรรม
+import { CreateAccountComponent } from './live/account/accounts/create-account/create-account.component';
+
 // Defines the routes for the application using the Routes interface.
 // กำหนดเส้นทางสำหรับแอปพลิเคชันโดยใช้ interface Routes.
 const routes: Routes = [
@@ -152,6 +156,14 @@ const routes: Routes = [
     path: 'transactions',
     component: TransactionsComponent,
     title: 'transactions',
+  },
+
+  // Path for the live managing
+  // เส้นทางสำหรับการจัดการ
+  {
+    path: 'create-account',
+    component: CreateAccountComponent,
+    title: 'Create Account',
   },
 ];
 

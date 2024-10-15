@@ -39,6 +39,30 @@ routes.route("/").get(async (req, res, next) => {
 });
 
 /*
+Create a new account:
+สร้างบัญชีใหม่:
+
+- This route handles the creation of a new account in the database using the data provided in the request body.
+- It uses the 'create' method from Mongoose to insert the account data into the database.
+- If successful, it returns the newly created account data as the response.
+- In case of an error, it catches the error and passes it to the next middleware for further handling.
+
+- เส้นทางนี้ใช้สำหรับสร้างบัญชีใหม่ในฐานข้อมูล โดยข้อมูลบัญชีจะถูกส่งมาใน request body
+- ใช้เมธอด 'create' ของ Mongoose เพื่อเพิ่มข้อมูลบัญชีเข้าไปในฐานข้อมูล
+- หากสร้างสำเร็จ จะคืนข้อมูลบัญชีที่สร้างใหม่เป็นการตอบกลับ
+- ในกรณีที่เกิดข้อผิดพลาด จะจับข้อผิดพลาดและส่งไปยัง middleware ถัดไปเพื่อจัดการ
+*/
+routes.route("/create-account").post(async (req, res, next) => {
+  try {
+    const data = await Account.create(req.body);
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+/*
 Exporting the demoRoutes module:
 ส่งออกโมดูล demoRoutes:
 
