@@ -10,7 +10,6 @@ import { RouterModule, Routes } from '@angular/router';
 // นำเข้าคอมโพเนนต์หลักสำหรับโครงสร้างของแอปพลิเคชัน
 import { HomeComponent } from './home/home.component';
 
-
 // ►►► Authentication components ◄◄◄
 // ►►► คอมโพเนนต์การยืนยันตัวตนเพื่อใช้งาน ◄◄◄
 
@@ -165,9 +164,9 @@ const routes: Routes = [
     component: TransactionsComponent,
     title: 'transactions',
   },
-  
+
   // Path for the live version of the specific account
-  // เส้นทางสำหรับเวอร์ชันใช้งานจริงของบัญชีที่กำหนด 
+  // เส้นทางสำหรับเวอร์ชันใช้งานจริงของบัญชีที่กำหนด
   {
     path: 'account/:accountId',
     component: AccountDashboardComponent,

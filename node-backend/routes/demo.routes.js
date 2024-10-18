@@ -147,7 +147,29 @@ demoRoutes.route("/delete-account/:id").delete(async (req, res, next) => {
   }
 });
 
-//
+/* 
+Defining a POST route for creating a new transaction for a specific account:
+กำหนดเส้นทาง POST สำหรับการสร้างธุรกรรมใหม่สำหรับบัญชีที่ระบุ:
+
+This route handles the creation of a transaction associated with a specific account ID provided in the URL.
+เส้นทางนี้จัดการการสร้างธุรกรรมที่เชื่อมโยงกับบัญชีที่ระบุโดย ID ใน URL
+
+- Extracts the account ID from the request parameters.
+- Attempts to find the account by its ID in the database.
+- If the account is not found, responds with a 404 status code and an error message.
+- If the account is found, adds the new transaction (from the request body) to the account's transactions array.
+- Saves the updated account with the new transaction.
+- Responds with the updated account data in JSON format.
+- If an error occurs, logs the error and passes it to the next middleware for handling.
+
+- ดึง ID ของบัญชีจากพารามิเตอร์ของคำขอ
+- พยายามค้นหาบัญชีตาม ID ในฐานข้อมูล
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- หากพบบัญชี จะเพิ่มธุรกรรมใหม่ (จาก body ของคำขอ) ลงในอาร์เรย์ transactions ของบัญชี
+- บันทึกบัญชีที่อัปเดตพร้อมธุรกรรมใหม่
+- ตอบกลับด้วยข้อมูลบัญชีที่อัปเดตในรูปแบบ JSON
+- หากเกิดข้อผิดพลาด จะทำการล็อกข้อผิดพลาดและส่งต่อให้ middleware ถัดไปเพื่อจัดการ
+*/
 demoRoutes.route("/create-transaction/:id").post(async (req, res, next) => {
   try {
     const accountId = req.params.id;
@@ -170,7 +192,25 @@ demoRoutes.route("/create-transaction/:id").post(async (req, res, next) => {
   }
 });
 
-// Get transactions of a specific account
+/* 
+Defining a GET route for retrieving transactions of a specific account:
+กำหนดเส้นทาง GET สำหรับการดึงธุรกรรมของบัญชีที่ระบุ:
+
+This route handles requests to fetch all transactions associated with a specific account ID provided in the URL.
+เส้นทางนี้จัดการคำขอเพื่อนำธุรกรรมทั้งหมดที่เชื่อมโยงกับบัญชีที่ระบุโดย ID ใน URL
+
+- Extracts the account ID from the request parameters.
+- Attempts to find the account by its ID in the database.
+- If the account is not found, responds with a 404 status code and an error message.
+- If the account is found, responds with the account's transactions in JSON format.
+- If an error occurs, logs the error and passes it to the next middleware for handling.
+
+- ดึง ID ของบัญชีจากพารามิเตอร์ของคำขอ
+- พยายามค้นหาบัญชีตาม ID ในฐานข้อมูล
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- หากพบบัญชี จะตอบกลับด้วยธุรกรรมของบัญชีในรูปแบบ JSON
+- หากเกิดข้อผิดพลาด จะทำการล็อกข้อผิดพลาดและส่งต่อให้ middleware ถัดไปเพื่อจัดการ
+*/
 demoRoutes
   .route("/read-account-transactions/:id")
   .get(async (req, res, next) => {
@@ -186,7 +226,29 @@ demoRoutes
     }
   });
 
-// Get a specific transaction of a specific account
+/* 
+Defining a GET route for retrieving a specific transaction from an account:
+กำหนดเส้นทาง GET สำหรับการดึงธุรกรรมเฉพาะจากบัญชี:
+
+This route handles requests to fetch a specific transaction identified by its ID within a given account.
+เส้นทางนี้จัดการคำขอเพื่อนำธุรกรรมเฉพาะที่ระบุโดย ID ในบัญชีที่กำหนด
+
+- Extracts the account ID and transaction ID from the request parameters.
+- Attempts to find the account by its ID in the database.
+- If the account is not found, responds with a 404 status code and an error message.
+- If the account is found, attempts to find the transaction by its ID within the account's transactions.
+- If the transaction is not found, responds with a 404 status code and an error message.
+- If the transaction is found, responds with the transaction data in JSON format.
+- If an error occurs, logs the error and passes it to the next middleware for handling.
+
+- ดึง ID ของบัญชีและ ID ของธุรกรรมจากพารามิเตอร์ของคำขอ
+- พยายามค้นหาบัญชีตาม ID ในฐานข้อมูล
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- หากพบบัญชี จะพยายามค้นหาธุรกรรมตาม ID ในธุรกรรมของบัญชี
+- หากไม่พบธุรกรรม จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- หากพบบัญชี จะตอบกลับด้วยข้อมูลธุรกรรมในรูปแบบ JSON
+- หากเกิดข้อผิดพลาด จะทำการล็อกข้อผิดพลาดและส่งต่อให้ middleware ถัดไปเพื่อจัดการ
+*/
 demoRoutes
   .route("/read-account-transaction/:accountId/:transactionId")
   .get(async (req, res, next) => {
@@ -196,7 +258,6 @@ demoRoutes
         return res.status(404).json({ message: "Account not found" });
       }
 
-      // Find the transaction by its ID
       const transaction = account.transactions.id(req.params.transactionId);
       if (!transaction) {
         return res.status(404).json({ message: "Transaction not found" });
@@ -209,7 +270,31 @@ demoRoutes
     }
   });
 
-// Update a specific transaction of a specific account
+/* 
+Defining a PUT route for updating a specific transaction within an account:
+กำหนดเส้นทาง PUT สำหรับการปรับปรุงธุรกรรมเฉพาะภายในบัญชี:
+
+This route handles requests to update a specific transaction identified by its ID within a given account.
+เส้นทางนี้จัดการคำขอเพื่อปรับปรุงธุรกรรมเฉพาะที่ระบุโดย ID ในบัญชีที่กำหนด
+
+- Extracts the account ID and transaction ID from the request parameters.
+- Attempts to find the account by its ID in the database.
+- Attempts to find the transaction by its ID within the account's transactions.
+- If either the account or the transaction is not found, responds with a 404 status code and an error message.
+- If both are found, updates the transaction details with the data from the request body.
+- Saves the updated account back to the database.
+- Responds with the updated transaction data in JSON format.
+- If an error occurs, logs the error and passes it to the next middleware for handling.
+
+- ดึง ID ของบัญชีและ ID ของธุรกรรมจากพารามิเตอร์ของคำขอ
+- พยายามค้นหาบัญชีตาม ID ในฐานข้อมูล
+- พยายามค้นหาธุรกรรมตาม ID ในธุรกรรมของบัญชี
+- หากไม่พบบัญชีหรือธุรกรรมใด ๆ จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- หากพบทั้งคู่ จะทำการปรับปรุงรายละเอียดธุรกรรมด้วยข้อมูลจาก body ของคำขอ
+- บันทึกบัญชีที่อัปเดตกลับลงในฐานข้อมูล
+- ตอบกลับด้วยข้อมูลธุรกรรมที่อัปเดตในรูปแบบ JSON
+- หากเกิดข้อผิดพลาด จะทำการล็อกข้อผิดพลาดและส่งต่อให้ middleware ถัดไปเพื่อจัดการ
+*/
 demoRoutes
   .route("/update-account-transaction/:accountId/:transactionId")
   .put(async (req, res, next) => {
@@ -223,7 +308,6 @@ demoRoutes
           .json({ message: "Account or Transaction not found" });
       }
 
-      // Update the transaction details
       Object.assign(transaction, req.body);
       await account.save();
 
@@ -234,11 +318,31 @@ demoRoutes
     }
   });
 
-// Update account balance
+/* 
+Defining a PUT route for updating the balance of a specific account:
+กำหนดเส้นทาง PUT สำหรับการปรับปรุงยอดเงินของบัญชีเฉพาะ:
+
+This route handles requests to update the balance of an account identified by its ID.
+เส้นทางนี้จัดการคำขอเพื่อปรับปรุงยอดเงินของบัญชีที่ระบุโดย ID
+
+- Extracts the account ID from the request parameters.
+- Extracts the new balance value from the request body.
+- Attempts to find and update the account's balance using the provided ID.
+- If the account is not found, responds with a 404 status code and an error message.
+- If the update is successful, responds with the updated account data in JSON format.
+- If an error occurs, logs the error and passes it to the next middleware for handling.
+
+- ดึง ID ของบัญชีจากพารามิเตอร์ของคำขอ
+- ดึงค่า balance ใหม่จาก body ของคำขอ
+- พยายามค้นหาและปรับปรุงยอดเงินของบัญชีโดยใช้ ID ที่ให้มา
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- หากการอัปเดตสำเร็จ จะตอบกลับด้วยข้อมูลบัญชีที่อัปเดตในรูปแบบ JSON
+- หากเกิดข้อผิดพลาด จะทำการล็อกข้อผิดพลาดและส่งต่อให้ middleware ถัดไปเพื่อจัดการ
+*/
 demoRoutes.route("/update-balance/:id").put(async (req, res, next) => {
   try {
     const accountId = req.params.id;
-    const { balance } = req.body; // รับค่า balance จาก body ของ request
+    const { balance } = req.body;
 
     const updatedAccount = await DemoAccount.findByIdAndUpdate(
       accountId,
@@ -257,25 +361,44 @@ demoRoutes.route("/update-balance/:id").put(async (req, res, next) => {
   }
 });
 
-// Delete a specific transaction of a specific account
+/* 
+Defining a DELETE route for removing a specific transaction from an account:
+กำหนดเส้นทาง DELETE สำหรับการลบธุรกรรมเฉพาะจากบัญชี:
+
+This route handles requests to delete a transaction identified by its ID from a specific account.
+เส้นทางนี้จัดการคำขอเพื่อลบธุรกรรมที่ระบุโดย ID จากบัญชีเฉพาะ
+
+- Retrieves the account from the database using the account ID from the request parameters.
+- If the account is not found, responds with a 404 status code and an error message.
+- Searches for the specified transaction within the account's transactions array.
+- If the transaction is not found, responds with a 404 status code and an error message.
+- Removes the transaction from the transactions array using the pull method.
+- Saves the updated account after deletion.
+- Responds with a success message and the deleted transaction data.
+
+- ดึงบัญชีจากฐานข้อมูลโดยใช้ account ID จากพารามิเตอร์ของคำขอ
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- ค้นหาธุรกรรมที่ระบุในอาร์เรย์ transactions ของบัญชี
+- หากไม่พบบันทึกธุรกรรม จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- ลบธุรกรรมออกจากอาร์เรย์ transactions โดยใช้วิธี pull
+- บันทึกบัญชีที่อัปเดตหลังจากลบ
+- ตอบกลับด้วยข้อความสำเร็จและข้อมูลธุรกรรมที่ถูกลบ
+*/
 demoRoutes.route('/delete-account-transaction/:accountId/:transactionId').delete(async (req, res, next) => {
   try {
-      // ดึง Account จาก req.params.accountId
       const account = await DemoAccount.findById(req.params.accountId);
 
       if (!account) {
           return res.status(404).json({ message: 'Account not found' });
       }
 
-      // ค้นหาและลบ transaction จากบัญชี
       const transaction = account.transactions.id(req.params.transactionId);
       if (!transaction) {
           return res.status(404).json({ message: 'Transaction not found' });
       }
 
-      // ลบ transaction ออกจาก array
-      account.transactions.pull(transaction); // ใช้ pull แทน remove
-      await account.save(); // บันทึกการเปลี่ยนแปลงหลังจากลบ
+      account.transactions.pull(transaction);
+      await account.save();
 
       res.status(200).json({
           message: 'Transaction deleted successfully',

@@ -3,8 +3,6 @@ Importing necessary Angular modules for the application:
 นำเข้าโมดูล Angular ที่จำเป็นสำหรับแอปพลิเคชัน:
 
 - Injectable: Decorator to define a service that can be injected.
-- Inject: Function for injecting dependencies.
-- PLATFORM_ID: Token representing the platform the app is running on.
 - catchError: Operator for handling errors in observables.
 - map: Operator for transforming data in observables.
 - Observable: Class representing a stream of data.
@@ -15,8 +13,6 @@ Importing necessary Angular modules for the application:
 - isPlatformBrowser: Utility function to check if the app is running in a browser.
 
 - Injectable: เดคอเรเตอร์สำหรับกำหนดบริการที่สามารถถูกฉีดเข้าไป
-- Inject: ฟังก์ชันสำหรับการฉีดพึ่งพา
-- PLATFORM_ID: โทเคนที่แสดงถึงแพลตฟอร์มที่แอปกำลังทำงานอยู่
 - catchError: โอเปอเรเตอร์สำหรับจัดการข้อผิดพลาดใน observable
 - map: โอเปอเรเตอร์สำหรับแปลงข้อมูลใน observable
 - Observable: คลาสที่แสดงถึงสตรีมของข้อมูล
@@ -24,13 +20,11 @@ Importing necessary Angular modules for the application:
 - HttpClient: บริการสำหรับทำคำขอ HTTP
 - HttpHeaders: คลาสที่แสดงถึง HTTP headers
 - HttpErrorResponse: คลาสสำหรับจัดการข้อผิดพลาด HTTP responses
-- isPlatformBrowser: ฟังก์ชันยูทิลิตี้เพื่อตรวจสอบว่าแอปกำลังทำงานอยู่ในเบราว์เซอร์หรือไม่
 */
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { isPlatformBrowser } from '@angular/common';
 
 // Interface representing a user account with details such as account name, currency, balance, and associated transactions.
 // อินเทอร์เฟซที่แสดงบัญชีผู้ใช้พร้อมรายละเอียดเช่น ชื่อบัญชี สกุลเงิน ยอดคงเหลือ และธุรกรรมที่เกี่ยวข้อง
@@ -62,8 +56,7 @@ export class CrudService {
   // Constructor for the class, injecting HttpClient for making HTTP requests
   // คอนสตรักเตอร์สำหรับคลาสนี้ใช้ในการฉีด HttpClient เพื่อทำการส่งคำขอ HTTP
   constructor(
-    private httpClient: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private httpClient: HttpClient
   ) {}
 
   // ►►► Account API Methods ◄◄◄
@@ -301,22 +294,31 @@ export class CrudService {
     );
   }
 
-  // Method to handle errors from HTTP requests
-  // เมธอดสำหรับจัดการข้อผิดพลาดจากคำขอ HTTP
+  /*
+    Method to handle errors from HTTP requests:
+    เมธอดสำหรับจัดการข้อผิดพลาดจากคำขอ HTTP:
+
+    - This method checks if the error has a specific message on the client-side.
+    - If it does, it constructs an error message indicating a client-side error.
+    - If not, it prepares a server error message with the status code and message.
+    - Finally, it logs the error message to the console and throws it as an observable error.
+
+    - เมธอดนี้ตรวจสอบว่าข้อผิดพลาดมีข้อความเฉพาะที่ฝั่งคลายเอนต์หรือไม่
+    - หากมี จะสร้างข้อความข้อผิดพลาดที่ระบุว่าเป็นข้อผิดพลาดจากฝั่งคลายเอนต์
+    - หากไม่มี จะเตรียมข้อความข้อผิดพลาดจากเซิร์ฟเวอร์พร้อมรหัสสถานะและข้อความ
+    - สุดท้ายจะทำการบันทึกข้อความข้อผิดพลาดไปยังคอนโซลและโยนเป็นข้อผิดพลาดใน observable
+  */
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';
-
-    if (isPlatformBrowser(this.platformId)) {
-      if (error.error instanceof ErrorEvent) {
-        errorMessage = error.error.message;
-      } else {
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      }
-      alert(errorMessage);
-      return throwError(() => new Error(errorMessage));
+  
+    if (error.error && typeof error.error.message === 'string') {
+      errorMessage = `Client-side error: ${error.error.message}`;
+    } else {
+      errorMessage = `Server error Code: ${error.status}\nMessage: ${error.message}`;
     }
-
-    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    return throwError(() => new Error('An unknown error occurred.'));
+  
+    console.error(errorMessage);
+  
+    return throwError(() => new Error(errorMessage));
   }
 }

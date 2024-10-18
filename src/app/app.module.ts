@@ -112,12 +112,12 @@ import { DashboardComponent } from './live/dashboard/dashboard.component';
 import { AccountsComponent } from './live/account/accounts/accounts.component';
 import { TransactionsComponent } from './live/transactions/transactions.component';
 
-// Import components for the demo version of the specific account dashboard and its transaction lists
-// นำเข้าคอมโพเนนต์สำหรับเวอร์ชันเดโมของแดชบอร์ดบัญชีที่กำหนดและรายการธุรกรรมของบัญชีนั้น
+// Import components for the live version of the specific account dashboard and its transaction lists
+// นำเข้าคอมโพเนนต์สำหรับเวอร์ชันใช้งานจริงของแดชบอร์ดบัญชีที่กำหนดและรายการธุรกรรมของบัญชีนั้น
 import { AccountDashboardComponent } from './live/account/dashboard/dashboard.component';
 import { TransactionsForAccountComponent } from './live/account/transactions/transactions.component';
 
-// Import components for managing accounts and demo transactions
+// Import components for managing accounts and transactions
 // นำเข้าคอมโพเนนต์สำหรับการจัดการบัญชีและธุรกรรม
 import { CreateAccountComponent } from './live/account/accounts/create-account/create-account.component';
 import { UpdateAccountComponent } from './live/account/accounts/update-account/update-account.component';
@@ -154,8 +154,6 @@ The main module of the application that defines necessary components, features, 
     // HtmlPipe: Custom pipe for handling and sanitizing HTML content in the application
     // HtmlPipe: Pipe ที่กำหนดเองสำหรับจัดการและทำความสะอาดเนื้อหา HTML ในแอปพลิเคชัน
     HtmlPipe,
-
-    // ส่วนตัวอย่าง || ส่วนที่จะถูกแก้ไข || ส่วนที่จะถูนำออกในเวอร์ชันใช้งานจริง
 
     // ►►► Authentication components ◄◄◄
     // ►►► ส่วนประกอบการยืนยันตัวตนเพื่อใช้งาน ◄◄◄

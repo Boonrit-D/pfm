@@ -39,15 +39,15 @@ routes.route("/").get(async (req, res, next) => {
 });
 
 /*
-Route to retrieve a demo account by its ID:
-เส้นทางสำหรับดึงข้อมูลบัญชีเดโมโดยใช้ ID ของบัญชี:
+Route to retrieve a live account by its ID:
+เส้นทางสำหรับดึงข้อมูลบัญชีโดยใช้ ID ของบัญชี:
 
-- This route uses the HTTP GET method to retrieve a specific demo account from the database based on the account ID.
+- This route uses the HTTP GET method to retrieve a specific live account from the database based on the account ID.
 - It uses Mongoose's 'findById' method to search for the account.
 - If the account is found, it sends the data as a JSON response.
 - If an error occurs, it is logged to the console and passed to the next middleware for handling.
 
-- เส้นทางนี้ใช้เมธอด HTTP GET เพื่อดึงข้อมูลบัญชีเดโมจากฐานข้อมูลโดยใช้ ID ของบัญชี
+- เส้นทางนี้ใช้เมธอด HTTP GET เพื่อดึงข้อมูลบัญชีจากฐานข้อมูลโดยใช้ ID ของบัญชี
 - ใช้เมธอด 'findById' ของ Mongoose ในการค้นหาบัญชี
 - ถ้าพบบัญชี จะส่งข้อมูลเป็น JSON กลับไป
 - หากเกิดข้อผิดพลาด จะแสดงในคอนโซลและส่งต่อให้ middleware ถัดไปจัดการ
@@ -87,8 +87,8 @@ routes.route("/create-account").post(async (req, res, next) => {
 });
 
 /*
-Route to update a demo account by its ID:
-เส้นทางสำหรับอัปเดตบัญชีเดโมโดยใช้ ID ของบัญชี:
+Route to update a live account by its ID:
+เส้นทางสำหรับอัปเดตบัญชีโดยใช้ ID ของบัญชี:
 
 - This route handler uses the 'findByIdAndUpdate' method from Mongoose to update the specified account.
 - The '$set' operator is used to update only the fields provided in the request body.
@@ -147,7 +147,27 @@ routes.route("/delete-account/:id").delete(async (req, res, next) => {
   }
 });
 
-//
+/* 
+Defining a POST route for creating a new transaction in a specific account:
+กำหนดเส้นทาง POST สำหรับการสร้างธุรกรรมใหม่ในบัญชีเฉพาะ:
+
+This route handles requests to create a new transaction and add it to the specified account's transaction array.
+เส้นทางนี้จัดการคำขอเพื่อสร้างธุรกรรมใหม่และเพิ่มลงในอาร์เรย์ธุรกรรมของบัญชีที่ระบุ
+
+- Extracts the account ID from the request parameters.
+- Retrieves the account from the database using the account ID.
+- If the account is not found, responds with a 404 status code and an error message.
+- Adds the new transaction data from the request body to the account's transactions array.
+- Saves the updated account after adding the new transaction.
+- Responds with the updated account data in JSON format.
+
+- ดึง account ID จากพารามิเตอร์ของคำขอ
+- ดึงบัญชีจากฐานข้อมูลโดยใช้ account ID
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- เพิ่มข้อมูลธุรกรรมใหม่จาก body ของคำขอไปยังอาร์เรย์ transactions ของบัญชี
+- บันทึกบัญชีที่อัปเดตหลังจากเพิ่มธุรกรรมใหม่
+- ตอบกลับด้วยข้อมูลบัญชีที่อัปเดตในรูปแบบ JSON
+*/
 routes.route("/create-transaction/:id").post(async (req, res, next) => {
   try {
     const accountId = req.params.id;
@@ -157,10 +177,8 @@ routes.route("/create-transaction/:id").post(async (req, res, next) => {
       return res.status(404).json({ message: "Account not found" });
     }
 
-    // Add the new transaction to the account's transactions array
     account.transactions.push(req.body);
 
-    // Save the account with the new transaction
     const updatedAccount = await account.save();
 
     res.json(updatedAccount);
@@ -170,7 +188,23 @@ routes.route("/create-transaction/:id").post(async (req, res, next) => {
   }
 });
 
-// Get transactions of a specific account
+/* 
+Defining a GET route for retrieving all transactions of a specific account:
+กำหนดเส้นทาง GET สำหรับดึงธุรกรรมทั้งหมดของบัญชีเฉพาะ:
+
+This route handles requests to read all transactions associated with a given account ID.
+เส้นทางนี้จัดการคำขอเพื่ออ่านธุรกรรมทั้งหมดที่เกี่ยวข้องกับ account ID ที่กำหนด
+
+- Extracts the account ID from the request parameters.
+- Retrieves the account from the database using the account ID.
+- If the account is not found, responds with a 404 status code and an error message.
+- If the account is found, returns the transactions associated with that account in JSON format.
+
+- ดึง account ID จากพารามิเตอร์ของคำขอ
+- ดึงบัญชีจากฐานข้อมูลโดยใช้ account ID
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- หากพบบัญชี จะส่งคืนธุรกรรมที่เกี่ยวข้องกับบัญชีนั้นในรูปแบบ JSON
+*/
 routes
   .route("/read-account-transactions/:id")
   .get(async (req, res, next) => {
@@ -186,7 +220,27 @@ routes
     }
   });
 
-// Get a specific transaction of a specific account
+/* 
+Defining a GET route for retrieving a specific transaction of an account:
+กำหนดเส้นทาง GET สำหรับดึงธุรกรรมเฉพาะของบัญชี:
+
+This route handles requests to read a specific transaction associated with an account ID and transaction ID.
+เส้นทางนี้จัดการคำขอเพื่ออ่านธุรกรรมเฉพาะที่เกี่ยวข้องกับ account ID และ transaction ID
+
+- Extracts the account ID and transaction ID from the request parameters.
+- Retrieves the account from the database using the account ID.
+- If the account is not found, responds with a 404 status code and an error message.
+- Finds the transaction within the account's transactions array using the transaction ID.
+- If the transaction is not found, responds with a 404 status code and an error message.
+- If both account and transaction are found, returns the transaction in JSON format.
+
+- ดึง account ID และ transaction ID จากพารามิเตอร์ของคำขอ
+- ดึงบัญชีจากฐานข้อมูลโดยใช้ account ID
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- ค้นหาธุรกรรมใน array ของธุรกรรมของบัญชีโดยใช้ transaction ID
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- หากพบทั้งบัญชีและธุรกรรม จะส่งคืนธุรกรรมในรูปแบบ JSON
+*/
 routes
   .route("/read-account-transaction/:accountId/:transactionId")
   .get(async (req, res, next) => {
@@ -196,7 +250,6 @@ routes
         return res.status(404).json({ message: "Account not found" });
       }
 
-      // Find the transaction by its ID
       const transaction = account.transactions.id(req.params.transactionId);
       if (!transaction) {
         return res.status(404).json({ message: "Transaction not found" });
@@ -209,7 +262,27 @@ routes
     }
   });
 
-// Update a specific transaction of a specific account
+/* 
+Defining a PUT route for updating a specific transaction of an account:
+กำหนดเส้นทาง PUT สำหรับการอัปเดตธุรกรรมเฉพาะของบัญชี:
+
+This route handles requests to update an existing transaction associated with an account ID and transaction ID.
+เส้นทางนี้จัดการคำขอเพื่ออัปเดตธุรกรรมที่มีอยู่ซึ่งเกี่ยวข้องกับ account ID และ transaction ID
+
+- Retrieves the account from the database using the account ID.
+- Finds the transaction within the account's transactions array using the transaction ID.
+- If either the account or the transaction is not found, responds with a 404 status code and an error message.
+- Updates the transaction details with the new data from the request body.
+- Saves the updated account back to the database.
+- Returns the updated transaction in JSON format.
+
+- ดึงบัญชีจากฐานข้อมูลโดยใช้ account ID
+- ค้นหาธุรกรรมใน array ของธุรกรรมของบัญชีโดยใช้ transaction ID
+- หากไม่พบทั้งบัญชีหรือธุรกรรม จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- อัปเดตข้อมูลธุรกรรมด้วยข้อมูลใหม่จาก body ของคำขอ
+- บันทึกบัญชีที่อัปเดตกลับไปยังฐานข้อมูล
+- ส่งคืนธุรกรรมที่อัปเดตในรูปแบบ JSON
+*/
 routes
   .route("/update-account-transaction/:accountId/:transactionId")
   .put(async (req, res, next) => {
@@ -234,7 +307,28 @@ routes
     }
   });
 
-// Update account balance
+/* 
+Defining a PUT route for updating the balance of an account:
+กำหนดเส้นทาง PUT สำหรับการอัปเดตยอดเงินของบัญชี:
+
+This route handles requests to update the balance of a specific account identified by its ID.
+เส้นทางนี้จัดการคำขอเพื่ออัปเดตยอดเงินของบัญชีเฉพาะที่ระบุโดย ID ของมัน
+
+- Extracts the account ID from the request parameters.
+- Retrieves the new balance from the request body.
+- Uses the findByIdAndUpdate method to update the account's balance in the database.
+- The 'new: true' option returns the updated account after the update.
+- If the account is not found, responds with a 404 status code and an error message.
+- If successful, returns the updated account in JSON format.
+
+- ดึง account ID จากพารามิเตอร์ของคำขอ
+- ดึงยอดเงินใหม่จาก body ของคำขอ
+- ใช้ findByIdAndUpdate เพื่ออัปเดตยอดเงินของบัญชีในฐานข้อมูล
+- ตัวเลือก 'new: true' จะคืนค่าบัญชีที่อัปเดตหลังจากการอัปเดต
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- หากสำเร็จ ส่งคืนบัญชีที่อัปเดตในรูปแบบ JSON
+*/
+
 routes.route("/update-balance/:id").put(async (req, res, next) => {
   try {
     const accountId = req.params.id;
@@ -257,7 +351,32 @@ routes.route("/update-balance/:id").put(async (req, res, next) => {
   }
 });
 
-// Delete a specific transaction of a specific account
+/* 
+Defining a DELETE route for removing a specific transaction from an account:
+กำหนดเส้นทาง DELETE สำหรับการลบ transaction เฉพาะจากบัญชี:
+
+This route handles requests to delete a specific transaction identified by its ID from the specified account.
+เส้นทางนี้จัดการคำขอเพื่อลบ transaction เฉพาะที่ระบุโดย ID จากบัญชีที่กำหนด
+
+- Extracts the account ID and transaction ID from the request parameters.
+- Retrieves the account associated with the provided account ID.
+- If the account is not found, responds with a 404 status code and an error message.
+- Finds the transaction within the account's transactions array using the provided transaction ID.
+- If the transaction is not found, responds with a 404 status code and an error message.
+- Uses the pull method to remove the transaction from the transactions array.
+- Saves the updated account after the transaction has been removed.
+- Responds with a 200 status code and a success message, including the deleted transaction.
+
+- ดึง account ID และ transaction ID จากพารามิเตอร์ของคำขอ
+- ดึงข้อมูลบัญชีที่เกี่ยวข้องกับ account ID ที่ให้มา
+- หากไม่พบบัญชี จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- ค้นหา transaction ภายในอาร์เรย์ transactions ของบัญชีโดยใช้ transaction ID ที่ให้มา
+- หากไม่พบ transaction จะตอบกลับด้วยสถานะ 404 และข้อความข้อผิดพลาด
+- ใช้เมธอด pull เพื่อลบ transaction จากอาร์เรย์ transactions
+- บันทึกบัญชีที่อัปเดตหลังจากลบ transaction
+- ตอบกลับด้วยสถานะ 200 และข้อความความสำเร็จ รวมถึง transaction ที่ถูกลบ
+*/
+
 routes.route('/delete-account-transaction/:accountId/:transactionId').delete(async (req, res, next) => {
   try {
       // ดึง Account จาก req.params.accountId
@@ -288,13 +407,13 @@ routes.route('/delete-account-transaction/:accountId/:transactionId').delete(asy
 });
 
 /*
-Exporting the demoRoutes module:
-ส่งออกโมดูล demoRoutes:
+Exporting the Routes module:
+ส่งออกโมดูล Routes:
 
-- This line exports the 'demoRoutes' object, making it available for import in other files.
+- This line exports the 'routes' object, making it available for import in other files.
 - It allows other parts of the application to use the defined routes for handling requests related to DemoAccount.
 
-- บรรทัดนี้ส่งออกวัตถุ 'demoRoutes' ทำให้สามารถนำเข้าในไฟล์อื่นได้
+- บรรทัดนี้ส่งออกวัตถุ 'routes' ทำให้สามารถนำเข้าในไฟล์อื่นได้
 - ช่วยให้ส่วนอื่น ๆ ของแอปพลิเคชันสามารถใช้เส้นทางที่กำหนดสำหรับจัดการคำขอที่เกี่ยวข้องกับ DemoAccount
 */
 module.exports = routes;

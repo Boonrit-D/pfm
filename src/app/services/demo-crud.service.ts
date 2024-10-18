@@ -3,8 +3,6 @@ Importing necessary Angular modules for the application:
 นำเข้าโมดูล Angular ที่จำเป็นสำหรับแอปพลิเคชัน:
 
 - Injectable: Decorator to define a service that can be injected.
-- Inject: Function for injecting dependencies.
-- PLATFORM_ID: Token representing the platform the app is running on.
 - catchError: Operator for handling errors in observables.
 - map: Operator for transforming data in observables.
 - Observable: Class representing a stream of data.
@@ -15,8 +13,6 @@ Importing necessary Angular modules for the application:
 - isPlatformBrowser: Utility function to check if the app is running in a browser.
 
 - Injectable: เดคอเรเตอร์สำหรับกำหนดบริการที่สามารถถูกฉีดเข้าไป
-- Inject: ฟังก์ชันสำหรับการฉีดพึ่งพา
-- PLATFORM_ID: โทเคนที่แสดงถึงแพลตฟอร์มที่แอปกำลังทำงานอยู่
 - catchError: โอเปอเรเตอร์สำหรับจัดการข้อผิดพลาดใน observable
 - map: โอเปอเรเตอร์สำหรับแปลงข้อมูลใน observable
 - Observable: คลาสที่แสดงถึงสตรีมของข้อมูล
@@ -24,17 +20,11 @@ Importing necessary Angular modules for the application:
 - HttpClient: บริการสำหรับทำคำขอ HTTP
 - HttpHeaders: คลาสที่แสดงถึง HTTP headers
 - HttpErrorResponse: คลาสสำหรับจัดการข้อผิดพลาด HTTP responses
-- isPlatformBrowser: ฟังก์ชันยูทิลิตี้เพื่อตรวจสอบว่าแอปกำลังทำงานอยู่ในเบราว์เซอร์หรือไม่
 */
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpErrorResponse,
-} from '@angular/common/http';
-import { isPlatformBrowser } from '@angular/common';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 // Interface representing a user account with details such as account name, currency, balance, and associated transactions.
 // อินเทอร์เฟซที่แสดงบัญชีผู้ใช้พร้อมรายละเอียดเช่น ชื่อบัญชี สกุลเงิน ยอดคงเหลือ และธุรกรรมที่เกี่ยวข้อง
@@ -55,6 +45,8 @@ export interface Transaction {
   date: string;
 }
 
+// This service is provided at the root level, making it a singleton throughout the application.
+// บริการนี้ถูกกำหนดที่ระดับ root ทำให้เป็น singleton ตลอดการทำงานของแอปพลิเคชัน
 @Injectable({
   providedIn: 'root',
 })
@@ -63,16 +55,9 @@ export class DemoCrudService {
   // URL ของ REST API ที่ใช้สำหรับการทำงานเกี่ยวกับข้อมูลบัญชี (เช่น การดึงข้อมูล เพิ่ม ลบ หรือแก้ไขบัญชี)
   REST_API_DEMO_ACCOUNT: string = 'http://localhost:8000/demo';
 
-  // Creating HTTP headers with 'Content-Type' set to 'application/json'
-  // การสร้างส่วนหลักของการร้องขอและการตอบกลับโดยกำหนดรูปแบบของเนื้อหาเป็นแบบเจสัน
-  httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
-
   // Constructor for the class, injecting HttpClient for making HTTP requests
   // คอนสตรักเตอร์สำหรับคลาสนี้ใช้ในการฉีด HttpClient เพื่อทำการส่งคำขอ HTTP
-  constructor(
-    private httpClient: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   // ►►► Account API Methods ◄◄◄
   // ►►► เมธอด API สำหรับจัดการบัญชี ◄◄◄
@@ -85,14 +70,12 @@ export class DemoCrudService {
       .post(API_URL, data)
       .pipe(catchError(this.handleError));
   }
-
   // Method to retrieve all accounts by sending a GET request to the API
   // เมธอดสำหรับดึงข้อมูลบัญชีทั้งหมดโดยการส่งคำขอ GET ไปยัง API
   getAccounts(): Observable<any> {
     const API_URL = `${this.REST_API_DEMO_ACCOUNT}`;
     return this.httpClient.get(API_URL).pipe(catchError(this.handleError));
   }
-
   /*
   Method to retrieve a demo account by its ID:
   เมธอดสำหรับดึงข้อมูลบัญชีเดโมโดยใช้ ID ของบัญชี:
@@ -114,7 +97,6 @@ export class DemoCrudService {
       catchError(this.handleError)
     );
   }
-
   /*
   Method to update a demo account by its ID:
   เมธอดสำหรับอัปเดตบัญชีเดโมโดยใช้ ID ของบัญชี:
@@ -129,13 +111,11 @@ export class DemoCrudService {
   */
   updateAccount(accountId: string, data: Account): Observable<any> {
     let API_URL = `${this.REST_API_DEMO_ACCOUNT}/update-account/${accountId}`;
-    console.log(`API URL: ${API_URL}`);
 
     return this.httpClient
       .put(API_URL, data)
       .pipe(catchError(this.handleError));
   }
-
   /*
   Method to delete a demo account by its ID:
   เมธอดสำหรับลบบัญชีเดโมโดยใช้ ID ของบัญชี:
@@ -174,7 +154,6 @@ export class DemoCrudService {
       .post(API_URL, data)
       .pipe(catchError(this.handleError));
   }
-
   /*
     Method to retrieve all transactions from all demo accounts:
     เมธอดสำหรับดึงข้อมูลธุรกรรมทั้งหมดจากบัญชีเดโมทั้งหมด:
@@ -195,7 +174,6 @@ export class DemoCrudService {
       catchError(this.handleError)
     );
   }
-
   /*
     Method to retrieve transactions for the current demo account by its ID:
     เมธอดสำหรับดึงข้อมูลธุรกรรมของบัญชีเดโมปัจจุบันโดยใช้ ID ของบัญชี:
@@ -217,7 +195,6 @@ export class DemoCrudService {
       catchError(this.handleError)
     );
   }
-
   /*
     Method to retrieve a specific transaction for an account by account ID and transaction ID:
     เมธอดสำหรับดึงข้อมูลธุรกรรมเฉพาะของบัญชีโดยใช้ ID ของบัญชีและ ID ของธุรกรรม:
@@ -242,7 +219,6 @@ export class DemoCrudService {
       catchError(this.handleError)
     );
   }
-
   /*
     Method to update a transaction for a specific account by its ID:
     เมธอดสำหรับอัปเดตธุรกรรมของบัญชีเฉพาะโดยใช้ ID ของธุรกรรมและบัญชี:
@@ -266,7 +242,6 @@ export class DemoCrudService {
       .put(API_URL, data)
       .pipe(catchError(this.handleError));
   }
-
   /*
     Method to update the balance of a specific account:
     เมธอดสำหรับอัปเดตยอดคงเหลือของบัญชีเฉพาะ:
@@ -285,7 +260,6 @@ export class DemoCrudService {
       { balance }
     );
   }
-
   /*
     Method to delete a specific transaction for an account:
     เมธอดสำหรับลบธุรกรรมเฉพาะของบัญชี:
@@ -309,22 +283,31 @@ export class DemoCrudService {
     );
   }
 
-  // Method to handle errors from HTTP requests
-  // เมธอดสำหรับจัดการข้อผิดพลาดจากคำขอ HTTP
+  /*
+    Method to handle errors from HTTP requests:
+    เมธอดสำหรับจัดการข้อผิดพลาดจากคำขอ HTTP:
+
+    - This method checks if the error has a specific message on the client-side.
+    - If it does, it constructs an error message indicating a client-side error.
+    - If not, it prepares a server error message with the status code and message.
+    - Finally, it logs the error message to the console and throws it as an observable error.
+
+    - เมธอดนี้ตรวจสอบว่าข้อผิดพลาดมีข้อความเฉพาะที่ฝั่งคลายเอนต์หรือไม่
+    - หากมี จะสร้างข้อความข้อผิดพลาดที่ระบุว่าเป็นข้อผิดพลาดจากฝั่งคลายเอนต์
+    - หากไม่มี จะเตรียมข้อความข้อผิดพลาดจากเซิร์ฟเวอร์พร้อมรหัสสถานะและข้อความ
+    - สุดท้ายจะทำการบันทึกข้อความข้อผิดพลาดไปยังคอนโซลและโยนเป็นข้อผิดพลาดใน observable
+  */
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';
 
-    if (isPlatformBrowser(this.platformId)) {
-      if (error.error instanceof ErrorEvent) {
-        errorMessage = error.error.message;
-      } else {
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      }
-      alert(errorMessage);
-      return throwError(() => new Error(errorMessage));
+    if (error.error && typeof error.error.message === 'string') {
+      errorMessage = `Client-side error: ${error.error.message}`;
+    } else {
+      errorMessage = `Server error Code: ${error.status}\nMessage: ${error.message}`;
     }
 
-    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    return throwError(() => new Error('An unknown error occurred.'));
+    console.error(errorMessage);
+
+    return throwError(() => new Error(errorMessage));
   }
 }

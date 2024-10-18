@@ -1,13 +1,24 @@
-/*
-  English: 
-  Import necessary Angular modules and classes for HTTP requests, 
-  handling HTTP events, and implementing an interceptor to modify requests 
-  and responses in the application's HTTP pipeline.
+/* 
+Importing necessary Angular modules for the application:
+นำเข้าโมดูล Angular ที่จำเป็นสำหรับแอปพลิเคชัน:
 
-  ภาษาไทย:
-  นำเข้าโมดูลและคลาสที่จำเป็นของ Angular สำหรับการทำคำขอ HTTP,
-  การจัดการเหตุการณ์ HTTP, และการใช้ interceptor เพื่อปรับเปลี่ยนคำขอ 
-  และการตอบกลับใน HTTP pipeline ของแอปพลิเคชัน
+- Injectable: Decorator to define a service that can be injected.
+- HttpRequest: Class representing an HTTP request.
+- HttpHandler: Interface for handling HTTP requests.
+- HttpEvent: Class representing an HTTP event.
+- HttpInterceptor: Interface for intercepting HTTP requests and responses.
+- Observable: Class representing a stream of data.
+- isPlatformBrowser: Utility function to check if the app is running in a browser.
+- AuthService: Service for authentication-related functionalities.
+
+- Injectable: เดคอเรเตอร์สำหรับกำหนดบริการที่สามารถถูกฉีดเข้าไป
+- HttpRequest: คลาสที่แสดงถึงคำขอ HTTP
+- HttpHandler: อินเทอร์เฟซสำหรับจัดการคำขอ HTTP
+- HttpEvent: คลาสที่แสดงถึงเหตุการณ์ HTTP
+- HttpInterceptor: อินเทอร์เฟซสำหรับการดักจับคำขอและการตอบสนอง HTTP
+- Observable: คลาสที่แสดงถึงสตรีมของข้อมูล
+- isPlatformBrowser: ฟังก์ชันยูทิลิตี้เพื่อตรวจสอบว่าแอปกำลังทำงานอยู่ในเบราว์เซอร์หรือไม่
+- AuthService: บริการสำหรับฟังก์ชันการทำงานที่เกี่ยวข้องกับการพิสูจน์ตัวตน
 */
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import {
